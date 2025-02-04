@@ -1,0 +1,23 @@
+{
+  "name": "ALL-ts-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/bandalgomim/ALL-ts-backend",
+  "author": "bandalgomim <bandalgomim@naver.com>",
+  "license": "MIT",
+  "scripts": {
+    "prebuild": "yarn run lint",
+    "lint": "eslint src/**/*.ts --fix",
+    "start:dev": "nodemon"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.19.0",
+    "@stylistic/eslint-plugin": "^3.0.1",
+    "eslint": "^9.19.0",
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.23.0"
+  }
+}

@@ -1,0 +1,6 @@
+{
+    "watch": ["src"],
+    "ext": "ts",
+    "exec": "yarn run lint && ts-node ./src/main.ts"
+  }
+  
