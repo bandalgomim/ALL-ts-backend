@@ -5,7 +5,7 @@ import { status } from "../../../config/response.status";
 import { mainSql } from "./main.sql";
 
 
-export const postDao = {
+export const mainDao = {
     get: async (userId: string) => {
         // main 페이지의 달력과 선호팀에 들어갈 정보를 반환
         const connection = await getPool().getConnection();
@@ -20,7 +20,7 @@ export const postDao = {
             connection.release();
         }
     },
-    deleteMvp: async (matchId: number, userId: string) => {
+    deleteMatch: async (userId: string, matchId: number) => {
         // 해당 match를 달력에서 삭제
         const connection = await getPool().getConnection();
         try {

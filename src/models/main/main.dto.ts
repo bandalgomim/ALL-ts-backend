@@ -1,4 +1,4 @@
-interface match {
+export interface match {
     matchId: number,
     matchDate: string,
     homeTeamId: number,
@@ -6,7 +6,7 @@ interface match {
     teamicon: string
 }
 
-interface team {
+export interface team {
     teamId: number,
     teamName: string,
     teamIcon: string
@@ -15,8 +15,4 @@ interface team {
 export interface getMainDto {
     calander: match[],
     favorite: team[]
-}
-
-export interface deleteMatchMainDto {
-    matchId: number
 }
