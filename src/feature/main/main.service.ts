@@ -16,12 +16,14 @@ export const mainService = {
                 matchDate: data.match_date,
                 homeTeamId: data.home_team_id,
                 awayTeamId: data.away_team_id,
-                teamicon: data.teamIcon
+                hometeamLogo: data.home_team_logo,
+                awayteamLogo: data.data.away_team_logo,
+                isMatchSelected: true
             };
             const team = {
                 teamId: data.team_id,
                 teamName: data.team_name,
-                teamIcon: data.teamIcon
+                teamLogo: data.teamLogo
             };
             calander.push(match);
             favorite.push(team);
