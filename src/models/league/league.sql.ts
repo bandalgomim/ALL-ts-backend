@@ -19,7 +19,7 @@ export const leagueSql = {
         FROM match_info m
         INNER JOIN team t1 ON t1.team_id = m.home_team_id
         INNER JOIN team t2 ON t2.team_id = m.away_team_id
-        WHERE t1.league_id = ?
+        WHERE m.league_id = ?
     ),
     team_list AS (
         SELECT 
