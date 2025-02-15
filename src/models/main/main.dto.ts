@@ -5,6 +5,7 @@ export interface match {
     awayTeamId: number,
     hometeamLogo: string,
     awayteamLogo: string,
+    matchState: string,
     isMatchSelected: boolean
 }
 

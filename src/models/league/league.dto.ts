@@ -1,4 +1,4 @@
-import { match } from "../team/team.dto";
+import { match } from "../main/main.dto";
 
 export interface league {
     leagueId: number,
@@ -20,5 +20,6 @@ export interface getLeagueDto {
     team: team[],
     match: match[]
 }
+
 export { match };
 

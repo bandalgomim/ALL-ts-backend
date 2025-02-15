@@ -4,9 +4,10 @@ import cors from "cors";
 import { tokenMinddleware } from "./utils/jwt.middleware";
 import asyncHandler from "express-async-handler";
 import { config } from "dotenv";
-import { leagueRouter } from "./route/league/league.route";
+import { matchRouter } from "./route/match/match.route";
 import { mainRouter } from "./route/main/main.route";
 import { teamRouter } from "./route/team/team.route";
+import { leagueRouter } from "./route/league/league.route";
 
 
 config();
@@ -19,6 +20,7 @@ export default function App() {
     app.use(express.urlencoded({ extended: false }));
     app.use("/main", asyncHandler(tokenMinddleware.auth), asyncHandler(mainRouter));
     app.use("/team", asyncHandler(tokenMinddleware.auth), asyncHandler(teamRouter));
+    app.use("/match", asyncHandler(tokenMinddleware.auth), asyncHandler(matchRouter));
     app.use("/league", asyncHandler(tokenMinddleware.auth), asyncHandler(leagueRouter));
     return app;
 }

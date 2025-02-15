@@ -6,6 +6,7 @@ export const leagueSql = {
             m.home_team_id,
             m.away_team_id,
             m.match_date,
+            m.match_state,
             t1.team_logo AS home_team_logo,
             t2.team_logo AS away_team_logo,
             EXISTS (

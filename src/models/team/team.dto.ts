@@ -1,12 +1,4 @@
-export interface match {
-    matchId: number,
-    matchDate: string,
-    homeTeamId: number,
-    awayTeamId: number,
-    hometeamLogo: string,
-    awayteamLogo: string,
-    isMatchSelected: boolean
-}
+import { match } from "../main/main.dto";
 
 export interface team {
     teamId: number,
@@ -25,3 +17,5 @@ export interface getTeamDto {
     team: team,
     calander: match[]
 }
+export { match };
+

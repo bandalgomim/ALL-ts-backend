@@ -11,22 +11,21 @@ export const mainService = {
         const favorite: team[] = [];
 
         result.map((data) => { // 매핑을 통해 배열에 알맞은 오브젝트를 생성 후 push
-            const match = {
+            calander.push({
                 matchId: data.match_id,
                 matchDate: data.match_date,
+                matchState: data.match_state,
                 homeTeamId: data.home_team_id,
                 awayTeamId: data.away_team_id,
                 hometeamLogo: data.home_team_logo,
                 awayteamLogo: data.data.away_team_logo,
                 isMatchSelected: true
-            };
-            const team = {
+            });
+            favorite.push({
                 teamId: data.team_id,
                 teamName: data.team_name,
                 teamLogo: data.teamLogo
-            };
-            calander.push(match);
-            favorite.push(team);
+            });
         });
 
         const res: BaseApiResponse<getMainDto> = {

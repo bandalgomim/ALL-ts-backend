@@ -19,23 +19,22 @@ export const leagueService = {
 
         result.map((data) => { // 매핑을 통해 배열에 알맞은 오브젝트를 생성 후 push
             if (data.match_id !== null) {
-                const match_data = {
+                match.push({
                     matchId: data.match_id,
                     matchDate: data.match_date,
+                    matchState: data.match_state,
                     homeTeamId: data.home_team_id,
                     awayTeamId: data.away_team_id,
                     hometeamLogo: data.home_team_logo,
                     awayteamLogo: data.data.away_team_logo,
                     isMatchSelected: data.is_match_selected
-                };
-                match.push(match_data);
+                });
             } else {
-                const team_data = {
+                team.push({
                     teamId: data.team_id,
                     teamName: data.team_name,
                     teamLogo: data.team_logo
-                };
-                team.push(team_data);
+                });
             }
         });
         const res: BaseApiResponse<getLeagueDto> = {
