@@ -37,9 +37,12 @@ export const teamSql = {
             t1.team_logo AS home_team_logo,
             t2.team_logo AS away_team_logo,
             EXISTS (
-                SELECT 1 
-                FROM calendar c 
-                WHERE m.match_id = c.match_id
+                SELECT 
+                    c.is_selected 
+                FROM 
+                    calendar c 
+                WHERE 
+                    m.match_id = c.match_id
             ) AS is_match_selected
         FROM
             match_info m
