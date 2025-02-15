@@ -16,6 +16,6 @@ export interface team {
 }
 
 export interface getMainDto {
-    calander: match[],
-    favorite: team[]
+    matchList: match[],
+    teamList: team[]
 }

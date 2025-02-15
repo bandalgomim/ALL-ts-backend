@@ -40,7 +40,7 @@ export const teamSql = {
                 SELECT 
                     c.is_selected 
                 FROM 
-                    calendar c 
+                    match_list c 
                 WHERE 
                     m.match_id = c.match_id
             ) AS is_match_selected
@@ -61,5 +61,5 @@ export const teamSql = {
     ORDER BY 
         ml.match_date;
     `,
-    patchMatch: "DELETE FROM calendar WHERE user_id = ? AND match_id = ?" // 유저 아이디와 매치정보를 통해 해당 매치를 삭제
+    patchMatch: "DELETE FROM match_list WHERE user_id = ? AND match_id = ?" // 유저 아이디와 매치정보를 통해 해당 매치를 삭제
 };

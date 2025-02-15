@@ -7,11 +7,11 @@ import { getMainDto, match, team } from "../../models/main/main.dto";
 export const mainService = {
     get: async (userId: string) => {
         const result = await mainDao.get(userId); // dao의 정보를 반환
-        const calander: match[] = []; // 각 항목이 들어갈 배열을 생성
-        const favorite: team[] = [];
+        const matchList: match[] = []; // 각 항목이 들어갈 배열을 생성
+        const teamList: team[] = [];
 
         result.map((data) => { // 매핑을 통해 배열에 알맞은 오브젝트를 생성 후 push
-            calander.push({
+            matchList.push({
                 matchId: data.match_id,
                 matchDate: data.match_date,
                 matchState: data.match_state,
@@ -21,7 +21,7 @@ export const mainService = {
                 awayteamLogo: data.data.away_team_logo,
                 isMatchSelected: true
             });
-            favorite.push({
+            teamList.push({
                 teamId: data.team_id,
                 teamName: data.team_name,
                 teamLogo: data.teamLogo
@@ -31,8 +31,8 @@ export const mainService = {
         const res: BaseApiResponse<getMainDto> = {
             ...status.SUCCESS.body,
             result: {
-                calander: calander,
-                favorite: [ ...new Set(favorite) ] // 중복 제거
+                matchList: matchList,
+                teamList: [ ...new Set(teamList) ] // 중복 제거
             }
         };
         return res;

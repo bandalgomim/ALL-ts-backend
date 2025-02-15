@@ -15,7 +15,7 @@ export interface team {
 
 export interface getTeamDto {
     team: team,
-    calander: match[]
+    matchList: match[]
 }
 export { match };
 

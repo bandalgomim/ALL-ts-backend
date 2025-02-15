@@ -13,7 +13,7 @@ export const matchSql = {
                 SELECT 
                     c.is_selected 
                 FROM 
-                    calendar c 
+                    match_list c 
                 WHERE 
                     m.match_id = c.match_id
             ) AS is_match_selected

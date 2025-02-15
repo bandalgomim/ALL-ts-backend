@@ -13,7 +13,7 @@ export const mainSql = {
             WHERE 
                 tl.user_id = ?
         ),
-        calendar_match as ( //달력과 매치 정보를 join
+        match_list_match as ( //달력과 매치 정보를 join
             SELECT 
                 m.match_id,
                 m.home_team_id,
@@ -23,7 +23,7 @@ export const mainSql = {
                 t1.team_logo as home_team_logo,
                 t2.team_logo as away_team_logo
             FROM
-                calendar c
+                match_list c
             INNER JOIN
                 match_info m on c.match_id = m.match_id
             INNER JOIN
@@ -44,11 +44,11 @@ export const mainSql = {
         cm.home_team_logo,
         cm.away_team_logo
     FROM 
-        favorite f
+        teamList f
     INNER JOIN 
-        calendar_match cm 
+        match_list_match cm 
     ON 
         f.team_id = cm.home_team_id OR f.team_id = cm.away_team_id;
     `,
-    deleteMatch: "INSERT INTO calendar (user_id, match_id) VALUES (?, ?)" // 유저 아이디와 매치정보를 캘린더에 입력
+    deleteMatch: "INSERT INTO match_list (user_id, match_id) VALUES (?, ?)" // 유저 아이디와 매치정보를 캘린더에 입력
 };

@@ -7,10 +7,10 @@ import { getTeamDto, match } from "../../models/team/team.dto";
 export const teamService = {
     get: async (teamId: number) => {
         const result = await teamDao.get(teamId); // dao의 정보를 반환
-        const calander: match[] = []; // 각 항목이 들어갈 배열을 생성
+        const matchList: match[] = []; // 각 항목이 들어갈 배열을 생성
 
         result.map((data) => { // 매핑을 통해 배열에 알맞은 오브젝트를 생성 후 push
-            calander.push({
+            matchList.push({
                 matchId: data.match_id,
                 matchDate: data.match_date,
                 matchState: data.match_state,
@@ -37,7 +37,7 @@ export const teamService = {
                     countryName: result[0].country_name,
                     isTeamSelected: result[0].is_team_selected
                 },
-                calander: calander // 중복 제거
+                matchList: matchList // 중복 제거
             }
         };
         return res;
