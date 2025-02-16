@@ -41,13 +41,5 @@ export const teamService = {
             }
         };
         return res;
-    },
-    patchMatch: async (userId: string, matchId: number) => {
-        await teamDao.patchMatch(userId, matchId); // 반환할 정보가 없음
-        const res: BaseApiResponse<null> = {
-            ...status.SUCCESS.body,
-            result: null
-        };
-        return res;
     }
 };

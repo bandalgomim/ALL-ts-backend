@@ -1,4 +1,4 @@
-import { ResultSetHeader, RowDataPacket } from "mysql2/promise";
+import { RowDataPacket } from "mysql2/promise";
 import { getPool } from "../../../config/db.pool";
 import { ApiError } from "../../../config/error";
 import { status } from "../../../config/response.status";
@@ -15,19 +15,6 @@ export const mainDao = {
         } catch (err) {
             console.error(err);
             throw new ApiError(status.DATA_SEARCH_SQL_ERROR);
-        } finally {
-        // 연결 반환 보장
-            connection.release();
-        }
-    },
-    deleteMatch: async (userId: string, matchId: number) => {
-        // 해당 match를 달력에서 삭제
-        const connection = await getPool().getConnection();
-        try {
-            await connection.query<ResultSetHeader>(mainSql.deleteMatch, [ userId, matchId ]);
-        } catch (err) {
-            console.error(err);
-            throw new ApiError(status.DATA_UPDATED_SQL_ERROR);
         } finally {
         // 연결 반환 보장
             connection.release();

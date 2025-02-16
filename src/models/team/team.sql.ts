@@ -12,7 +12,7 @@ export const teamSql = {
             c.country_id,
             c.country_name,
             EXISTS (
-                SELECT 1 
+                SELECT tl.is_selected 
                 FROM team_list tl 
                 WHERE tl.team_id = t.team_id
             ) AS is_team_selected
@@ -60,6 +60,5 @@ export const teamSql = {
         match_list ml ON ml.home_team_id = ti.team_id OR ml.away_team_id = ti.team_id
     ORDER BY 
         ml.match_date;
-    `,
-    patchMatch: "DELETE FROM match_list WHERE user_id = ? AND match_id = ?" // 유저 아이디와 매치정보를 통해 해당 매치를 삭제
+    `
 };

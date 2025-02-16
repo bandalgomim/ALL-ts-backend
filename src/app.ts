@@ -7,6 +7,7 @@ import { config } from "dotenv";
 import { matchRouter } from "./route/match/match.route";
 import { mainRouter } from "./route/main/main.route";
 import { teamRouter } from "./route/team/team.route";
+import { isSelectedRouter } from "./route/isSelected/isSelected.route";
 import { leagueRouter } from "./route/league/league.route";
 
 
@@ -21,6 +22,7 @@ export default function App() {
     app.use("/main", asyncHandler(tokenMinddleware.auth), asyncHandler(mainRouter));
     app.use("/team", asyncHandler(tokenMinddleware.auth), asyncHandler(teamRouter));
     app.use("/match", asyncHandler(tokenMinddleware.auth), asyncHandler(matchRouter));
+    app.use("/isSelected", asyncHandler(tokenMinddleware.auth), asyncHandler(isSelectedRouter));
     app.use("/league", asyncHandler(tokenMinddleware.auth), asyncHandler(leagueRouter));
     return app;
 }

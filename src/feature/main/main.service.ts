@@ -36,13 +36,5 @@ export const mainService = {
             }
         };
         return res;
-    },
-    deleteMatch: async (userId: string, matchId: number) => {
-        await mainDao.deleteMatch(userId, matchId); // 반환할 정보가 없음
-        const res: BaseApiResponse<null> = {
-            ...status.SUCCESS.body,
-            result: null
-        };
-        return res;
     }
 };

@@ -49,6 +49,5 @@ export const mainSql = {
         match_list_match cm 
     ON 
         f.team_id = cm.home_team_id OR f.team_id = cm.away_team_id;
-    `,
-    deleteMatch: "INSERT INTO match_list (user_id, match_id) VALUES (?, ?)" // 유저 아이디와 매치정보를 캘린더에 입력
+    `
 };

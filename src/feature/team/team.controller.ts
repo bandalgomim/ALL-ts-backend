@@ -6,11 +6,5 @@ export const teamController = {
         const matchId = parseInt(req.query.matchId as string);
         const result = await teamService.get(matchId);
         res.json(result);
-    },
-    patchMatch: async (req: Request, res: Response) => {
-        const userId = res.locals.id;
-        const matchId = parseInt(req.query.matchId as string);
-        const result = await teamService.patchMatch(userId, matchId);
-        res.json(result);
     }
 };
