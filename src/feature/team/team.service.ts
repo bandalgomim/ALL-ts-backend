@@ -17,7 +17,9 @@ export const teamService = {
                 homeTeamId: data.home_team_id,
                 awayTeamId: data.away_team_id,
                 hometeamLogo: data.home_team_logo,
-                awayteamLogo: data.data.away_team_logo,
+                awayteamLogo: data.away_team_logo,
+                homeTeamScore: data.home_team_score,
+                awayTeamScore: data.away_team_score,
                 isMatchSelected: data.is_match_selected
             });
         });

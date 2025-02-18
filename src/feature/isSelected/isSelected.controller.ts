@@ -6,6 +6,9 @@ export const isSelectedController = {
         const userId = res.locals.id;
         const teamId = parseInt(req.query.teamId as string);
         const matchId = parseInt(req.query.matchId as string);
+
+        console.log("isSelected matchId: " + matchId);
+
         let result;
 
         if (teamId && !matchId) {

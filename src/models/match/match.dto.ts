@@ -12,6 +12,8 @@ export interface getMatchDto {
     awayTeamId: number,
     hometeamLogo: string,
     awayteamLogo: string,
+    homeTeamScore: number,
+    awayTeamScore: number,
     matchState: string,
     isMatchSelected: boolean,
     platform: platform[]

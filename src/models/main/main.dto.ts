@@ -5,6 +5,8 @@ export interface match {
     awayTeamId: number,
     hometeamLogo: string,
     awayteamLogo: string,
+    homeTeamScore: number,
+    awayTeamScore: number,
     matchState: string,
     isMatchSelected: boolean
 }
@@ -12,7 +14,8 @@ export interface match {
 export interface team {
     teamId: number,
     teamName: string,
-    teamLogo: string
+    teamLogo: string,
+    isTeamSelected: boolean
 }
 
 export interface getMainDto {

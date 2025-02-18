@@ -11,8 +11,9 @@ export const isSelectedDao = {
         // isSelected 페이지의 달력과 선호팀에 들어갈 정보를 반환
         const connection = await getPool().getConnection();
         try {
-            const [ result ] = await connection.query<RowDataPacket[]>(isSelectedSql.patchTeam, [ userId, teamId ]);
-            return result;
+            await connection.query<RowDataPacket[]>(isSelectedSql.patchTeam, [ userId, teamId ]);
+            await connection.query<RowDataPacket[]>(isSelectedSql.updateMatch, [ teamId, teamId, userId ]);
+            return;
         } catch (err) {
             console.error(err);
             throw new ApiError(status.DATA_SEARCH_SQL_ERROR);
