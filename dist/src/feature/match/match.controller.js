@@ -1,0 +1,23 @@
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.matchController = void 0;
+const match_service_1 = require("./match.service");
+exports.matchController = {
+    get: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const matchId = parseInt(req.query.matchId);
+        console.log("in match controller match Id: ", matchId);
+        if (matchId) {
+            const result = yield match_service_1.matchService.get(matchId);
+            res.json(result);
+        }
+    })
+};
