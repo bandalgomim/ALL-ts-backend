@@ -5,5 +5,6 @@ import { IAMController } from "../../../feature/auth/IAM/IAM.controller";
 export const IAMRouter = Router();
 IAMRouter.get("/login", asyncHandler(IAMController.login));
 IAMRouter.post("/signUp", asyncHandler(IAMController.signUp));
+IAMRouter.post("/signUpTest", asyncHandler(IAMController.signUpTest));
 IAMRouter.get("/refreshToken", asyncHandler(IAMController.refreshToken));
 IAMRouter.post("/loginTest", asyncHandler(IAMController.loginTest));

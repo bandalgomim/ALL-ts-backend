@@ -6,11 +6,12 @@ import { leagueSql } from "./league.sql";
 
 
 export const leagueDao = {
-    get: async (leagueId: number) => {
+    get: async (userId: string, leagueId: number) => {
         // league 페이지의 달력과 선호팀에 들어갈 정보를 반환
         const connection = await getPool().getConnection();
         try {
-            const [ result ] = await connection.query<RowDataPacket[]>(leagueSql.get, [ leagueId, leagueId, leagueId ]);
+            const [ result ]
+            = await connection.query<RowDataPacket[]>(leagueSql.get, [ userId, leagueId, leagueId, userId, leagueId ]);
             return result;
         } catch (err) {
             console.error(err);

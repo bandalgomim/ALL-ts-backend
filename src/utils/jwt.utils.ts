@@ -19,7 +19,7 @@ export const tokenUtils = {
         };
         return jwt.sign(payload, secret, {
             algorithm: "HS256",
-            expiresIn: "60d"
+            expiresIn: "15m"
         });
     },
     login: async (user_id: string) => {
@@ -44,7 +44,7 @@ export const tokenUtils = {
     refresh: () => {
         return jwt.sign({}, secret, {
             algorithm: "HS256",
-            expiresIn: "14d"
+            expiresIn: "1h"
         });
     },
     refreshVerify: async (token: string, userId: string) => {
@@ -60,8 +60,12 @@ export const tokenUtils = {
             } else {
                 return false;
             }
-        } catch {
-            throw new ApiError(status.REDIS_ERROR);
+        } catch (error) {
+            if (error instanceof Error) {
+                return false;
+            } else {
+                throw new Error("Unknown Redis error");
+            }
         }
     }
 };

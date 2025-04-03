@@ -5,6 +5,10 @@ export const leagueSql = {
             m.match_id,
             m.home_team_id,
             m.away_team_id,
+            t1.team_name AS home_team_name,
+            t2.team_name AS away_team_name,
+            t1.team_initial AS home_team_initial,
+            t2.team_initial AS away_team_initial,
             m.match_date,
             m.match_state,
             t1.team_logo AS home_team_logo,
@@ -16,20 +20,27 @@ export const leagueSql = {
                 FROM match_list c
                 WHERE m.match_id = c.match_id
                 AND c.is_selected = true
+                AND c.user_id = ?
             ) AS is_match_selected,
             NULL AS team_id,
             NULL AS team_name,
+            NULL AS team_initial,
             NULL AS team_logo
         FROM match_info m
         LEFT JOIN team t1 ON t1.team_id = m.home_team_id
         LEFT JOIN team t2 ON t2.team_id = m.away_team_id
         WHERE m.league_id = ?
+        ORDER BY m.match_date ASC
     ),
     team_list AS (
         SELECT 
             NULL AS match_id,
             NULL AS home_team_id,
             NULL AS away_team_id,
+            NULL AS home_team_name,
+            NULL AS away_team_name,
+            NULL AS home_team_initial,
+            NULL AS away_team_initial,
             NULL AS match_date,
             NULL AS match_state,
             NULL AS home_team_logo,
@@ -39,6 +50,7 @@ export const leagueSql = {
             NULL AS is_match_selected,
             t.team_id,
             t.team_name,
+            t.team_initial as    team_initial,
             t.team_logo
         FROM team t
         WHERE t.league_id = ?
@@ -52,10 +64,16 @@ export const leagueSql = {
         SELECT
             l.league_id,
             l.league_name,
+            l.league_logo,
             l.sport_id,
             s.sport_name,
             l.country_id,
-            c.country_name
+            c.country_name,
+            EXISTS (
+                SELECT ll.is_selected 
+                FROM league_list ll 
+                WHERE ll.league_id = l.league_id AND ll.is_selected = 1 AND ll.user_id = ?
+            ) AS is_league_selected
         FROM 
             league l
         LEFT JOIN
@@ -67,5 +85,5 @@ export const leagueSql = {
     )
     SELECT *
     FROM league_info
-    CROSS JOIN team_match;`
+    LEFT JOIN team_match ON 1 = 1`
 };

@@ -4,8 +4,14 @@ import { mainService } from "./main.service";
 export const mainController = {
     get: async (req: Request, res: Response) => {
         const userId = res.locals.id;
-        console.log("main controller: userId = " + userId);
         const result = await mainService.get(userId);
+        res.json(result);
+    },
+    patch: async (req: Request, res: Response) => {
+        const userId = res.locals.id;
+        const index = req.body;
+        console.log(userId, req.body, "!!");
+        const result = await mainService.patch(userId, index);
         res.json(result);
     }
 };

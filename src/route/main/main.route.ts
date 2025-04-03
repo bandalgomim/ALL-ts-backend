@@ -4,5 +4,6 @@ import { mainController } from "../../feature/main/main.controller";
 
 export const mainRouter = Router();
 mainRouter.get("/", asyncHandler(mainController.get));
+mainRouter.patch("/", asyncHandler(mainController.patch));
 
 
