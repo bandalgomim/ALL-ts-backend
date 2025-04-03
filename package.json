@@ -8,7 +8,8 @@
   "scripts": {
     "prebuild": "yarn run lint",
     "lint": "eslint src/**/*.ts --fix",
-    "start:dev": "nodemon"
+    "start:dev": "nodemon",
+    "start": "node dist/main.js"
   },
   "dependencies": {
     "axios": "^1.7.9",
