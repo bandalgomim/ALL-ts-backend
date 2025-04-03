@@ -203,7 +203,7 @@ export const status: Record<ResponseType, ResponseWithStatus> = {
     body: {
       isSuccess: false,
       code: "400",
-      message: "JWT verification failed.",
+      message: "JWT verification failed",
     },
   },
   REDIS_ERROR: {

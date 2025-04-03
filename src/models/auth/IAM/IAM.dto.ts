@@ -1,8 +1,8 @@
 export interface postSignUpDto {
     userId: string,
     email: string,
-    name: string,
-    iconUrl: string
+    nickname: string,
+    icon: string
 }
 
 export interface headers {

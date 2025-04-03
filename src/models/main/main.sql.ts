@@ -6,10 +6,19 @@ export const mainSql = {
                 tl.team_id,
                 t.team_name,
                 t.team_logo,
-                tl.is_selected AS is_team_selected,
+                tl.\`index\` AS team_index,
+                null AS league_id,
+                null AS league_name,
+                null AS league_logo,
+                null AS league_index,
+                null AS user_id,
                 null AS match_id,
                 null AS home_team_id,
                 null AS away_team_id,
+                NULL AS home_team_name,
+                NULL AS away_team_name,
+                NULL AS home_team_initial,
+                NULL AS away_team_initial,
                 null AS match_date,
                 null AS match_state,
                 null AS home_team_logo,
@@ -21,18 +30,63 @@ export const mainSql = {
                 team_list tl
             LEFT JOIN
                 team t ON tl.team_id = t.team_id
-            WHERE 
+            WHERE
+                tl.is_selected = 1
+            AND
                 tl.user_id = ?
+        ),
+        league_list_info as (
+            SELECT 
+                null AS team_id,
+                null AS team_name,
+                null AS team_logo,
+                null AS team_index,
+                ll.league_id,
+                l.league_name,
+                l.league_logo,
+                ll.\`index\` AS league_index,
+                null AS user_id,
+                null AS match_id,
+                null AS home_team_id,
+                null AS away_team_id,
+                NULL AS home_team_name,
+                NULL AS away_team_name,
+                NULL AS home_team_initial,
+                NULL AS away_team_initial,
+                null AS match_date,
+                null AS match_state,
+                null AS home_team_logo,
+                null AS away_team_logo,
+                null AS home_team_score,
+                null AS away_team_score,
+                null AS is_match_selected
+            FROM 
+                league_list ll
+            LEFT JOIN
+                league l ON ll.league_id = l.league_id
+            WHERE
+                ll.is_selected = 1
+            AND
+                ll.user_id = ?
         ),
         match_list_info as (
             SELECT
                 null AS team_id,
                 null AS team_name,
                 null AS team_logo,
-                null AS is_selected, 
-                m.match_id,
+                null AS team_index,
+                null AS league_id,
+                null AS league_name,
+                null AS league_logo,
+                null AS league_index,
+                c.user_id,
+                c.match_id,
                 m.home_team_id,
                 m.away_team_id,
+                t1.team_name AS home_team_name,
+                t2.team_name AS away_team_name,
+                t1.team_initial AS home_team_initial,
+                t2.team_initial AS away_team_initial,
                 m.match_date,
                 m.match_state,
                 t1.team_logo as home_team_logo,
@@ -44,6 +98,7 @@ export const mainSql = {
                     FROM match_list c
                     WHERE m.match_id = c.match_id
                     AND c.is_selected = true
+                    AND c.user_id = ?
                 ) AS is_match_selected
             FROM
                 match_list c
@@ -55,6 +110,7 @@ export const mainSql = {
                 team t2 on t2.team_id = m.away_team_id
             WHERE
                 c.user_id = ?
+            ORDER BY m.match_date ASC
         )
     SELECT 
         tli.*
@@ -63,6 +119,30 @@ export const mainSql = {
     UNION ALL
     SELECT
         mli.*
-    FROM match_list_info mli
-    `
+    FROM 
+        match_list_info mli
+    UNION ALL
+    SELECT
+        lli.*
+    FROM 
+        league_list_info lli
+    `,
+    patchTeamList: (teamItems: { teamId: number, index: number }[]) => {
+        const caseStatements = teamItems.map(() => "WHEN team_id = ? THEN ?").join(" ");
+        const whereClause = teamItems.map(() => "?").join(", ");
+        return `
+            UPDATE team_list
+            SET \`index\` = CASE ${caseStatements} END
+            WHERE team_id IN (${whereClause});
+        `;
+    },
+    patchLeagueList: (leagueItems: { leagueId: number, index: number }[]) => {
+        const caseStatements = leagueItems.map(() => "WHEN league_id = ? THEN ?").join(" ");
+        const whereClause = leagueItems.map(() => "?").join(", ");
+        return `
+            UPDATE league_list
+            SET \`index\` = CASE ${caseStatements} END
+            WHERE league_id IN (${whereClause});
+        `;
+    }
 };

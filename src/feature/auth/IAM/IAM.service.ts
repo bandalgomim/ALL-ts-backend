@@ -30,13 +30,11 @@ export const IAMService = {
             const authToken = headers.Authorization.split(" ")[1];
             const refreshToken = headers.RefreshToken;
             const authResult = tokenUtils.verify(authToken);
-
-            // access token 디코딩하여 user의 정보를 가져옵니다.
             const decoded = jwt.decode(authToken) as jwt.JwtPayload;
-
             if (decoded === null) {
                 throw new ApiError(status.ACCESS_TOKEN_UNMATCHED);
             }
+
             const refreshResult = await tokenUtils.refreshVerify(refreshToken, decoded.sub as string);
             if (authResult.ok === false) {
                 // 1. access token이 만료되고, refresh token도 만료 된 경우 => 새로 로그인해야합니다.

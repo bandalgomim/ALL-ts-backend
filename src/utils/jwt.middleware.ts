@@ -1,10 +1,10 @@
 import { tokenUtils } from "./jwt.utils";
 import { Request, Response, NextFunction } from "express";
-
 import { status } from "../../config/response.status";
 import { config } from "dotenv";
 import axios from "axios";
 import { ApiError } from "../../config/error";
+import { IAMController } from "../feature/auth/IAM/IAM.controller";
 
 config();
 
@@ -18,7 +18,7 @@ export const tokenMinddleware = {
                 res.locals.id = result.sub;
                 next();
             } else {
-                throw new ApiError(status.ACCESS_TOKEN_EXPIRED);
+                await IAMController.refreshToken(req, res);
             }
         } else {
             throw new ApiError(status.THERE_IS_NO_ACCESS_TOKEN);

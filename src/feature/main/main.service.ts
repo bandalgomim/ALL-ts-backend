@@ -2,29 +2,34 @@
 import { mainDao } from "../../models/main/main.dao";
 import { status } from "../../../config/response.status";
 import { BaseApiResponse } from "../../../config/response";
-import { getMainDto, match, team } from "../../models/main/main.dto";
+import { getMainDto, league, match, patchMainReqDto, team } from "../../models/main/main.dto";
+import moment from "moment";
 
 export const mainService = {
     get: async (userId: string) => {
         const result = await mainDao.get(userId); // dao의 정보를 반환
         const matchList: match[] = []; // 각 항목이 들어갈 배열을 생성
         const teamList: team[] = [];
-
-        console.log("mainService: result = " + JSON.stringify(result));
-
+        const leagueList: league[] = [];
         result.map((data) => { // 매핑을 통해 배열에 알맞은 오브젝트를 생성 후 push
             if (data.match_id !== null && data.is_match_selected !== 0) {
                 matchList.push({
                     matchId: data.match_id,
-                    matchDate: data.match_date,
+                    matchDate: moment.utc(data.match_date).tz("Asia/Seoul")
+                        .format("YYYY-MM-DD HH:mm:ss"),
                     matchState: data.match_state,
                     homeTeamId: data.home_team_id,
                     awayTeamId: data.away_team_id,
+                    homeTeamName: data.home_team_name,
+                    awayTeamName: data.away_team_name,
+                    homeTeamInit: data.home_team_initial,
+                    awayTeamInit: data.away_team_initial,
                     hometeamLogo: data.home_team_logo,
                     awayteamLogo: data.away_team_logo,
                     homeTeamScore: data.home_team_score,
                     awayTeamScore: data.away_team_score,
-                    isMatchSelected: data.is_match_selected
+                    userId: data.user_id,
+                    isMatchSelected: Boolean(data.is_match_selected)
                 });
             }
             if (data.team_id !== null && data.is_team_selected !== 0) {
@@ -32,7 +37,15 @@ export const mainService = {
                     teamId: data.team_id,
                     teamName: data.team_name,
                     teamLogo: data.team_logo,
-                    isTeamSelected: data.is_team_selected
+                    index: data.team_index
+                });
+            }
+            if (data.league_id !== null && data.is_league_selected !== 0) {
+                leagueList.push({
+                    leagueId: data.league_id,
+                    leagueName: data.league_name,
+                    leagueLogo: data.league_logo,
+                    index: data.league_index
                 });
             }
         });
@@ -41,8 +54,16 @@ export const mainService = {
             ...status.SUCCESS.body,
             result: {
                 matchList: matchList,
-                teamList: [ ...new Set(teamList) ] // 중복 제거
+                teamAndLeagueList: [ ...teamList, ...leagueList ].sort((a, b) => a.index - b.index)
             }
+        };
+        return res;
+    },
+    patch: async (userId: string, index: patchMainReqDto[]) => {
+        await mainDao.patch(userId, index);
+        const res: BaseApiResponse<null> = {
+            ...status.SUCCESS.body,
+            result: null
         };
         return res;
     }

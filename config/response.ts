@@ -11,4 +11,5 @@ type FailedResponse = {
     message: string
 };
 
+
 export type BaseApiResponse<T> = SuccessResponse<T> | FailedResponse;
