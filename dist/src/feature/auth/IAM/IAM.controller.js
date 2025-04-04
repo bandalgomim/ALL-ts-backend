@@ -35,6 +35,7 @@ exports.IAMController = {
     }),
     loginTest: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const id = req.body.id;
+        console.log("id in loginTest: ", id);
         const result = yield IAM_service_1.IAMService.login(id);
         setHeader(res, result[0], result[1]);
     }),
