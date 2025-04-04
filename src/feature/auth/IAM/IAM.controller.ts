@@ -27,6 +27,7 @@ export const IAMController = {
     },
     loginTest: async (req: Request, res: Response) => {
         const id = req.body.id;
+        console.log("id in loginTest: ", id);
         const result = await IAMService.login(id);
         setHeader(res, result[0], result[1]);
     },
