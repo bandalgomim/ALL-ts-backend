@@ -9,6 +9,8 @@ exports.matchSql = {
             m.away_team_id,
             t1.team_name AS home_team_name,
             t2.team_name AS away_team_name,
+            t1.team_initial AS home_team_initial,
+            t2.team_initial AS away_team_initial,
             m.match_date,
             m.match_state,
             t1.team_logo AS home_team_logo,

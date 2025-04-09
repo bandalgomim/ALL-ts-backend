@@ -8,7 +8,6 @@ export const matchService = {
     get: async (matchId: number) => {
         const result = await matchDao.get(matchId); // dao의 정보를 반환
         const platform: platform[] = [];
-        console.log(result[0]);
         result.map((data) => {
             // 매핑을 통해 배열에 알맞은 오브젝트를 생성 후 push
             platform.push({
