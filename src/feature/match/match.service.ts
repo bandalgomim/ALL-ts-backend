@@ -21,8 +21,7 @@ export const matchService = {
             ...status.SUCCESS.body,
             result: {
                 matchId: result[0].match_id,
-                matchDate: moment.utc(result[0].match_date).tz("Asia/Seoul")
-                    .format("YYYY-MM-DD HH:mm:ss"),
+                matchDate: result[0].match_date,
                 homeTeamId: result[0].home_team_id,
                 awayTeamId: result[0].away_team_id,
                 homeTeamName: result[0].home_team_name,
