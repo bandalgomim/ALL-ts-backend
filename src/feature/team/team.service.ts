@@ -3,7 +3,6 @@ import { teamDao } from "../../models/team/team.dao";
 import { status } from "../../../config/response.status";
 import { BaseApiResponse } from "../../../config/response";
 import { getTeamDto, match } from "../../models/team/team.dto";
-import moment from "moment";
 
 export const teamService = {
     get: async (userId: string, teamId: number) => {
@@ -13,8 +12,7 @@ export const teamService = {
             result.map((data) => { // 매핑을 통해 배열에 알맞은 오브젝트를 생성 후 push
                 matchList.push({
                     matchId: data.match_id,
-                    matchDate: moment.utc(data.match_date).tz("Asia/Seoul")
-                        .format("YYYY-MM-DD HH:mm:ss"),
+                    matchDate: data.match_date,
                     matchState: data.match_state,
                     homeTeamId: data.home_team_id,
                     awayTeamId: data.away_team_id,

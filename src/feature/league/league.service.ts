@@ -2,7 +2,6 @@ import { leagueDao } from "../../models/league/league.dao";
 import { status } from "../../../config/response.status";
 import { BaseApiResponse } from "../../../config/response";
 import { getLeagueDto, team, match, league } from "../../models/league/league.dto";
-import moment from "moment";
 
 export const leagueService = {
     get: async (userId: string, leagueId: number) => {
@@ -24,8 +23,7 @@ export const leagueService = {
             if (data.match_id !== null) {
                 matchList.push({
                     matchId: data.match_id,
-                    matchDate: moment.utc(data.match_date).tz("Asia/Seoul")
-                        .format("YYYY-MM-DD HH:mm:ss"),
+                    matchDate: data.match_date,
                     matchState: data.match_state,
                     homeTeamId: data.home_team_id,
                     awayTeamId: data.away_team_id,

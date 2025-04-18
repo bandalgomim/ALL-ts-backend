@@ -8,14 +8,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.matchService = void 0;
 const match_dao_1 = require("../../models/match/match.dao");
 const response_status_1 = require("../../../config/response.status");
-const moment_timezone_1 = __importDefault(require("moment-timezone"));
 exports.matchService = {
     get: (matchId) => __awaiter(void 0, void 0, void 0, function* () {
         const result = yield match_dao_1.matchDao.get(matchId); // dao의 정보를 반환
@@ -31,8 +27,7 @@ exports.matchService = {
         });
         const res = Object.assign(Object.assign({}, response_status_1.status.SUCCESS.body), { result: {
                 matchId: result[0].match_id,
-                matchDate: moment_timezone_1.default.utc(result[0].match_date).tz("Asia/Seoul")
-                    .format("YYYY-MM-DD HH:mm:ss"),
+                matchDate: result[0].match_date,
                 homeTeamId: result[0].home_team_id,
                 awayTeamId: result[0].away_team_id,
                 homeTeamName: result[0].home_team_name,

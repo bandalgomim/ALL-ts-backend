@@ -2,7 +2,6 @@ import { matchDao } from "../../models/match/match.dao";
 import { status } from "../../../config/response.status";
 import { BaseApiResponse } from "../../../config/response";
 import { getMatchDto, platform } from "../../models/match/match.dto";
-import moment from "moment-timezone";
 
 export const matchService = {
     get: async (matchId: number) => {

@@ -8,14 +8,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.leagueService = void 0;
 const league_dao_1 = require("../../models/league/league.dao");
 const response_status_1 = require("../../../config/response.status");
-const moment_1 = __importDefault(require("moment"));
 exports.leagueService = {
     get: (userId, leagueId) => __awaiter(void 0, void 0, void 0, function* () {
         const result = yield league_dao_1.leagueDao.get(userId, leagueId); // dao의 정보를 반환
@@ -35,8 +31,7 @@ exports.leagueService = {
             if (data.match_id !== null) {
                 matchList.push({
                     matchId: data.match_id,
-                    matchDate: moment_1.default.utc(data.match_date).tz("Asia/Seoul")
-                        .format("YYYY-MM-DD HH:mm:ss"),
+                    matchDate: data.match_date,
                     matchState: data.match_state,
                     homeTeamId: data.home_team_id,
                     awayTeamId: data.away_team_id,
