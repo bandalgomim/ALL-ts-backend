@@ -2,7 +2,9 @@ export interface platform {
     platformId: number,
     platformName: string,
     platformlogo: string,
-    platformUrl: string
+    platformLeagueUrl: string,
+    platformMatchUrl: string,
+    platfromMatchUrlType: string
 }
 
 export interface getMatchDto {

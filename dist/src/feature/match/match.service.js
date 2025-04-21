@@ -22,7 +22,9 @@ exports.matchService = {
                 platformId: data.platform_id,
                 platformName: data.platform_name,
                 platformlogo: data.platform_logo,
-                platformUrl: data.platform_url
+                platformLeagueUrl: data.league_url,
+                platformMatchUrl: data.match_url,
+                platfromMatchUrlType: data.match_url_type
             });
         });
         const res = Object.assign(Object.assign({}, response_status_1.status.SUCCESS.body), { result: {

@@ -3,6 +3,7 @@ export const matchSql = {
     `WITH match_info_cte AS (
         SELECT 
             m.match_id,
+            m.league_id,
             m.home_team_id,
             m.away_team_id,
             t1.team_name AS home_team_name,
@@ -45,42 +46,23 @@ export const matchSql = {
         LEFT JOIN 
             league l2 ON t2.league_id = l2.league_id
         WHERE m.match_id = ?
-        ORDER BY m.match_date ASC
-    ),
-    platform_info AS (
-        SELECT
-            lp.league_id,
-            lp.platform_id,
-            lp.url AS platform_url,
-            p.platform_name,
-            p.platform_logo
-        FROM 
-            league_platform lp
-        LEFT JOIN
-            platform p ON p.platform_id = lp.platform_id
     )
     SELECT
         mi.*,
-        pi.platform_id,
-        pi.platform_url,
-        pi.platform_name,
-        pi.platform_logo
+        lp.platform_id,
+        lp.url AS league_url,
+        mp.url as match_url,
+        mp.type as match_url_type,
+        p.platform_name,
+        p.platform_logo
     FROM
         match_info_cte mi
     LEFT JOIN
-        platform_info pi on mi.home_league_id = pi.league_id
-
-    UNION
-
-    SELECT
-        mi.*,
-        pi.platform_id,
-        pi.platform_url,
-        pi.platform_name,
-        pi.platform_logo
-    FROM
-        match_info_cte mi
+        league_platform lp on mi.league_id = lp.league_id
     LEFT JOIN
-        platform_info pi on mi.away_league_id = pi.league_id
+        match_url mp on mi.match_id = mp.match_id and lp.platform_id = mp.platform_id
+    LEFT JOIN
+        platform p ON p.platform_id = lp.platform_id
+    ORDER BY mi.match_date ASC
     `
 };
