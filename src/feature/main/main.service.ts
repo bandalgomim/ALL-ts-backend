@@ -6,7 +6,7 @@ import { getMainDto, league, matchList, match, patchMainReqDto, team } from "../
 export const mainService = {
     get: async (userId: string) => {
         const result = await mainDao.get(userId); // dao의 정보를 반환
-        const matchList: matchList = [];
+        const matchList: matchList = {};
         let matchItems: match[] = [];
         let prevDate: string | null = null;
         const teamList: team[] = [];
@@ -16,7 +16,7 @@ export const mainService = {
                 const currDate = new Date(data.match_date).toISOString()
                     .split("T")[0];
                 if (prevDate && prevDate !== currDate) {
-                    matchList.push({ [prevDate]: matchItems });
+                    matchList[prevDate] = matchItems;
                     matchItems = [];
                 }
                 matchItems.push({
@@ -59,7 +59,7 @@ export const mainService = {
 
         // 마지막 날짜의 matchItems도 추가
         if (matchItems.length > 0 && prevDate) {
-            matchList.push({ [prevDate]: matchItems });
+            matchList[prevDate] = matchItems;
         }
 
         const res: BaseApiResponse<getMainDto> = {

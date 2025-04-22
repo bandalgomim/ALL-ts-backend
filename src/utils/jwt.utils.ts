@@ -19,7 +19,7 @@ export const tokenUtils = {
         };
         return jwt.sign(payload, secret, {
             algorithm: "HS256",
-            expiresIn: "15m"
+            expiresIn: "1h"
         });
     },
     login: async (user_id: string) => {
@@ -44,7 +44,7 @@ export const tokenUtils = {
     refresh: () => {
         return jwt.sign({}, secret, {
             algorithm: "HS256",
-            expiresIn: "1h"
+            expiresIn: "24h"
         });
     },
     refreshVerify: async (token: string, userId: string) => {

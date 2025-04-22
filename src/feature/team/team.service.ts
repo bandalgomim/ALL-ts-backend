@@ -2,12 +2,12 @@ import { teamDao } from "../../models/team/team.dao";
 import { status } from "../../../config/response.status";
 import { BaseApiResponse } from "../../../config/response";
 import { getTeamDto } from "../../models/team/team.dto";
-import { match } from "../../models/main/main.dto";
+import { match, matchList } from "../../models/main/main.dto";
 
 export const teamService = {
     get: async (userId: string, teamId: number) => {
         const result = await teamDao.get(userId, teamId);
-        const matchList: Record<string, match[]>[] = [];
+        const matchList: matchList = {};
         let matchItems: match[] = [];
         let prevDate: string | null = null;
 
@@ -17,7 +17,7 @@ export const teamService = {
                     const currDate = new Date(data.match_date).toISOString()
                         .split("T")[0];
                     if (prevDate && prevDate !== currDate) {
-                        matchList.push({ [prevDate]: matchItems });
+                        matchList[prevDate] = matchItems;
                         matchItems = [];
                     }
                     matchItems.push({
@@ -44,7 +44,7 @@ export const teamService = {
 
             // 마지막 날짜의 matchItems도 추가
             if (matchItems.length > 0 && prevDate) {
-                matchList.push({ [prevDate]: matchItems });
+                matchList[prevDate] = matchItems;
             }
         }
 

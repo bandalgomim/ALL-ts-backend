@@ -18,7 +18,7 @@ export interface match {
     userId: string,
     isMatchSelected: boolean
 }
-export type matchList = Record<string, match[]>[];
+export type matchList = Record<string, match[]>;
 
 
 export interface team {
