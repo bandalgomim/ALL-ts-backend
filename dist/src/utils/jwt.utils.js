@@ -32,7 +32,7 @@ exports.tokenUtils = {
         };
         return jsonwebtoken_1.default.sign(payload, secret, {
             algorithm: "HS256",
-            expiresIn: "15m"
+            expiresIn: "1h"
         });
     },
     login: (user_id) => __awaiter(void 0, void 0, void 0, function* () {
@@ -58,7 +58,7 @@ exports.tokenUtils = {
     refresh: () => {
         return jsonwebtoken_1.default.sign({}, secret, {
             algorithm: "HS256",
-            expiresIn: "1h"
+            expiresIn: "24h"
         });
     },
     refreshVerify: (token, userId) => __awaiter(void 0, void 0, void 0, function* () {

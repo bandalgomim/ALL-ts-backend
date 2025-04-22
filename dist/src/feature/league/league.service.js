@@ -26,7 +26,7 @@ exports.leagueService = {
             isSelected: Boolean(result[0].is_league_selected)
         };
         const teamList = [];
-        const matchList = [];
+        const matchList = {};
         let matchItems = [];
         let prevDate = null;
         result.forEach((data) => {
@@ -34,7 +34,7 @@ exports.leagueService = {
                 const currDate = new Date(data.match_date).toISOString()
                     .split("T")[0];
                 if (prevDate && prevDate !== currDate) {
-                    matchList.push({ [prevDate]: matchItems });
+                    matchList[prevDate] = matchItems;
                     matchItems = [];
                 }
                 matchItems.push({
@@ -68,7 +68,7 @@ exports.leagueService = {
         });
         // 마지막 날짜의 matchItems도 추가
         if (matchItems.length > 0 && prevDate) {
-            matchList.push({ [prevDate]: matchItems });
+            matchList[prevDate] = matchItems;
         }
         const res = Object.assign(Object.assign({}, response_status_1.status.SUCCESS.body), { result: {
                 league: league,

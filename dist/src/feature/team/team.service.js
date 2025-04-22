@@ -15,7 +15,7 @@ const response_status_1 = require("../../../config/response.status");
 exports.teamService = {
     get: (userId, teamId) => __awaiter(void 0, void 0, void 0, function* () {
         const result = yield team_dao_1.teamDao.get(userId, teamId);
-        const matchList = [];
+        const matchList = {};
         let matchItems = [];
         let prevDate = null;
         if (result[0].match_id) {
@@ -24,7 +24,7 @@ exports.teamService = {
                     const currDate = new Date(data.match_date).toISOString()
                         .split("T")[0];
                     if (prevDate && prevDate !== currDate) {
-                        matchList.push({ [prevDate]: matchItems });
+                        matchList[prevDate] = matchItems;
                         matchItems = [];
                     }
                     matchItems.push({
@@ -50,7 +50,7 @@ exports.teamService = {
             });
             // 마지막 날짜의 matchItems도 추가
             if (matchItems.length > 0 && prevDate) {
-                matchList.push({ [prevDate]: matchItems });
+                matchList[prevDate] = matchItems;
             }
         }
         const res = Object.assign(Object.assign({}, response_status_1.status.SUCCESS.body), { result: {
