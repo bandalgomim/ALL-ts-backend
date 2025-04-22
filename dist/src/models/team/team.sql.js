@@ -39,6 +39,7 @@ exports.teamSql = {
             t1.team_initial AS home_team_initial,
             t2.team_initial AS away_team_initial,
             m.match_date,
+            TIME(m.match_date) AS match_time,
             m.match_state,
             t1.team_logo AS home_team_logo,
             t2.team_logo AS away_team_logo,

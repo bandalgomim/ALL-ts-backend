@@ -14,28 +14,44 @@ const team_dao_1 = require("../../models/team/team.dao");
 const response_status_1 = require("../../../config/response.status");
 exports.teamService = {
     get: (userId, teamId) => __awaiter(void 0, void 0, void 0, function* () {
-        const result = yield team_dao_1.teamDao.get(userId, teamId); // dao의 정보를 반환
-        const matchList = []; // 각 항목이 들어갈 배열을 생성
+        const result = yield team_dao_1.teamDao.get(userId, teamId);
+        const matchList = [];
+        let matchItems = [];
+        let prevDate = null;
         if (result[0].match_id) {
-            result.map((data) => {
-                matchList.push({
-                    matchId: data.match_id,
-                    matchDate: data.match_date,
-                    matchState: data.match_state,
-                    homeTeamId: data.home_team_id,
-                    awayTeamId: data.away_team_id,
-                    homeTeamName: data.home_team_name,
-                    awayTeamName: data.away_team_name,
-                    homeTeamInit: data.home_team_initial,
-                    awayTeamInit: data.away_team_initial,
-                    hometeamLogo: data.home_team_logo,
-                    awayteamLogo: data.away_team_logo,
-                    homeTeamScore: data.home_team_score,
-                    awayTeamScore: data.away_team_score,
-                    userId: data.user_id,
-                    isMatchSelected: Boolean(data.is_match_selected)
-                });
+            result.forEach((data) => {
+                if (data.match_id !== null) {
+                    const currDate = new Date(data.match_date).toISOString()
+                        .split("T")[0];
+                    if (prevDate && prevDate !== currDate) {
+                        matchList.push({ [prevDate]: matchItems });
+                        matchItems = [];
+                    }
+                    matchItems.push({
+                        matchId: data.match_id,
+                        matchDate: currDate,
+                        matchTime: data.match_time,
+                        matchState: data.match_state,
+                        homeTeamId: data.home_team_id,
+                        awayTeamId: data.away_team_id,
+                        homeTeamName: data.home_team_name,
+                        awayTeamName: data.away_team_name,
+                        homeTeamInit: data.home_team_initial,
+                        awayTeamInit: data.away_team_initial,
+                        hometeamLogo: data.home_team_logo,
+                        awayteamLogo: data.away_team_logo,
+                        homeTeamScore: data.home_team_score,
+                        awayTeamScore: data.away_team_score,
+                        userId: data.user_id,
+                        isMatchSelected: Boolean(data.is_match_selected)
+                    });
+                    prevDate = currDate;
+                }
             });
+            // 마지막 날짜의 matchItems도 추가
+            if (matchItems.length > 0 && prevDate) {
+                matchList.push({ [prevDate]: matchItems });
+            }
         }
         const res = Object.assign(Object.assign({}, response_status_1.status.SUCCESS.body), { result: {
                 team: {
@@ -50,7 +66,7 @@ exports.teamService = {
                     countryName: result[0].country_name,
                     isTeamSelected: Boolean(result[0].is_team_selected)
                 },
-                matchList: matchList.reverse() // 중복 제거
+                matchList: matchList // 날짜별로 묶인 matchList
             } });
         return res;
     })

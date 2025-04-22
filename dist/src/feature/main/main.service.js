@@ -15,14 +15,23 @@ const response_status_1 = require("../../../config/response.status");
 exports.mainService = {
     get: (userId) => __awaiter(void 0, void 0, void 0, function* () {
         const result = yield main_dao_1.mainDao.get(userId); // dao의 정보를 반환
-        const matchList = []; // 각 항목이 들어갈 배열을 생성
+        const matchList = [];
+        let matchItems = [];
+        let prevDate = null;
         const teamList = [];
         const leagueList = [];
-        result.map((data) => {
+        result.forEach((data) => {
             if (data.match_id !== null && data.is_match_selected !== 0) {
-                matchList.push({
+                const currDate = new Date(data.match_date).toISOString()
+                    .split("T")[0];
+                if (prevDate && prevDate !== currDate) {
+                    matchList.push({ [prevDate]: matchItems });
+                    matchItems = [];
+                }
+                matchItems.push({
                     matchId: data.match_id,
-                    matchDate: data.match_date,
+                    matchDate: currDate,
+                    matchTime: data.match_time,
                     matchState: data.match_state,
                     homeTeamId: data.home_team_id,
                     awayTeamId: data.away_team_id,
@@ -37,6 +46,7 @@ exports.mainService = {
                     userId: data.user_id,
                     isMatchSelected: Boolean(data.is_match_selected)
                 });
+                prevDate = currDate;
             }
             if (data.team_id !== null && data.is_team_selected !== 0) {
                 teamList.push({
@@ -55,6 +65,10 @@ exports.mainService = {
                 });
             }
         });
+        // 마지막 날짜의 matchItems도 추가
+        if (matchItems.length > 0 && prevDate) {
+            matchList.push({ [prevDate]: matchItems });
+        }
         const res = Object.assign(Object.assign({}, response_status_1.status.SUCCESS.body), { result: {
                 matchList: matchList,
                 teamAndLeagueList: [...teamList, ...leagueList].sort((a, b) => a.index - b.index)

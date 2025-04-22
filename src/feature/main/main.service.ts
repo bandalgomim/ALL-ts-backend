@@ -1,20 +1,28 @@
-
 import { mainDao } from "../../models/main/main.dao";
 import { status } from "../../../config/response.status";
 import { BaseApiResponse } from "../../../config/response";
-import { getMainDto, league, match, patchMainReqDto, team } from "../../models/main/main.dto";
+import { getMainDto, league, matchList, match, patchMainReqDto, team } from "../../models/main/main.dto";
 
 export const mainService = {
     get: async (userId: string) => {
         const result = await mainDao.get(userId); // dao의 정보를 반환
-        const matchList: match[] = []; // 각 항목이 들어갈 배열을 생성
+        const matchList: matchList = [];
+        let matchItems: match[] = [];
+        let prevDate: string | null = null;
         const teamList: team[] = [];
         const leagueList: league[] = [];
-        result.map((data) => { // 매핑을 통해 배열에 알맞은 오브젝트를 생성 후 push
+        result.forEach((data) => {
             if (data.match_id !== null && data.is_match_selected !== 0) {
-                matchList.push({
+                const currDate = new Date(data.match_date).toISOString()
+                    .split("T")[0];
+                if (prevDate && prevDate !== currDate) {
+                    matchList.push({ [prevDate]: matchItems });
+                    matchItems = [];
+                }
+                matchItems.push({
                     matchId: data.match_id,
-                    matchDate: data.match_date,
+                    matchDate: currDate,
+                    matchTime: data.match_time,
                     matchState: data.match_state,
                     homeTeamId: data.home_team_id,
                     awayTeamId: data.away_team_id,
@@ -29,6 +37,7 @@ export const mainService = {
                     userId: data.user_id,
                     isMatchSelected: Boolean(data.is_match_selected)
                 });
+                prevDate = currDate;
             }
             if (data.team_id !== null && data.is_team_selected !== 0) {
                 teamList.push({
@@ -47,6 +56,11 @@ export const mainService = {
                 });
             }
         });
+
+        // 마지막 날짜의 matchItems도 추가
+        if (matchItems.length > 0 && prevDate) {
+            matchList.push({ [prevDate]: matchItems });
+        }
 
         const res: BaseApiResponse<getMainDto> = {
             ...status.SUCCESS.body,

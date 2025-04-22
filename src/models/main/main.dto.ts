@@ -1,6 +1,9 @@
+
+
 export interface match {
     matchId: number,
     matchDate: string,
+    matchTime: string,
     homeTeamId: number,
     awayTeamId: number,
     homeTeamName: string,
@@ -15,6 +18,8 @@ export interface match {
     userId: string,
     isMatchSelected: boolean
 }
+export type matchList = Record<string, match[]>[];
+
 
 export interface team {
     teamId: number,
@@ -30,7 +35,7 @@ export interface league {
 }
 
 export interface getMainDto {
-    matchList: match[],
+    matchList: matchList,
     teamAndLeagueList: (team | league)[]
 }
 
