@@ -5,4 +5,4 @@ import { snsRouter } from "./sns/sns.route";
 
 export const authRouter = Router();
 authRouter.use("/IAM", asyncHandler(IAMRouter));
-authRouter.use("/sns", snsRouter);
+authRouter.use("/sns", asyncHandler(snsRouter));
