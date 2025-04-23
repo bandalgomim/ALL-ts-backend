@@ -3,4 +3,4 @@ import asyncHandler from "express-async-handler";
 import { snsController } from "../../../feature/auth/sns/sns.controller";
 
 export const snsRouter = Router();
-snsRouter.get("/sns/naver", asyncHandler(snsController.naver));
+snsRouter.get("/naver", asyncHandler(snsController.naver));
