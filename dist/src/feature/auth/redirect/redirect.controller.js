@@ -13,6 +13,10 @@ exports.redirectController = void 0;
 exports.redirectController = {
     naver: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         // URL에서 code와 state를 추출
-        res.redirect(`com.ALLts:/oauthredirect?code=${req.query.code}&state=${req.query.state}`);
+        res.json({
+            code: req.query.code,
+            state: req.query.state
+        });
+        // res.redirect(`com.ALLts:/oauthredirect?code=${req.query.code}&state=${req.query.state}`);
     })
 };

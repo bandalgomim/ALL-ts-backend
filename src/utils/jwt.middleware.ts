@@ -58,13 +58,6 @@ export const tokenMinddleware = {
         next();
     },
     naver: async (req: Request, res: Response, next: NextFunction) => {
-        const path = req.path;
-        let redirectUri = null;
-        if (path === "/signUp/naver") {
-            redirectUri = process.env.NAVER_REDIRECT_URI_SIGN_UP;
-        } else {
-            redirectUri = process.env.NAVER_REDIRECT_URI_LOGIN;
-        }
         const code = req.query.code;
         const state = req.query.state;
 
@@ -73,7 +66,7 @@ export const tokenMinddleware = {
             response_type: "code",
             client_id: process.env.NAVER_CLIENT_ID as string,
             client_secret: process.env.NAVER_CLIENT_SECRET as string,
-            redirect_uri: redirectUri as string,
+            redirect_uri: process.env.NAVER_REDIRECT_URI as string,
             code: code as string,
             state: state as string
         };

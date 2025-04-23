@@ -71,14 +71,6 @@ exports.tokenMinddleware = {
         next();
     }),
     naver: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-        const path = req.path;
-        let redirectUri = null;
-        if (path === "/signUp/naver") {
-            redirectUri = process.env.NAVER_REDIRECT_URI_SIGN_UP;
-        }
-        else {
-            redirectUri = process.env.NAVER_REDIRECT_URI_LOGIN;
-        }
         const code = req.query.code;
         const state = req.query.state;
         const data = {
@@ -86,7 +78,7 @@ exports.tokenMinddleware = {
             response_type: "code",
             client_id: process.env.NAVER_CLIENT_ID,
             client_secret: process.env.NAVER_CLIENT_SECRET,
-            redirect_uri: redirectUri,
+            redirect_uri: process.env.NAVER_REDIRECT_URI,
             code: code,
             state: state
         };
