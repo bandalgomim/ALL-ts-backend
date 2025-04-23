@@ -6,3 +6,4 @@ import { redirectController } from "../../../feature/auth/redirect/redirect.cont
 export const snsRouter = Router();
 snsRouter.get("/naver", asyncHandler(snsController.naver));
 snsRouter.get("/naver/redirect", asyncHandler(redirectController.naver));
+
