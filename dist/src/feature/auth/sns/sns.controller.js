@@ -22,7 +22,6 @@ exports.snsController = {
     }),
     naver: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const result = yield sns_service_1.snsService.naver();
-        console.log("result", result);
-        res.json(result);
+        res.redirect(result);
     })
 };

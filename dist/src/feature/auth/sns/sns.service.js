@@ -29,7 +29,7 @@ exports.snsService = {
     naver: () => __awaiter(void 0, void 0, void 0, function* () {
         let url = "https://nid.naver.com/oauth2.0/authorize?response_type=code";
         url += `&client_id=${process.env.NAVER_CLIENT_ID}`;
-        url += `&redirect_uri=${process.env.NAVER_REDIRECT_URI_LOGIN}`;
+        url += `&redirect_uri=${process.env.NAVER_REDIRECT_URI}`;
         url += "&state=test";
         return url;
     })

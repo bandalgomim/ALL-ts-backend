@@ -12,8 +12,7 @@ export const snsController = {
     },
     naver: async (req: Request, res: Response) => {
         const result = await snsService.naver();
-        console.log("result", result);
-        res.json(result);
+        res.redirect(result);
     }
 };
 
