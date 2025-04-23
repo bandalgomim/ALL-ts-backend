@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { tokenMinddleware } from "../../../utils/jwt.middleware";
 
 export const redirectController = {
 
@@ -7,8 +8,8 @@ export const redirectController = {
         const code = req.query.code;  // 예: ?code=jFU1XfdIG9ffp9trs6
         const state = req.query.state;  // 예: ?state=test
 
-        console.log("Code:", code);
-        console.log("State:", state);
+        await tokenMinddleware.naver(req, res, () => {});
+        console.log("res.locals", res.locals);
 
         // TODO: code를 이용하여 액세스 토큰 요청
         // 예시: 결과를 클라이언트에게 JSON으로 응답
