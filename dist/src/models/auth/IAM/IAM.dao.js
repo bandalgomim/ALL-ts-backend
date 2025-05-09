@@ -50,5 +50,19 @@ exports.IAMDao = {
             // 연결 반환 보장
             connection.release();
         }
+    }),
+    patchFcmToken: (userId, token) => __awaiter(void 0, void 0, void 0, function* () {
+        const connection = yield (0, db_pool_1.getPool)().getConnection();
+        try {
+            yield connection.query(IAM_sql_1.IAMSql.patchFcmToken, [token, userId]);
+        }
+        catch (err) {
+            console.error(err);
+            throw new error_1.ApiError(response_status_1.status.DATA_INSERTED_SQL_ERROR);
+        }
+        finally {
+            // 연결 반환 보장
+            connection.release();
+        }
     })
 };

@@ -15,6 +15,7 @@ const team_route_1 = require("./route/team/team.route");
 const isSelected_route_1 = require("./route/isSelected/isSelected.route");
 const league_route_1 = require("./route/league/league.route");
 const auth_route_1 = require("./route/auth/auth.route");
+const fcmToken_route_1 = require("./route/fcmToken/fcmToken.route");
 (0, dotenv_1.config)();
 function App() {
     const app = (0, express_1.default)();
@@ -23,6 +24,7 @@ function App() {
     app.use(express_1.default.json()); // request의 본문을 json으로 해석할 수 있도록 함 (JSON 형태의 요청 body를 파싱하기 위함)
     app.use(express_1.default.urlencoded({ extended: false }));
     app.use("/auth", (0, express_async_handler_1.default)(auth_route_1.authRouter));
+    app.use("/fcmToken", (0, express_async_handler_1.default)(jwt_middleware_1.tokenMinddleware.auth), (0, express_async_handler_1.default)(fcmToken_route_1.fcmTokenRouter));
     app.use("/main", (0, express_async_handler_1.default)(jwt_middleware_1.tokenMinddleware.auth), (0, express_async_handler_1.default)(main_route_1.mainRouter));
     app.use("/team", (0, express_async_handler_1.default)(jwt_middleware_1.tokenMinddleware.auth), (0, express_async_handler_1.default)(team_route_1.teamRouter));
     app.use("/match", (0, express_async_handler_1.default)(jwt_middleware_1.tokenMinddleware.auth), (0, express_async_handler_1.default)(match_route_1.matchRouter));
