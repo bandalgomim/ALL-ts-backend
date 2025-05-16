@@ -37,7 +37,6 @@ export const chackDailyMatch = async () => {
     }
 };
 
-
 export const getLocalDateString = (): string => {
     const now = new Date();
     const year = now.getFullYear();
