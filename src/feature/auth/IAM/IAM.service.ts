@@ -2,7 +2,7 @@ import { ApiError } from "../../../../config/error";
 import { status } from "../../../../config/response.status";
 import { IAMDao } from "../../../models/auth/IAM/IAM.dao";
 import { tokenUtils } from "../../../utils/jwt.utils";
-import { postSignUpDto, headers, patchFcmTokenReqDto } from "../../../models/auth/IAM/IAM.dto";
+import { postSignUpDto, headers } from "../../../models/auth/IAM/IAM.dto";
 import jwt  from "jsonwebtoken";
 
 
@@ -57,13 +57,6 @@ export const IAMService = {
             } else {
                 throw new ApiError(status.THERE_IS_NO_ACCESS_TOKEN);
             }
-        }
-    },
-    patchFcmToken: async (userId: string, body: patchFcmTokenReqDto) => {
-        try {
-            await IAMDao.patchFcmToken(userId, body.token);
-        } catch (error) {
-            throw new Error(error instanceof Error ? error.message : String(error));
         }
     }
 };

@@ -1,8 +1,8 @@
 import { Router } from "express";
 import asyncHandler from "express-async-handler";
-import { fcmTokenController } from "../../feature/auth/fcmToken/fcmToken.controller";
+import { fcmTokenController } from "../../fcmToken/fcmToken.controller";
 
 export const fcmTokenRouter = Router();
-fcmTokenRouter.patch("/", asyncHandler(fcmTokenController.fcmToken));
+fcmTokenRouter.patch("/", asyncHandler(fcmTokenController.patch));
 
 

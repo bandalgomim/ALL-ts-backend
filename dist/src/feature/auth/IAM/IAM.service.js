@@ -76,13 +76,5 @@ exports.IAMService = {
                 throw new error_1.ApiError(response_status_1.status.THERE_IS_NO_ACCESS_TOKEN);
             }
         }
-    }),
-    patchFcmToken: (userId, body) => __awaiter(void 0, void 0, void 0, function* () {
-        try {
-            yield IAM_dao_1.IAMDao.patchFcmToken(userId, body.token);
-        }
-        catch (error) {
-            throw new Error(error instanceof Error ? error.message : String(error));
-        }
     })
 };

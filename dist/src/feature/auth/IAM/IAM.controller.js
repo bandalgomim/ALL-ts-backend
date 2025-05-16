@@ -42,15 +42,5 @@ exports.IAMController = {
     signUpTest: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const result = yield IAM_service_1.IAMService.signUp(req.body);
         setHeader(res, result[0], result[1]);
-    }),
-    patchFcmToken: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        console.log("body in patchFcmToken: ", req.body);
-        // const userId = res.locals.id;
-        try {
-            // await IAMService.patchFcmToken(userId, body);
-        }
-        catch (error) {
-            res.status(500).json({ message: "Error updating FCM token", error });
-        }
     })
 };
