@@ -13,7 +13,6 @@ exports.fcmTokenService = void 0;
 const fcm_dao_1 = require("../models/fcm/fcm.dao");
 exports.fcmTokenService = {
     patch: (userId, body) => __awaiter(void 0, void 0, void 0, function* () {
-        console.log("body in fcmTokenService: ", body);
         try {
             yield fcm_dao_1.fcmDao.patchFcmToken(userId, body.token);
         }

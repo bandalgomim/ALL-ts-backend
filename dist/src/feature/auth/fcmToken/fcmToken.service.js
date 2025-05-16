@@ -13,7 +13,6 @@ exports.fcmTokenService = void 0;
 const IAM_dao_1 = require("../../../models/auth/IAM/IAM.dao");
 exports.fcmTokenService = {
     fcmToken: (userId, body) => __awaiter(void 0, void 0, void 0, function* () {
-        console.log("body in fcmTokenService: ", body);
         try {
             yield IAM_dao_1.IAMDao.patchFcmToken(userId, body.token);
         }

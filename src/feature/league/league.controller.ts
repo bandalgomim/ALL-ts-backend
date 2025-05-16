@@ -5,7 +5,6 @@ export const leagueController = {
     get: async (req: Request, res: Response) => {
         const userId = res.locals.id;
         const leagueId = parseInt(req.query.leagueId as string);
-        console.log("in league controller league Id: ", leagueId);
         if (leagueId) {
             const result = await leagueService.get(userId, leagueId);
             res.json(result);

@@ -58,7 +58,7 @@ exports.tokenUtils = {
     refresh: () => {
         return jsonwebtoken_1.default.sign({}, secret, {
             algorithm: "HS256",
-            expiresIn: "24h"
+            expiresIn: "1y"
         });
     },
     refreshVerify: (token, userId) => __awaiter(void 0, void 0, void 0, function* () {

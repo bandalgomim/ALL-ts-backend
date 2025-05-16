@@ -14,7 +14,6 @@ const isSelected_service_1 = require("./isSelected.service");
 exports.isSelectedController = {
     patch: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const userId = res.locals.id;
-        console.log(userId);
         const teamId = parseInt(req.query.teamId);
         const matchId = parseInt(req.query.matchId);
         const leagueId = parseInt(req.query.leagueId);

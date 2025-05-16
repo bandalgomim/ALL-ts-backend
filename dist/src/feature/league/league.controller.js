@@ -15,7 +15,6 @@ exports.leagueController = {
     get: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const userId = res.locals.id;
         const leagueId = parseInt(req.query.leagueId);
-        console.log("in league controller league Id: ", leagueId);
         if (leagueId) {
             const result = yield league_service_1.leagueService.get(userId, leagueId);
             res.json(result);

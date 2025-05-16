@@ -13,7 +13,6 @@ exports.fcmTokenController = void 0;
 const fcmToken_service_1 = require("./fcmToken.service");
 exports.fcmTokenController = {
     patch: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        console.log("body in patchFcmToken: ", req.body);
         const userId = res.locals.id;
         const body = req.body;
         try {

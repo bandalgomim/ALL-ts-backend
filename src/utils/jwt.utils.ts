@@ -44,7 +44,7 @@ export const tokenUtils = {
     refresh: () => {
         return jwt.sign({}, secret, {
             algorithm: "HS256",
-            expiresIn: "24h"
+            expiresIn: "1y"
         });
     },
     refreshVerify: async (token: string, userId: string) => {

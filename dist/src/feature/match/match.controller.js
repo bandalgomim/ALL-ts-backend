@@ -14,7 +14,6 @@ const match_service_1 = require("./match.service");
 exports.matchController = {
     get: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const matchId = parseInt(req.query.matchId);
-        console.log("in match controller match Id: ", matchId);
         if (matchId) {
             const result = yield match_service_1.matchService.get(matchId);
             res.json(result);

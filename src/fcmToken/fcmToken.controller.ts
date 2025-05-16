@@ -4,7 +4,6 @@ import { fcmTokenService } from "./fcmToken.service";
 
 export const fcmTokenController = {
     patch: async (req: Request, res: Response) => {
-        console.log("body in patchFcmToken: ", req.body);
         const userId = res.locals.id;
         const body = req.body;
         try {

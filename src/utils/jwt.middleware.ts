@@ -36,7 +36,6 @@ export const tokenMinddleware = {
             redirectUri = process.env.GOOGLE_REDIRECT_URI_LOGIN;
         }
         const { code } = req.query;
-        console.log(code);
         const token = await axios.post(process.env.GOOGLE_TOKEN_URL as string, {
             code,
             client_id: process.env.GOOGLE_CLIENT_ID,
