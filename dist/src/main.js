@@ -9,6 +9,6 @@ const dotenv_1 = require("dotenv");
 (0, dotenv_1.config)();
 (0, db_pool_1.initPool)();
 const app = (0, app_1.default)();
-app.listen(3001, "0.0.0.0", () => {
-    console.log("Server is running on port 3001");
+app.listen(3000, "0.0.0.0", () => {
+    console.log("Server is running on port 3000");
 });
