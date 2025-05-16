@@ -30,6 +30,7 @@ export default function App() {
     app.use("/league", asyncHandler(tokenMinddleware.auth), asyncHandler(leagueRouter));
 
     // chackDailyMatch를 1분마다 실행
+
     chackDailyMatch(); // 최초 한번 실행
     setInterval(chackDailyMatch, 300000); // 1분(60000ms)마다 실행
 

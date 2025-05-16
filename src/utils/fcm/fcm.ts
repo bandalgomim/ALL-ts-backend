@@ -3,7 +3,6 @@ import { fcmDao } from "../../models/fcm/fcm.dao";
 import { chackDailyMatchDto } from "../../models/fcm/fcm.dto";
 import { sendFCMToManyDevices } from "./sendNotification";
 
-
 export const chackDailyMatch = async () => {
     const list = await redisClient.get("matchList");
     const today = getLocalDateString();
