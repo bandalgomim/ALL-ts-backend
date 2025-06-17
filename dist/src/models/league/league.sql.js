@@ -28,7 +28,12 @@ exports.leagueSql = {
             NULL AS team_id,
             NULL AS team_name,
             NULL AS team_initial,
-            NULL AS team_logo
+            NULL AS team_logo,
+            NULL AS win,
+            NULL AS draw,
+            NULL AS lose,
+            NULL AS point,
+            NULL AS section,
         FROM match_info m
         LEFT JOIN team t1 ON t1.team_id = m.home_team_id
         LEFT JOIN team t2 ON t2.team_id = m.away_team_id
@@ -54,8 +59,13 @@ exports.leagueSql = {
             NULL AS is_match_selected,
             t.team_id,
             t.team_name,
-            t.team_initial as    team_initial,
-            t.team_logo
+            t.team_initial,
+            t.team_logo,
+            t.win,
+            t.draw,
+            t.lose,
+            t.point,
+            t.section
         FROM team t
         WHERE t.league_id = ?
     ),
