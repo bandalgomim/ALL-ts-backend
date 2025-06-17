@@ -15,7 +15,12 @@ export interface team {
     teamId: number,
     teamName: string,
     teamInit: string,
-    teamLogo: string
+    teamLogo: string,
+    win: string,
+    draw: string,
+    lose: string,
+    point: string,
+    section: string
 }
 
 export interface getLeagueDto {
