@@ -4,6 +4,7 @@ export interface team {
     teamId: number,
     teamName: string,
     teamLogo: string,
+    rank: string,
     win: string,
     draw: string,
     rose: string,

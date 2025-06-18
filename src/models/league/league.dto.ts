@@ -16,6 +16,7 @@ export interface team {
     teamName: string,
     teamInit: string,
     teamLogo: string,
+    rank: string,
     win: string,
     draw: string,
     rose: string,

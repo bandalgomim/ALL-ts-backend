@@ -55,6 +55,7 @@ export const leagueService = {
                     teamName: data.team_name,
                     teamInit: data.team_initial,
                     teamLogo: data.team_logo,
+                    rank: data.rank,
                     win: data.win,
                     draw: data.draw,
                     rose: data.rose,
