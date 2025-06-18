@@ -58,6 +58,7 @@ exports.teamService = {
                     teamId: result[0].team_id,
                     teamName: result[0].team_name,
                     teamLogo: result[0].team_logo,
+                    rank: result[0].rank,
                     win: result[0].win,
                     draw: result[0].draw,
                     rose: result[0].rose,

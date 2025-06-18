@@ -7,6 +7,7 @@ exports.teamSql = {
             t.team_id,
             t.team_name,
             t.team_logo,
+            t.\`rank\`,
             t.win,
             t.draw,
             t.rose,
