@@ -9,7 +9,7 @@ exports.teamSql = {
             t.team_logo,
             t.win,
             t.draw,
-            t.lose,
+            t.rose,
             t.point,
             t.section,
             l.league_id,

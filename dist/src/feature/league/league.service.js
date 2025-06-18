@@ -65,7 +65,7 @@ exports.leagueService = {
                     teamLogo: data.team_logo,
                     win: data.win,
                     draw: data.draw,
-                    lose: data.lose,
+                    rose: data.rose,
                     point: data.point,
                     section: data.section
                 });

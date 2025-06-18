@@ -6,7 +6,7 @@ export interface team {
     teamLogo: string,
     win: string,
     draw: string,
-    lose: string,
+    rose: string,
     point: string,
     section: string,
     leagueId: number,

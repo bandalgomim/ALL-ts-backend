@@ -57,7 +57,7 @@ export const teamService = {
                     teamLogo: result[0].team_logo,
                     win: result[0].win,
                     draw: result[0].draw,
-                    lose: result[0].lose,
+                    rose: result[0].rose,
                     point: result[0].point,
                     section: result[0].section,
                     leagueId: result[0].league_id,

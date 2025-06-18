@@ -31,7 +31,7 @@ exports.leagueSql = {
             NULL AS team_logo,
             NULL AS win,
             NULL AS draw,
-            NULL AS lose,
+            NULL AS rose,
             NULL AS point,
             NULL AS section,
         FROM match_info m
@@ -63,7 +63,7 @@ exports.leagueSql = {
             t.team_logo,
             t.win,
             t.draw,
-            t.lose,
+            t.rose,
             t.point,
             t.section
         FROM team t
