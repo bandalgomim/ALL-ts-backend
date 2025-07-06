@@ -11,7 +11,8 @@ export const leagueDao = {
         const connection = await getPool().getConnection();
         try {
             const [ result ]
-            = await connection.query<RowDataPacket[]>(leagueSql.get, [ userId, leagueId, leagueId, userId, leagueId ]);
+            = await connection.query<RowDataPacket[]>(leagueSql.get,
+                [ userId, userId, userId, leagueId, userId, leagueId, userId, userId, leagueId ]);
             return result;
         } catch (err) {
             console.error(err);

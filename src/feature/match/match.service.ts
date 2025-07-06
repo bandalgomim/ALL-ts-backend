@@ -4,8 +4,8 @@ import { BaseApiResponse } from "../../../config/response";
 import { getMatchDto, platform } from "../../models/match/match.dto";
 
 export const matchService = {
-    get: async (matchId: number) => {
-        const result = await matchDao.get(matchId); // dao의 정보를 반환
+    get: async (userId: string, matchId: number) => {
+        const result = await matchDao.get(userId, matchId); // dao의 정보를 반환
         const platform: platform[] = [];
         result.map((data) => {
             // 매핑을 통해 배열에 알맞은 오브젝트를 생성 후 push
