@@ -19,7 +19,7 @@ exports.teamDao = {
         // team 페이지의 달력과 선호팀에 들어갈 정보를 반환
         const connection = yield (0, db_pool_1.getPool)().getConnection();
         try {
-            const [result] = yield connection.query(team_sql_1.teamSql.get, [userId, teamId, userId]);
+            const [result] = yield connection.query(team_sql_1.teamSql.get, [userId, userId, teamId, userId, userId, userId]);
             return result;
         }
         catch (err) {

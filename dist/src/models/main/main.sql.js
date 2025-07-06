@@ -7,7 +7,7 @@ exports.mainSql = {
             SELECT 
                 tl.team_id,
                 t.team_name,
-                t.team_logo,
+                i.icon as team_logo,
                 tl.\`index\` AS team_index,
                 null AS league_id,
                 null AS league_name,
@@ -32,6 +32,8 @@ exports.mainSql = {
             FROM 
                 team_list tl
             LEFT JOIN
+                icon i ON i.type = 'team' and tl.team_id = i.id and i.user_id = ?
+            LEFT JOIN
                 team t ON tl.team_id = t.team_id
             WHERE
                 tl.is_selected = 1
@@ -46,7 +48,7 @@ exports.mainSql = {
                 null AS team_index,
                 ll.league_id,
                 l.league_name,
-                l.league_logo,
+                i.icon as league_logo,
                 ll.\`index\` AS league_index,
                 null AS user_id,
                 null AS match_id,
@@ -66,6 +68,8 @@ exports.mainSql = {
                 null AS is_match_selected
             FROM 
                 league_list ll
+            LEFT JOIN
+                icon i ON i.type = 'league' and ll.league_id = i.id and i.user_id = ?
             LEFT JOIN
                 league l ON ll.league_id = l.league_id
             WHERE
@@ -94,8 +98,8 @@ exports.mainSql = {
                 m.match_date AS match_date,
                 TIME(m.match_date) AS match_time,
                 m.match_state,
-                t1.team_logo as home_team_logo,
-                t2.team_logo as away_team_logo,
+                i1.icon as home_team_logo,
+                i2.icon as away_team_logo,
                 m.home_team_score,
                 m.away_team_score,
                 EXISTS (
@@ -113,6 +117,10 @@ exports.mainSql = {
                 team t1 on t1.team_id = m.home_team_id
             LEFT JOIN
                 team t2 on t2.team_id = m.away_team_id
+            LEFT JOIN
+                icon i1 ON i1.type = 'team' and m.home_team_id = i1.id and i1.user_id = ?
+            LEFT JOIN
+                icon i2 ON i2.type = 'team' and m.away_team_id = i2.id and i2.user_id = ?
             WHERE
                 c.user_id = ?
             ORDER BY m.match_date ASC

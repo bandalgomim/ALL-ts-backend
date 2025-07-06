@@ -12,11 +12,12 @@ const dotenv_1 = require("dotenv");
 const match_route_1 = require("./route/match/match.route");
 const main_route_1 = require("./route/main/main.route");
 const team_route_1 = require("./route/team/team.route");
-const isSelected_route_1 = require("./route/isSelected/isSelected.route");
+const icon_route_1 = require("./route/icon/icon.route");
 const league_route_1 = require("./route/league/league.route");
 const auth_route_1 = require("./route/auth/auth.route");
 const fcmToken_route_1 = require("./route/fcmToken/fcmToken.route");
 const fcm_1 = require("./utils/fcm/fcm");
+const isSelected_route_1 = require("./route/isSelected/isSelected.route");
 (0, dotenv_1.config)();
 function App() {
     const app = (0, express_1.default)();
@@ -29,6 +30,7 @@ function App() {
     app.use("/main", (0, express_async_handler_1.default)(jwt_middleware_1.tokenMinddleware.auth), (0, express_async_handler_1.default)(main_route_1.mainRouter));
     app.use("/team", (0, express_async_handler_1.default)(jwt_middleware_1.tokenMinddleware.auth), (0, express_async_handler_1.default)(team_route_1.teamRouter));
     app.use("/match", (0, express_async_handler_1.default)(jwt_middleware_1.tokenMinddleware.auth), (0, express_async_handler_1.default)(match_route_1.matchRouter));
+    app.use("/icon", (0, express_async_handler_1.default)(jwt_middleware_1.tokenMinddleware.auth), (0, express_async_handler_1.default)(icon_route_1.iconRouter));
     app.use("/isSelected", (0, express_async_handler_1.default)(jwt_middleware_1.tokenMinddleware.auth), (0, express_async_handler_1.default)(isSelected_route_1.isSelectedRouter));
     app.use("/league", (0, express_async_handler_1.default)(jwt_middleware_1.tokenMinddleware.auth), (0, express_async_handler_1.default)(league_route_1.leagueRouter));
     // chackDailyMatch를 1분마다 실행

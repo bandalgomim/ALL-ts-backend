@@ -19,7 +19,7 @@ exports.leagueDao = {
         // league 페이지의 달력과 선호팀에 들어갈 정보를 반환
         const connection = yield (0, db_pool_1.getPool)().getConnection();
         try {
-            const [result] = yield connection.query(league_sql_1.leagueSql.get, [userId, leagueId, leagueId, userId, leagueId]);
+            const [result] = yield connection.query(league_sql_1.leagueSql.get, [userId, userId, userId, leagueId, userId, leagueId, userId, userId, leagueId]);
             return result;
         }
         catch (err) {

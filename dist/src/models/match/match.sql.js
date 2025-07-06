@@ -14,8 +14,8 @@ exports.matchSql = {
             t2.team_initial AS away_team_initial,
             m.match_date,
             m.match_state,
-            t1.team_logo AS home_team_logo,
-            t2.team_logo AS away_team_logo,
+            i1.icon AS home_team_logo,
+            i2.icon AS away_team_logo,
             m.home_team_score,
             m.away_team_score,
             s.sport_name,
@@ -33,6 +33,10 @@ exports.matchSql = {
             ) AS is_match_selected
         FROM 
             match_info m
+        LEFT JOIN
+            icon i1 ON i1.type = 'team' and m.home_team_id = i1.id and i1.user_id = ?
+        LEFT JOIN
+            icon i2 ON i2.type = 'team' and m.away_team_id = i2.id and i2.user_id = ?
         LEFT JOIN 
             team t1 ON t1.team_id = m.home_team_id
         LEFT JOIN 

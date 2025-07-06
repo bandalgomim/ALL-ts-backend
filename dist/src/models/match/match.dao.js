@@ -15,11 +15,11 @@ const error_1 = require("../../../config/error");
 const response_status_1 = require("../../../config/response.status");
 const match_sql_1 = require("./match.sql");
 exports.matchDao = {
-    get: (matchId) => __awaiter(void 0, void 0, void 0, function* () {
+    get: (userId, matchId) => __awaiter(void 0, void 0, void 0, function* () {
         // match 페이지의 달력과 선호팀에 들어갈 정보를 반환
         const connection = yield (0, db_pool_1.getPool)().getConnection();
         try {
-            const [result] = yield connection.query(match_sql_1.matchSql.get, [matchId, matchId]);
+            const [result] = yield connection.query(match_sql_1.matchSql.get, [userId, userId, matchId, matchId]);
             return result;
         }
         catch (err) {

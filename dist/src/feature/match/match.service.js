@@ -13,8 +13,8 @@ exports.matchService = void 0;
 const match_dao_1 = require("../../models/match/match.dao");
 const response_status_1 = require("../../../config/response.status");
 exports.matchService = {
-    get: (matchId) => __awaiter(void 0, void 0, void 0, function* () {
-        const result = yield match_dao_1.matchDao.get(matchId); // dao의 정보를 반환
+    get: (userId, matchId) => __awaiter(void 0, void 0, void 0, function* () {
+        const result = yield match_dao_1.matchDao.get(userId, matchId); // dao의 정보를 반환
         const platform = [];
         result.map((data) => {
             // 매핑을 통해 배열에 알맞은 오브젝트를 생성 후 push
