@@ -4,6 +4,7 @@ export const teamSql = {
         SELECT 
             t.team_id,
             t.team_name,
+            t.team_initial,
             i.icon as team_logo,
             t.\`rank\`,
             t.win,
