@@ -86,6 +86,7 @@ exports.leagueSql = {
         SELECT
             l.league_id,
             l.league_name,
+            l.league_initial,
             i.icon as league_logo,
             l.sport_id,
             s.sport_name,

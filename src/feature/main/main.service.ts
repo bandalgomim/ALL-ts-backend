@@ -43,6 +43,7 @@ export const mainService = {
                 teamList.push({
                     teamId: data.team_id,
                     teamName: data.team_name,
+                    teamInit: data.team_initial,
                     teamLogo: data.team_logo,
                     index: data.team_index
                 });
@@ -51,6 +52,7 @@ export const mainService = {
                 leagueList.push({
                     leagueId: data.league_id,
                     leagueName: data.league_name,
+                    leagueInit: data.league_initial,
                     leagueLogo: data.league_logo,
                     index: data.league_index
                 });

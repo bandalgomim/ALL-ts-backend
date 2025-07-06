@@ -3,6 +3,7 @@ import { matchList } from "../main/main.dto";
 export interface league {
     leagueId: number,
     leagueName: string,
+    leagueIni: string,
     leagueLogo: string,
     sportId: number,
     sportName: string,

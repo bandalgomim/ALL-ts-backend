@@ -24,12 +24,14 @@ export type matchList = Record<string, match[]>;
 export interface team {
     teamId: number,
     teamName: string,
+    teamInit: string,
     teamLogo: string,
     index: number
 }
 export interface league {
     leagueId: number,
     leagueName: string,
+    leagueInit: string,
     leagueLogo: string,
     index: number
 }

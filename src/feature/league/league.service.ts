@@ -10,6 +10,7 @@ export const leagueService = {
         const league: league = {
             leagueId: result[0].league_id,
             leagueName: result[0].league_name,
+            leagueIni: result[0].league_initial,
             leagueLogo: result[0].league_logo,
             sportId: result[0].sport_id,
             sportName: result[0].sport_name,
