@@ -10,7 +10,8 @@ export const teamDao = {
         // team 페이지의 달력과 선호팀에 들어갈 정보를 반환
         const connection = await getPool().getConnection();
         try {
-            const [ result ] = await connection.query<RowDataPacket[]>(teamSql.get, [ userId, teamId, userId ]);
+            const [ result ] = await connection.query<RowDataPacket[]>(teamSql.get,
+                [ userId, userId, teamId, userId, userId, userId ]);
             return result;
         } catch (err) {
             console.error(err);

@@ -4,7 +4,7 @@ export const teamSql = {
         SELECT 
             t.team_id,
             t.team_name,
-            t.team_logo,
+            i.icon as team_logo,
             t.\`rank\`,
             t.win,
             t.draw,
@@ -24,6 +24,8 @@ export const teamSql = {
             ) AS is_team_selected
         FROM 
             team t
+        LEFT JOIN
+            icon i ON i.type = 'team' and t.team_id = i.id and i.user_id = ?
         LEFT JOIN
             league l ON t.league_id = l.league_id
         LEFT JOIN
@@ -45,8 +47,8 @@ export const teamSql = {
             m.match_date,
             TIME(m.match_date) AS match_time,
             m.match_state,
-            t1.team_logo AS home_team_logo,
-            t2.team_logo AS away_team_logo,
+            i1.icon AS home_team_logo,
+            i2.icon AS away_team_logo,
             m.home_team_score,
             m.away_team_score,
             EXISTS (
@@ -62,6 +64,10 @@ export const teamSql = {
             team t1 ON t1.team_id = m.home_team_id
         LEFT JOIN
             team t2 ON t2.team_id = m.away_team_id
+        LEFT JOIN
+            icon i1 ON i1.type = 'team' and m.home_team_id = i1.id and i1.user_id = ?
+        LEFT JOIN
+            icon i2 ON i2.type = 'team' and m.away_team_id = i2.id and i2.user_id = ?
     )
     SELECT 
         ti.*,
