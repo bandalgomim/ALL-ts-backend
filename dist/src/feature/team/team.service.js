@@ -57,6 +57,7 @@ exports.teamService = {
                 team: {
                     teamId: result[0].team_id,
                     teamName: result[0].team_name,
+                    teamInit: result[0].team_initial,
                     teamLogo: result[0].team_logo,
                     rank: result[0].rank,
                     win: result[0].win,
