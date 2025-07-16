@@ -14,10 +14,10 @@ const icon_service_1 = require("./icon.service");
 exports.iconController = {
     patch: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const userId = res.locals.id;
-        const type = req.query.type;
-        const Id = parseInt(req.query.matchId);
-        const uri = req.query.leagueId;
-        const result = yield icon_service_1.iconService.patchIcon(userId, type, Id, uri);
+        const type = req.body.type;
+        const id = parseInt(req.body.id);
+        const uri = req.body.uri;
+        const result = yield icon_service_1.iconService.patchIcon(userId, type, id, uri);
         res.json(result);
     })
 };
