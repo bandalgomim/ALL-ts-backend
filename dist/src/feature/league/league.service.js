@@ -62,7 +62,12 @@ exports.leagueService = {
                     teamId: data.team_id,
                     teamName: data.team_name,
                     teamInit: data.team_initial,
-                    teamLogo: data.team_logo
+                    teamLogo: data.team_logo,
+                    win: data.win,
+                    draw: data.draw,
+                    lose: data.lose,
+                    point: data.point,
+                    section: data.section
                 });
             }
         });
