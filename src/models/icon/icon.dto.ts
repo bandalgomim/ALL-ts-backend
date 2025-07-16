@@ -1,5 +1,6 @@
-export interface patchIcon {
+export interface patchIconReqDto {
+    userId: string,
     type: "team" | "league",
     id: number,
-    icon: string
+    uri: string
 }

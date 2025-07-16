@@ -14,14 +14,14 @@ const icon_dao_1 = require("../../models/icon/icon.dao");
 const team_service_1 = require("../team/team.service");
 const league_service_1 = require("../league/league.service");
 exports.iconService = {
-    patchIcon: (userId, type, id, icon) => __awaiter(void 0, void 0, void 0, function* () {
-        yield icon_dao_1.iconDao.patchIcon(userId, type, id, icon); // dao를 통해 업데이트
+    patchIcon: (userId, type, id, uri) => __awaiter(void 0, void 0, void 0, function* () {
+        yield icon_dao_1.iconDao.patchIcon(userId, type, id, uri); // dao를 통해 업데이트
         let res;
         if (type === "team") {
-            res = yield team_service_1.teamService.get(userId, id); // 팀 아이콘 업데이트 후 팀 정보 가져오기
+            res = yield team_service_1.teamService.get(userId, id);
         }
         else if (type === "league") {
-            res = yield league_service_1.leagueService.get(userId, id); // 리그 아이콘 업데이트 후 리그 정보 가져오기
+            res = yield league_service_1.leagueService.get(userId, id); // 리그 아이콘 업데이트 후 리그 정보 반환
         }
         else {
             throw new Error("Invalid type provided for icon update");
