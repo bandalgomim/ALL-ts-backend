@@ -14,5 +14,5 @@ export const iconService = {
             throw new Error("Invalid type provided for icon update");
         }
         return res;
-    },
+    }
 };
