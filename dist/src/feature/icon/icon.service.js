@@ -27,5 +27,19 @@ exports.iconService = {
             throw new Error("Invalid type provided for icon update");
         }
         return res;
+    }),
+    deleteIcon: (userId, type, id) => __awaiter(void 0, void 0, void 0, function* () {
+        yield icon_dao_1.iconDao.deleteIcon(userId, type, id); // dao를 통해 삭제
+        let res;
+        if (type === "team") {
+            res = yield team_service_1.teamService.get(userId, id);
+        }
+        else if (type === "league") {
+            res = yield league_service_1.leagueService.get(userId, id); // 리그 아이콘 삭제 후 리그 정보 반환
+        }
+        else {
+            throw new Error("Invalid type provided for icon deletion");
+        }
+        return res;
     })
 };

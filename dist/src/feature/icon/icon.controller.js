@@ -19,5 +19,12 @@ exports.iconController = {
         const uri = req.body.uri;
         const result = yield icon_service_1.iconService.patchIcon(userId, type, id, uri);
         res.json(result);
+    }),
+    delete: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const userId = res.locals.id;
+        const type = req.body.type;
+        const id = parseInt(req.body.id);
+        const result = yield icon_service_1.iconService.deleteIcon(userId, type, id);
+        res.json(result);
     })
 };
