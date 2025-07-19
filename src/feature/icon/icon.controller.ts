@@ -9,5 +9,12 @@ export const iconController = {
         const uri = req.body.uri as string;
         const result = await iconService.patchIcon(userId, type, id, uri);
         res.json(result);
+    },
+    delete: async (req: Request, res: Response) => {
+        const userId = res.locals.id;
+        const type = req.body.type as string;
+        const id = parseInt(req.body.id as string);
+        const result = await iconService.deleteIcon(userId, type, id);
+        res.json(result);
     }
 };
