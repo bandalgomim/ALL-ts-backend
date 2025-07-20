@@ -28,19 +28,5 @@ exports.iconDao = {
             // 연결 반환 보장
             connection.release();
         }
-    }),
-    deleteIcon: (userId, type, id) => __awaiter(void 0, void 0, void 0, function* () {
-        const connection = yield (0, db_pool_1.getPool)().getConnection();
-        try {
-            yield connection.query(icon_sql_1.iconSql.deleteIcon, [userId, type, id]);
-        }
-        catch (err) {
-            console.error(err);
-            throw new error_1.ApiError(response_status_1.status.DATA_DELETED_SQL_ERROR);
-        }
-        finally {
-            // 연결 반환 보장
-            connection.release();
-        }
     })
 };
