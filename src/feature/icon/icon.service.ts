@@ -14,17 +14,5 @@ export const iconService = {
             throw new Error("Invalid type provided for icon update");
         }
         return res;
-    },
-    deleteIcon: async (userId: string, type: string, id: number) => {
-        await iconDao.deleteIcon(userId, type, id); // dao를 통해 삭제
-        let res;
-        if (type === "team") {
-            res = await teamService.get(userId, id);
-        } else if (type === "league") {
-            res = await leagueService.get(userId, id); // 리그 아이콘 삭제 후 리그 정보 반환
-        } else {
-            throw new Error("Invalid type provided for icon deletion");
-        }
-        return res;
     }
 };

@@ -6,8 +6,6 @@ export const iconSql = {
         user_id = VALUES(user_id),
         type = VALUES(type),
         id = VALUES(id),
-        icon = VALUES(icon);`,
-    deleteIcon:
-    "DELETE FROM icon WHERE user_id = ? AND type = ? AND id = ?;"
+        icon = VALUES(icon);`
 };
 
