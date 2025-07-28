@@ -18,6 +18,7 @@ const auth_route_1 = require("./route/auth/auth.route");
 const fcmToken_route_1 = require("./route/fcmToken/fcmToken.route");
 const fcm_1 = require("./utils/fcm/fcm");
 const league_route_1 = require("./route/league/league.route");
+const scheduler_route_1 = require("./route/scheduler/scheduler.route");
 (0, dotenv_1.config)();
 function App() {
     const app = (0, express_1.default)();
@@ -34,6 +35,7 @@ function App() {
     app.use("/isSelected", (0, express_async_handler_1.default)(jwt_middleware_1.tokenMinddleware.auth), (0, express_async_handler_1.default)(isSelected_route_1.isSelectedRouter));
     app.use("/league", (0, express_async_handler_1.default)(jwt_middleware_1.tokenMinddleware.auth), (0, express_async_handler_1.default)(league_route_1.leagueRouter));
     app.use("/icon", (0, express_async_handler_1.default)(jwt_middleware_1.tokenMinddleware.auth), (0, express_async_handler_1.default)(icon_route_1.iconRouter));
+    app.use("/scheduler", (0, express_async_handler_1.default)(scheduler_route_1.schedulerRouter));
     // chackDailyMatch를 1분마다 실행
     (0, fcm_1.chackDailyMatch)(); // 최초 한번 실행
     setInterval(fcm_1.chackDailyMatch, 300000); // 1분(60000ms)마다 실행

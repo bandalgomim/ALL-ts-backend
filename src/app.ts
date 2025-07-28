@@ -13,6 +13,7 @@ import { authRouter } from "./route/auth/auth.route";
 import { fcmTokenRouter } from "./route/fcmToken/fcmToken.route";
 import { chackDailyMatch } from "./utils/fcm/fcm";
 import { leagueRouter } from "./route/league/league.route";
+import { schedulerRouter } from "./route/scheduler/scheduler.route";
 
 config();
 
@@ -31,6 +32,7 @@ export default function App() {
     app.use("/isSelected", asyncHandler(tokenMinddleware.auth), asyncHandler(isSelectedRouter));
     app.use("/league", asyncHandler(tokenMinddleware.auth), asyncHandler(leagueRouter));
     app.use("/icon", asyncHandler(tokenMinddleware.auth), asyncHandler(iconRouter));
+    app.use("/scheduler", asyncHandler(schedulerRouter));
 
     // chackDailyMatch를 1분마다 실행
 

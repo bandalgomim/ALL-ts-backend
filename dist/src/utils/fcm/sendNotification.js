@@ -53,10 +53,6 @@ function sendFCMToManyDevices(tokens, item) {
             try {
                 // sendEachForMulticast 사용 (보내는 대상이 여러 개일 경우)
                 const response = yield firebase_1.messaging.sendEachForMulticast(message);
-                // console.log(
-                //     `✅ ${response.successCount}개 성공, ${response.failureCount}개 실패 ` +
-                //     `(Batch ${(i / BATCH_SIZE) + 1})`
-                // );
                 if (response.failureCount > 0) {
                     response.responses.forEach((resp, idx) => {
                         if (!resp.success) {
