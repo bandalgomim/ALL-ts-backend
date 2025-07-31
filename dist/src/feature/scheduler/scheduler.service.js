@@ -11,24 +11,24 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.schedulerService = void 0;
 const scheduler_dao_1 = require("../../models/scheduler/scheduler.dao");
+const prevData_1 = require("../../utils/prevData");
 exports.schedulerService = {
     get: (date) => __awaiter(void 0, void 0, void 0, function* () {
+        yield (0, prevData_1.setPrevData)(date);
         const result = yield scheduler_dao_1.schedulerDao.get(date);
         const res = [];
-        const scheduler = {
-            league: "",
-            start: "",
-            end: ""
-        };
+        const scheduler = { league: "", start: "", end: "" };
         result.forEach((data, index) => {
             if (index === 0 || data.league_name !== result[index - 1].league_name) {
+                if (index !== 0) {
+                    res.push(Object.assign({}, scheduler));
+                }
                 scheduler.league = data.league_name;
                 scheduler.start = data.match_date;
                 scheduler.end = data.match_date;
                 // eslint-disable-next-line @stylistic/max-len
             }
             else if (data.league_name === result[index - 1].league || (new Date(data.match_date).getTime() - new Date(result[index - 1].match_date).getTime()) > 3 * 60 * 60 * 1000) {
-                // 객체를 복사하여 추가
                 res.push(Object.assign({}, scheduler));
                 scheduler.start = data.match_date;
                 scheduler.end = data.match_date;
@@ -37,7 +37,6 @@ exports.schedulerService = {
                 scheduler.end = data.match_date;
             }
             if (index === result.length - 1) {
-                // 마지막 요소도 객체 복사하여 추가
                 res.push(Object.assign({}, scheduler));
             }
         });

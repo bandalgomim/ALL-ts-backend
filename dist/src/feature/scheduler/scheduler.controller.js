@@ -13,7 +13,8 @@ exports.schedulerController = void 0;
 const scheduler_service_1 = require("./scheduler.service");
 exports.schedulerController = {
     get: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        const date = req.body.date;
+        const date = req.query.date;
+        console.log(date);
         const result = yield scheduler_service_1.schedulerService.get(date);
         res.json(result);
     })
