@@ -12,10 +12,11 @@ export const prevUriList = {
         youtube: []
     },
     K리그1: {
+        coupang: [],
         youtube: []
     },
     EPL: {
-        spotv: [],
+        coupang: [],
         youtube: []
     },
     MLB: {
