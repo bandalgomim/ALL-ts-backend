@@ -77,23 +77,35 @@ const getPrevDate = (dateStr, count) => {
     return (0, exports.getPrevDate)(`${year}-${month}-${day}`, count - 1);
 };
 exports.getPrevDate = getPrevDate;
+// 안전 파서
+const safeJsonParse = (raw, fallback) => {
+    try {
+        if (raw == null)
+            return fallback;
+        const parsed = JSON.parse(raw);
+        return parsed && typeof parsed === "object" ? parsed : fallback;
+    }
+    catch (_a) {
+        return fallback;
+    }
+};
 function mergePrevUri(date) {
     return __awaiter(this, void 0, void 0, function* () {
-        var _a, _b, _c, _d;
-        const obj1 = JSON.parse(yield db_redis_1.default.get(`prevUriList_${date}`));
-        const obj2 = JSON.parse(yield db_redis_1.default.get(`prevUriList_${(0, exports.getPrevDate)(date, 1)}`));
+        var _a, _b;
+        const rawToday = yield db_redis_1.default.get(`prevUriList_${date}`);
+        const rawPrev = yield db_redis_1.default.get(`prevUriList_${(0, exports.getPrevDate)(date, 1)}`);
+        const obj1 = safeJsonParse(rawToday, {});
+        const obj2 = safeJsonParse(rawPrev, {});
         const merged = {};
         const keys = new Set([...Object.keys(obj1), ...Object.keys(obj2)]);
         for (const key of keys) {
+            const v1 = (_a = obj1[key]) !== null && _a !== void 0 ? _a : {};
+            const v2 = (_b = obj2[key]) !== null && _b !== void 0 ? _b : {};
             merged[key] = {};
-            const subKeys = new Set([
-                ...Object.keys(obj1[key] || {}),
-                ...Object.keys(obj2[key] || {})
-            ]);
+            const subKeys = new Set([...Object.keys(v1), ...Object.keys(v2)]);
             for (const subKey of subKeys) {
-                const arr1 = ((_b = (_a = obj1[key]) === null || _a === void 0 ? void 0 : _a[subKey]) !== null && _b !== void 0 ? _b : []);
-                const arr2 = ((_d = (_c = obj2[key]) === null || _c === void 0 ? void 0 : _c[subKey]) !== null && _d !== void 0 ? _d : []);
-                // 중복 제거 후 합치기
+                const arr1 = Array.isArray(v1[subKey]) ? v1[subKey] : [];
+                const arr2 = Array.isArray(v2[subKey]) ? v2[subKey] : [];
                 merged[key][subKey] = Array.from(new Set([...arr1, ...arr2]));
             }
         }

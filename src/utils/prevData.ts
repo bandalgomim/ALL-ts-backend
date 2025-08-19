@@ -66,23 +66,35 @@ export const getPrevDate = (dateStr: string, count: number): string => {
     return getPrevDate(`${year}-${month}-${day}`, count - 1);
 };
 
-export async function mergePrevUri(date: string) {
-    const obj1 = JSON.parse(await redisClient.get(`prevUriList_${date}`) as string);
-    const obj2 = JSON.parse(await redisClient.get(`prevUriList_${getPrevDate(date, 1)}`) as string);
+// 안전 파서
+const safeJsonParse = <T>(raw: string | null | undefined, fallback: T): T => {
+    try {
+        if (raw == null) return fallback;
+        const parsed = JSON.parse(raw);
+        return parsed && typeof parsed === "object" ? (parsed as T) : fallback;
+    } catch {
+        return fallback;
+    }
+};
 
-    const merged: uriDto = {};
+export async function mergePrevUri(date: string) {
+    const rawToday = await redisClient.get(`prevUriList_${date}`);
+    const rawPrev  = await redisClient.get(`prevUriList_${getPrevDate(date, 1)}`);
+
+    const obj1 = safeJsonParse<Record<string, Record<string, string[]>>>(rawToday, {});
+    const obj2 = safeJsonParse<Record<string, Record<string, string[]>>>(rawPrev, {});
+
+    const merged: uriDto = {} as Record<string, Record<string, string[]>>;
+
     const keys = new Set([ ...Object.keys(obj1), ...Object.keys(obj2) ]);
     for (const key of keys) {
+        const v1 = obj1[key] ?? {};
+        const v2 = obj2[key] ?? {};
         merged[key] = {};
-        const subKeys = new Set([
-            ...Object.keys(obj1[key] || {}),
-            ...Object.keys(obj2[key] || {})
-        ]);
+        const subKeys = new Set([ ...Object.keys(v1), ...Object.keys(v2) ]);
         for (const subKey of subKeys) {
-            const arr1 = (obj1[key]?.[subKey] ?? []);
-            const arr2 = (obj2[key]?.[subKey] ?? []);
-
-            // 중복 제거 후 합치기
+            const arr1 = Array.isArray(v1[subKey]) ? v1[subKey] : [];
+            const arr2 = Array.isArray(v2[subKey]) ? v2[subKey] : [];
             merged[key][subKey] = Array.from(new Set([ ...arr1, ...arr2 ]));
         }
     }
