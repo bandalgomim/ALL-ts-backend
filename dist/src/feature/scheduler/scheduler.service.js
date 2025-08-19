@@ -28,7 +28,7 @@ exports.schedulerService = {
                 scheduler.end = data.match_date;
                 // eslint-disable-next-line @stylistic/max-len
             }
-            else if (data.league_name === result[index - 1].league || (new Date(data.match_date).getTime() - new Date(result[index - 1].match_date).getTime()) > 3 * 60 * 60 * 1000) {
+            else if (data.league_name === result[index - 1].league || (new Date(data.match_date).getTime() - new Date(result[index - 1].match_date).getTime()) > 5 * 60 * 60 * 1000) {
                 res.push(Object.assign({}, scheduler));
                 scheduler.start = data.match_date;
                 scheduler.end = data.match_date;
@@ -40,6 +40,15 @@ exports.schedulerService = {
                 res.push(Object.assign({}, scheduler));
             }
         });
+        for (const item of res) {
+            if (item === null || item === void 0 ? void 0 : item.end) {
+                const end = new Date(item.end);
+                if (!isNaN(end.getTime())) {
+                    // eslint-disable-next-line @stylistic/no-mixed-operators
+                    item.end = new Date(end.getTime() + 5 * 60 * 60 * 1000).toISOString();
+                }
+            }
+        }
         return res;
     })
 };
