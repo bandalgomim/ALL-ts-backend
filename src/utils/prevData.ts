@@ -2,12 +2,26 @@ import redisClient from "../../config/db.redis";
 import { uriDto } from "../models/matchData/uri/uri.dto";
 
 export const prevUriList = {
-    coupang: { kLeague1: [], bundesliga: [] },
-    soop: { lck: [] },
-    tving: { kbo: [] },
-    spotv: { epl: [], mlb: [] },
-    youtube: { lck: [], epl: [], kLeague1: [], MLB: [], KBO: [] },
-    youtube_lck: { lck: [] }
+    LCK: {
+        soop: [],
+        youtube: [],
+        youtube_lck: []
+    },
+    KBO: {
+        tving: [],
+        youtube: []
+    },
+    K리그1: {
+        youtube: []
+    },
+    EPL: {
+        spotv: [],
+        youtube: []
+    },
+    MLB: {
+        spotv: [],
+        youtube: []
+    }
 };
 
 export const prevMatchList = {

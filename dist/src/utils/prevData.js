@@ -17,12 +17,26 @@ exports.setPrevData = setPrevData;
 exports.mergePrevUri = mergePrevUri;
 const db_redis_1 = __importDefault(require("../../config/db.redis"));
 exports.prevUriList = {
-    coupang: { kLeague1: [], bundesliga: [] },
-    soop: { lck: [] },
-    tving: { kbo: [] },
-    spotv: { epl: [], mlb: [] },
-    youtube: { lck: [], epl: [], kLeague1: [], MLB: [], KBO: [] },
-    youtube_lck: { lck: [] }
+    LCK: {
+        soop: [],
+        youtube: [],
+        youtube_lck: []
+    },
+    KBO: {
+        tving: [],
+        youtube: []
+    },
+    K리그1: {
+        youtube: []
+    },
+    EPL: {
+        spotv: [],
+        youtube: []
+    },
+    MLB: {
+        spotv: [],
+        youtube: []
+    }
 };
 exports.prevMatchList = {
     lck: [],
