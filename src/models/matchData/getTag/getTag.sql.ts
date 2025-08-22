@@ -1,0 +1,23 @@
+export const getTagSql = {
+    getTeamTag:
+    `
+    SELECT 
+        *
+    FROM 
+        team_tag
+    `,
+    getLeagueTag:
+    `
+    SELECT 
+        *    
+    FROM 
+        league_tag
+    `,
+    getPlatformTag:
+    `
+    SELECT 
+        *    
+    FROM 
+        platform
+    `
+};
