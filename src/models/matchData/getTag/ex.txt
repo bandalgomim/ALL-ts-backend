@@ -1,0 +1,10 @@
+  [{
+    "homeTeam": "롯데",
+    "awayTeam": "LG",
+    "url": "https://www.tving.com/contents/sports/SB0000043373",
+    "date": "2025/8/21",
+    "type": "다시보기",
+    "platform": "tving",
+    "leagueId": "KBO",
+    "raw_output": "롯데, LG, https://www.tving.com/contents/sports/SB0000043373, 2025/8/21, 다시보기, tving"
+  }]
