@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @stylistic/no-mixed-operators */
 export function parseRelativeDate(dateStr: string): string {
     const now = new Date();
