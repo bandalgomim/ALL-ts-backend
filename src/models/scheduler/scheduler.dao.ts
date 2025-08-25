@@ -3,7 +3,7 @@ import { getPool } from "../../../config/db.pool";
 import { ResultSetHeader, RowDataPacket } from "mysql2/promise";
 import { status } from "../../../config/response.status";
 import { ApiError } from "../../../config/error";
-import { postSchedulerReqDto, schedulerDto } from "./scheduler.dto";
+import { schedulerDto } from "./scheduler.dto";
 
 export const schedulerDao = {
     get: async (date: string): Promise<RowDataPacket[]> => {

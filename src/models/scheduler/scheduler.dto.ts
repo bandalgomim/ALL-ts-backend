@@ -8,11 +8,11 @@ export type schedulerDto =
     homeTeamScore: number | string,
     awayTeamScore: number | string,
     leagueId: number | string,
-    doubleHeader: number
+    doubleHeader: number,
+    [Symbol.iterator](): Iterator<schedulerDto>
 };
 export type postSchedulerReqDto = {
-    [league: string]: schedulerDto[],
-    [Symbol.iterator](): Iterator<schedulerDto>
+    [league: string]: schedulerDto[]
 };
 export type getSchedulerResDto = { league: string, start: string, end: string }[];
 

@@ -1,10 +1,7 @@
 import redisClient from "../../../config/db.redis";
-import { getTagDao } from "../../models/matchData/getTag/getTag.dao";
 import { schedulerDao } from "../../models/scheduler/scheduler.dao";
 import { getSchedulerResDto, postSchedulerReqDto, schedulerDto } from "../../models/scheduler/scheduler.dto";
-import { setPrevData } from "../../utils/prevData";
-import { parseMatchDate, parseMatchState } from "../../utils/translator";
-
+import { matchDataTranslator, setPrevData } from "../../utils/matchData";
 
 export const schedulerService = {
     get: async (date: string) => {
@@ -43,33 +40,26 @@ export const schedulerService = {
         }
         return res;
     },
-    post: async (data: postSchedulerReqDto | schedulerDto[], date: string) => {
-        const prevMatchList = await redisClient.get(`prevMatchList_${date}`);
-        const teamTag = await getTagDao.getTeamTag();
-        const leagueTag = await getTagDao.getLeagueTag();
+    post: async (data: postSchedulerReqDto, date: string) => {
+        const prevMatchList = await redisClient.get(`prevMatchList_${date}`) as string;
+        let insertData: schedulerDto[] = [];
         if (!prevMatchList) {
-            const insertData: schedulerDto[] = [];
-            for (const item of data) {
-                item.leagueId = leagueTag.find((tag) => tag.league_tag === item.leagueId)?.league_id || item.leagueId;
-                const homeTag = item.homeTeamId;
-                const awayTag = item.awayTeamId;
-                let homeTeamId = homeTag;
-                let awayTeamId = awayTag;
-
-                for (const tag of teamTag) {
-                    if (tag.league_id === item.leagueId) {
-                        if (tag.team_tag === homeTag) homeTeamId = tag.team_id;
-                        if (tag.team_tag === awayTag) awayTeamId = tag.team_id;
-                        if (homeTeamId !== homeTag && awayTeamId !== awayTag) break;
+            insertData = await matchDataTranslator(data);
+        } else {
+            const list = JSON.parse(prevMatchList) as postSchedulerReqDto;
+            const newData: postSchedulerReqDto = {};
+            for (const league in data) {
+                if (!newData[league]) newData[league] = [];
+                if (!list[league]) list[league] = [];
+                for (const item of data[league]) {
+                    if (!list[league].includes(item)) {
+                        newData[league].push(item);
                     }
                 }
-                item.homeTeamId = homeTeamId;
-                item.awayTeamId = awayTeamId;
-                item.status = parseMatchState(item.status) as string;
-                item.date = parseMatchDate(item.date, item.time) as string;
-                insertData.push(item);
             }
-            await schedulerDao.post(insertData);
+            insertData = await matchDataTranslator(newData);
         }
+        await schedulerDao.post(insertData);
+        await redisClient.set(`prevMatchList_${date}`, JSON.stringify(data));
     }
 };

@@ -29,5 +29,28 @@ exports.schedulerDao = {
             // 연결 반환 보장
             connection.release();
         }
+    }),
+    post: (data) => __awaiter(void 0, void 0, void 0, function* () {
+        if (!Array.isArray(data) || data.length === 0)
+            return;
+        const connection = yield (0, db_pool_1.getPool)().getConnection();
+        try {
+            const params = [];
+            const placeholders = data.map(() => "(?, ?, ?, ?, ?, ?, ?, ?)").join(", ");
+            for (const item of data) {
+                params.push(`${item.date}-${item.homeTeamId}-${item.awayTeamId}-${item.doubleHeader}`, item.leagueId, item.homeTeamId, item.awayTeamId, `${item.date} ${item.time}`, item.status, item.homeTeamScore, item.awayTeamScore);
+            }
+            yield connection.beginTransaction();
+            yield connection.query(scheduler_sql_1.schedulerSql.post(placeholders), params);
+            yield connection.commit();
+        }
+        catch (err) {
+            console.error(err);
+            throw new error_1.ApiError(response_status_1.status.DATA_SEARCH_SQL_ERROR);
+        }
+        finally {
+            // 연결 반환 보장
+            connection.release();
+        }
     })
 };

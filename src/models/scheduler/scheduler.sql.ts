@@ -22,5 +22,6 @@ export const schedulerSql = {
         match_date = VALUES(match_date),
         match_state = VALUES(match_state),
         home_team_score = VALUES(home_team_score),
-        away_team_score = VALUES(away_team_score);`}
+        away_team_score = VALUES(away_team_score);`;
+    }
 };

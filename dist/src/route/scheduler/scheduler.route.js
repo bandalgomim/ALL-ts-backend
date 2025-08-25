@@ -9,3 +9,4 @@ const express_async_handler_1 = __importDefault(require("express-async-handler")
 const scheduler_controller_1 = require("../../feature/scheduler/scheduler.controller");
 exports.schedulerRouter = (0, express_1.Router)();
 exports.schedulerRouter.get("/", (0, express_async_handler_1.default)(scheduler_controller_1.schedulerController.get));
+exports.schedulerRouter.post("/", (0, express_async_handler_1.default)(scheduler_controller_1.schedulerController.post));

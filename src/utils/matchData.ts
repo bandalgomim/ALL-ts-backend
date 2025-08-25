@@ -1,5 +1,8 @@
 import redisClient from "../../config/db.redis";
+import { getTagDao } from "../models/matchData/getTag/getTag.dao";
 import { uriDto } from "../models/matchData/uri/uri.dto";
+import { postSchedulerReqDto, schedulerDto } from "../models/scheduler/scheduler.dto";
+import { parseMatchDate, parseMatchState } from "./translator";
 
 export const prevUriList = {
     LCK: {
@@ -26,11 +29,12 @@ export const prevUriList = {
 };
 
 export const prevMatchList = {
-    lck: [],
-    kbaseball: [],
-    wbaseball: [],
-    kfootball: [],
-    wfootball: []
+    LCK: [],
+    KBO: [],
+    MLB: [],
+    K리그1: [],
+    EPL: [],
+    BUNDESLIGA: []
 };
 
 export const prevRankList = {
@@ -99,4 +103,34 @@ export async function mergePrevUri(date: string) {
         }
     }
     return merged;
+}
+
+export async function matchDataTranslator(data: postSchedulerReqDto) {
+    const insertData: schedulerDto[] = [];
+    const teamTag = await getTagDao.getTeamTag();
+    const leagueTag = await getTagDao.getLeagueTag();
+    for (const league in data) {
+        for (const item of data[league]) {
+            item.leagueId = leagueTag.find((tag) =>
+                tag.league_tag === item.leagueId)?.league_id || item.leagueId;
+            const homeTag = item.homeTeamId;
+            const awayTag = item.awayTeamId;
+            let homeTeamId = homeTag;
+            let awayTeamId = awayTag;
+
+            for (const tag of teamTag) {
+                if (tag.league_id === item.leagueId) {
+                    if (tag.team_tag === homeTag) homeTeamId = tag.team_id;
+                    if (tag.team_tag === awayTag) awayTeamId = tag.team_id;
+                    if (homeTeamId !== homeTag && awayTeamId !== awayTag) break;
+                }
+            }
+            item.homeTeamId = homeTeamId;
+            item.awayTeamId = awayTeamId;
+            item.status = parseMatchState(item.status) as string;
+            item.date = parseMatchDate(item.date, item.time) as string;
+            insertData.push(item);
+        }
+    }
+    return insertData;
 }

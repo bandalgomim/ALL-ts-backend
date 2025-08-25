@@ -66,7 +66,7 @@ export function parseRelativeType(typeStr: string | null | undefined): string | 
     return typeStr;
 }
 
-export function parseMatchState(status?: string): "next" | "off" | "end" | "live" {
+export function parseMatchState(status: string): "next" | "off" | "end" | "live" {
     const statusLower = status.toLowerCase();
     if (statusLower.includes("next") || statusLower.includes("예정")) {
         return "next";

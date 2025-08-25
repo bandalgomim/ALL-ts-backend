@@ -1,6 +1,6 @@
 import redisClient from "../../../../config/db.redis";
 import { uriDto } from "../../../models/matchData/uri/uri.dto";
-import { mergePrevUri } from "../../../utils/prevData";
+import { mergePrevUri } from "../../../utils/matchData";
 
 export const uriService = {
     post: async (data: uriDto, date: string) => {

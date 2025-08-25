@@ -17,5 +17,11 @@ exports.schedulerController = {
         console.log(date);
         const result = yield scheduler_service_1.schedulerService.get(date);
         res.json(result);
+    }),
+    post: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const date = req.query.date;
+        const data = req.body;
+        yield scheduler_service_1.schedulerService.post(data, date);
+        res.status(201).end();
     })
 };

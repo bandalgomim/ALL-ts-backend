@@ -8,13 +8,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.schedulerService = void 0;
+const db_redis_1 = __importDefault(require("../../../config/db.redis"));
 const scheduler_dao_1 = require("../../models/scheduler/scheduler.dao");
-const prevData_1 = require("../../utils/prevData");
+const matchData_1 = require("../../utils/matchData");
 exports.schedulerService = {
     get: (date) => __awaiter(void 0, void 0, void 0, function* () {
-        yield (0, prevData_1.setPrevData)(date);
+        yield (0, matchData_1.setPrevData)(date);
         const result = yield scheduler_dao_1.schedulerDao.get(date);
         const res = [];
         const scheduler = { league: "", start: "", end: "" };
@@ -50,5 +54,30 @@ exports.schedulerService = {
             }
         }
         return res;
+    }),
+    post: (data, date) => __awaiter(void 0, void 0, void 0, function* () {
+        const prevMatchList = yield db_redis_1.default.get(`prevMatchList_${date}`);
+        let insertData = [];
+        if (!prevMatchList) {
+            insertData = yield (0, matchData_1.matchDataTranslator)(data);
+        }
+        else {
+            const list = JSON.parse(prevMatchList);
+            const newData = {};
+            for (const league in data) {
+                if (!newData[league])
+                    newData[league] = [];
+                if (!list[league])
+                    list[league] = [];
+                for (const item of data[league]) {
+                    if (!list[league].includes(item)) {
+                        newData[league].push(item);
+                    }
+                }
+            }
+            insertData = yield (0, matchData_1.matchDataTranslator)(newData);
+        }
+        yield scheduler_dao_1.schedulerDao.post(insertData);
+        yield db_redis_1.default.set(`prevMatchList_${date}`, JSON.stringify(data));
     })
 };

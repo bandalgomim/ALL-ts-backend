@@ -14,12 +14,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.uriService = void 0;
 const db_redis_1 = __importDefault(require("../../../../config/db.redis"));
-const prevData_1 = require("../../../utils/prevData");
+const matchData_1 = require("../../../utils/matchData");
 exports.uriService = {
     post: (data, date) => __awaiter(void 0, void 0, void 0, function* () {
         var _a;
         const prevUriList = JSON.parse(yield db_redis_1.default.get(`prevUriList_${date}`));
-        const mergedPrevUri = yield (0, prevData_1.mergePrevUri)(date);
+        const mergedPrevUri = yield (0, matchData_1.mergePrevUri)(date);
         // 1. data와 mergedPrevUri 비교
         for (const platform in data) {
             for (const league in data[platform]) {
