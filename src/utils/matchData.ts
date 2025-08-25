@@ -138,6 +138,8 @@ export async function matchDataTranslator(data: postSchedulerReqDto) {
             item.awayTeamId = awayTeamId;
             item.status = parseMatchState(item.status) as string;
             item.date = parseMatchDate(item.date, item.time) as string;
+            if (item.homeTeamScore === "") { item.homeTeamScore = 0; }
+            if (item.awayTeamScore === "") { item.awayTeamScore = 0; }
             insertData.push(item);
         }
     }

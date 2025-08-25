@@ -150,6 +150,12 @@ function matchDataTranslator(data) {
                 item.awayTeamId = awayTeamId;
                 item.status = (0, translator_1.parseMatchState)(item.status);
                 item.date = (0, translator_1.parseMatchDate)(item.date, item.time);
+                if (item.homeTeamScore === "") {
+                    item.homeTeamScore = 0;
+                }
+                if (item.awayTeamScore === "") {
+                    item.awayTeamScore = 0;
+                }
                 insertData.push(item);
             }
         }
