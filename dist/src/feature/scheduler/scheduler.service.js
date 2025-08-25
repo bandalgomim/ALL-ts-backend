@@ -56,6 +56,7 @@ exports.schedulerService = {
         return res;
     }),
     post: (data, date) => __awaiter(void 0, void 0, void 0, function* () {
+        console.log(data, date);
         const prevMatchList = yield db_redis_1.default.get(`prevMatchList_${date}`);
         let insertData = [];
         if (!prevMatchList) {
@@ -67,8 +68,6 @@ exports.schedulerService = {
             for (const league in data) {
                 if (!newData[league])
                     newData[league] = [];
-                if (!list[league])
-                    list[league] = [];
                 for (const item of data[league]) {
                     if (!list[league].includes(item)) {
                         newData[league].push(item);

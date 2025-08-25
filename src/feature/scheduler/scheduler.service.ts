@@ -41,6 +41,7 @@ export const schedulerService = {
         return res;
     },
     post: async (data: postSchedulerReqDto, date: string) => {
+        console.log(data, date);
         const prevMatchList = await redisClient.get(`prevMatchList_${date}`) as string;
         let insertData: schedulerDto[] = [];
         if (!prevMatchList) {
@@ -50,7 +51,6 @@ export const schedulerService = {
             const newData: postSchedulerReqDto = {};
             for (const league in data) {
                 if (!newData[league]) newData[league] = [];
-                if (!list[league]) list[league] = [];
                 for (const item of data[league]) {
                     if (!list[league].includes(item)) {
                         newData[league].push(item);

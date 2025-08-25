@@ -122,8 +122,9 @@ function matchDataTranslator(data) {
         const insertData = [];
         const teamTag = yield getTag_dao_1.getTagDao.getTeamTag();
         const leagueTag = yield getTag_dao_1.getTagDao.getLeagueTag();
-        for (const league in data) {
-            for (const item of data[league]) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        for (const [league, items] of Object.entries(data)) {
+            for (const item of items) {
                 item.leagueId = ((_a = leagueTag.find((tag) => tag.league_tag === item.leagueId)) === null || _a === void 0 ? void 0 : _a.league_id) || item.leagueId;
                 const homeTag = item.homeTeamId;
                 const awayTag = item.awayTeamId;

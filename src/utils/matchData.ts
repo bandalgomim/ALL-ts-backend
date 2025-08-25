@@ -109,8 +109,10 @@ export async function matchDataTranslator(data: postSchedulerReqDto) {
     const insertData: schedulerDto[] = [];
     const teamTag = await getTagDao.getTeamTag();
     const leagueTag = await getTagDao.getLeagueTag();
-    for (const league in data) {
-        for (const item of data[league]) {
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    for (const [ league, items ] of Object.entries(data)) {
+        for (const item of items) {
             item.leagueId = leagueTag.find((tag) =>
                 tag.league_tag === item.leagueId)?.league_id || item.leagueId;
             const homeTag = item.homeTeamId;
