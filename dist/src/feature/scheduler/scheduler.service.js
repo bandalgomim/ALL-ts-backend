@@ -56,6 +56,8 @@ exports.schedulerService = {
         return res;
     }),
     post: (data, date) => __awaiter(void 0, void 0, void 0, function* () {
+        var _a;
+        console.log(data);
         const prevMatchList = yield db_redis_1.default.get(`prevMatchList_${date}`);
         const list = JSON.parse(prevMatchList);
         const league = Object.keys(data);
@@ -63,13 +65,40 @@ exports.schedulerService = {
         for (const league in data) {
             if (!newData[league])
                 newData[league] = [];
+            const prevItems = (_a = list[league]) !== null && _a !== void 0 ? _a : [];
             for (const item of data[league]) {
-                if (!list[league].includes(item)) {
+                if (!prevItems.includes(item)) {
+                    // doubleHeader 판정
+                    let isDoubleHeader = false;
+                    // newData에서 검사
+                    for (const exist of newData[league]) {
+                        if (exist.date === item.date
+                            && exist.homeTeamId === item.homeTeamId
+                            && exist.awayTeamId === item.awayTeamId
+                            && exist.time !== item.time) {
+                            isDoubleHeader = true;
+                            break;
+                        }
+                    }
+                    // list에서 검사
+                    if (!isDoubleHeader) {
+                        for (const exist of prevItems) {
+                            if (exist.date === item.date
+                                && exist.homeTeamId === item.homeTeamId
+                                && exist.awayTeamId === item.awayTeamId
+                                && exist.time !== item.time) {
+                                isDoubleHeader = true;
+                                break;
+                            }
+                        }
+                    }
+                    item.doubleHeader = isDoubleHeader ? 2 : 1;
                     newData[league].push(item);
                 }
             }
         }
         const insertData = yield (0, matchData_1.matchDataTranslator)(newData);
+        console.log(insertData);
         yield scheduler_dao_1.schedulerDao.post(insertData);
         list[league[0]] = data[league[0]];
         yield db_redis_1.default.set(`prevMatchList_${date}`, JSON.stringify(list));
