@@ -7,6 +7,6 @@ exports.translatorSql = {
         VALUES ${data}
     ON DUPLICATE KEY UPDATE
         platform_id = VALUES(platform_id),
-        url = VALUES(url),`;
+        url = VALUES(url)`;
     }
 };
