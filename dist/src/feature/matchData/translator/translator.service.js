@@ -22,9 +22,10 @@ exports.translatorService = {
         for (const item of data) {
             // leagueTag의 league_tag와 item.leagueId를 비교해야 함
             item.leagueId = ((_a = leagueTag.find((tag) => tag.league_tag === item.leagueId)) === null || _a === void 0 ? void 0 : _a.league_id) || item.leagueId;
-            item.platform = ((_b = platformTag.find((tag) => tag.platform_tag === item.platform)) === null || _b === void 0 ? void 0 : _b.platform_id) || item.platform;
-            const homeTag = item.homeTeam;
-            const awayTag = item.awayTeam;
+            // eslint-disable-next-line @stylistic/max-len
+            item.platformId = ((_b = platformTag.find((tag) => tag.platform_tag === item.platformId)) === null || _b === void 0 ? void 0 : _b.platform_id) || item.platformId;
+            const homeTag = item.homeTeamId;
+            const awayTag = item.awayTeamId;
             let homeTeamId = homeTag;
             let awayTeamId = awayTag;
             for (const tag of teamTag) {
@@ -37,8 +38,8 @@ exports.translatorService = {
                         break;
                 }
             }
-            item.homeTeam = homeTeamId;
-            item.awayTeam = awayTeamId;
+            item.homeTeamId = homeTeamId;
+            item.awayTeamId = awayTeamId;
             item.date = (0, translator_1.parseRelativeDate)(item.date);
             item.type = (0, translator_1.parseRelativeType)(item.type);
             translatedData.push(item);

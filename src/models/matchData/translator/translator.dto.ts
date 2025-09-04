@@ -1,12 +1,12 @@
 export type translatorDto = {
-    homeTeam: string,
-    awayTeam: string,
+    homeTeamId: string,
+    awayTeamId: string,
     url: string,
     date: string,
-    dh: number,
     type: string,
-    platform: string,
+    platformId: string,
     leagueId: string,
+    doubleHeader: number,
     raw_output: string
 };
 

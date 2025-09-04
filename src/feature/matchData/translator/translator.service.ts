@@ -11,9 +11,10 @@ export const translatorService = {
         for (const item of data) {
             // leagueTag의 league_tag와 item.leagueId를 비교해야 함
             item.leagueId = leagueTag.find((tag) => tag.league_tag === item.leagueId)?.league_id || item.leagueId;
-            item.platform = platformTag.find((tag) => tag.platform_tag === item.platform)?.platform_id || item.platform;
-            const homeTag = item.homeTeam;
-            const awayTag = item.awayTeam;
+            // eslint-disable-next-line @stylistic/max-len
+            item.platformId = platformTag.find((tag) => tag.platform_tag === item.platformId)?.platform_id || item.platformId;
+            const homeTag = item.homeTeamId;
+            const awayTag = item.awayTeamId;
             let homeTeamId = homeTag;
             let awayTeamId = awayTag;
 
@@ -24,8 +25,8 @@ export const translatorService = {
                     if (homeTeamId !== homeTag && awayTeamId !== awayTag) break;
                 }
             }
-            item.homeTeam = homeTeamId;
-            item.awayTeam = awayTeamId;
+            item.homeTeamId = homeTeamId;
+            item.awayTeamId = awayTeamId;
             item.date = parseRelativeDate(item.date);
             item.type = parseRelativeType(item.type) as string;
             translatedData.push(item);

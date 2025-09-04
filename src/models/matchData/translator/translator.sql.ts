@@ -1,5 +1,9 @@
 export const translatorSql = {
-    post:
-    `INSERT INTO match_url (match_id, platform_id, type, url) 
-    `
+    post: (data: string) => {
+        return `INSERT INTO match_url (match_id, platform_id, type, url) 
+        VALUES ${data}
+    ON DUPLICATE KEY UPDATE
+        platform_id = VALUES(platform_id),
+        url = VALUES(url),`;
+    }
 };
