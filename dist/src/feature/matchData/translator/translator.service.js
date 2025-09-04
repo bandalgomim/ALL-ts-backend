@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.translatorService = void 0;
 const getTag_dao_1 = require("../../../models/matchData/getTag/getTag.dao");
+const translator_dao_1 = require("../../../models/matchData/translator/translator.dao");
 const translator_1 = require("../../../utils/translator");
 exports.translatorService = {
     post: (data) => __awaiter(void 0, void 0, void 0, function* () {
@@ -45,6 +46,7 @@ exports.translatorService = {
             translatedData.push(item);
         }
         console.log("Translated Data:", translatedData);
+        yield translator_dao_1.translatorDao.post(translatedData);
         // prevUriList를 저장하거나 반환 등 필요한 작업 수행
     })
 };

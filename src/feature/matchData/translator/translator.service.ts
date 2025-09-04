@@ -1,4 +1,5 @@
 import { getTagDao } from "../../../models/matchData/getTag/getTag.dao";
+import { translatorDao } from "../../../models/matchData/translator/translator.dao";
 import { translatorListDto } from "../../../models/matchData/translator/translator.dto";
 import { parseRelativeDate, parseRelativeType } from "../../../utils/translator";
 
@@ -32,6 +33,7 @@ export const translatorService = {
             translatedData.push(item);
         }
         console.log("Translated Data:", translatedData);
+        await translatorDao.post(translatedData);
 
         // prevUriList를 저장하거나 반환 등 필요한 작업 수행
 
