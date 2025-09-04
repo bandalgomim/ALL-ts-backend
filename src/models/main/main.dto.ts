@@ -1,7 +1,7 @@
 
 
 export interface match {
-    matchId: number,
+    matchId: string,
     matchDate: string,
     matchTime: string,
     homeTeamId: number,

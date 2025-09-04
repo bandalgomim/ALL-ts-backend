@@ -13,7 +13,7 @@ exports.matchController = void 0;
 const match_service_1 = require("./match.service");
 exports.matchController = {
     get: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        const matchId = parseInt(req.query.matchId);
+        const matchId = req.query.matchId;
         const userId = res.locals.id;
         if (matchId) {
             const result = yield match_service_1.matchService.get(userId, matchId);

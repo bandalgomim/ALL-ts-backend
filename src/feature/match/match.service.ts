@@ -4,7 +4,7 @@ import { BaseApiResponse } from "../../../config/response";
 import { getMatchDto, platform } from "../../models/match/match.dto";
 
 export const matchService = {
-    get: async (userId: string, matchId: number) => {
+    get: async (userId: string, matchId: string) => {
         const result = await matchDao.get(userId, matchId); // dao의 정보를 반환
         const platform: platform[] = [];
         result.map((data) => {
