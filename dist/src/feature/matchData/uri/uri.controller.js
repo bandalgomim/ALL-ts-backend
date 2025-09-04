@@ -15,7 +15,6 @@ exports.uriController = {
     post: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const date = req.query.date;
         const result = yield uri_service_1.uriService.post(req.body, date);
-        console.log(date, result);
         res.json(result);
     })
 };

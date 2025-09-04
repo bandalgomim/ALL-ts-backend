@@ -56,7 +56,6 @@ exports.schedulerService = {
         return res;
     }),
     post: (data, date) => __awaiter(void 0, void 0, void 0, function* () {
-        console.log(data, date);
         const prevMatchList = yield db_redis_1.default.get(`prevMatchList_${date}`);
         let insertData = [];
         if (!prevMatchList) {
