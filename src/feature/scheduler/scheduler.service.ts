@@ -1,7 +1,7 @@
 import redisClient from "../../../config/db.redis";
 import { schedulerDao } from "../../models/scheduler/scheduler.dao";
 import { getSchedulerResDto, postSchedulerReqDto } from "../../models/scheduler/scheduler.dto";
-import { matchDataTranslator, setPrevData } from "../../utils/matchData";
+import { matchDataTranslator, prevMatchList, setPrevData } from "../../utils/matchData";
 
 export const schedulerService = {
     get: async (date: string) => {
@@ -41,15 +41,15 @@ export const schedulerService = {
         return res;
     },
     post: async (data: postSchedulerReqDto, date: string | null) => {
+        const prevMatchListRedis = await redisClient.get(`prevMatchList_${date}`) as string;
+        let list: postSchedulerReqDto;
 
-        if (date === null) {
-            const insertData = await matchDataTranslator(data);
-            await schedulerDao.post(insertData);
-            return;
+        if (!prevMatchListRedis && date === null) {
+            list = prevMatchList;
+        } else {
+            list = JSON.parse(prevMatchListRedis);
         }
-
-        const prevMatchList = await redisClient.get(`prevMatchList_${date}`) as string;
-        const list = JSON.parse(prevMatchList) as postSchedulerReqDto;
+        console.log("Match List:", data);
         const league = Object.keys(data);
         const newData: postSchedulerReqDto = {};
         for (const league in data) {
@@ -95,6 +95,8 @@ export const schedulerService = {
         const insertData = await matchDataTranslator(newData);
         await schedulerDao.post(insertData);
         list[league[0]] = data[league[0]];
-        await redisClient.set(`prevMatchList_${date}`, JSON.stringify(list));
+        if (prevMatchListRedis) {
+            await redisClient.set(`prevMatchList_${date}`, JSON.stringify(list));
+        }
     }
 };

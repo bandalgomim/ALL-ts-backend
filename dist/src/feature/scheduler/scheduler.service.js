@@ -57,13 +57,15 @@ exports.schedulerService = {
     }),
     post: (data, date) => __awaiter(void 0, void 0, void 0, function* () {
         var _a;
-        if (date === null) {
-            const insertData = yield (0, matchData_1.matchDataTranslator)(data);
-            yield scheduler_dao_1.schedulerDao.post(insertData);
-            return;
+        const prevMatchListRedis = yield db_redis_1.default.get(`prevMatchList_${date}`);
+        let list;
+        if (!prevMatchListRedis && date === null) {
+            list = matchData_1.prevMatchList;
         }
-        const prevMatchList = yield db_redis_1.default.get(`prevMatchList_${date}`);
-        const list = JSON.parse(prevMatchList);
+        else {
+            list = JSON.parse(prevMatchListRedis);
+        }
+        console.log("Match List:", data);
         const league = Object.keys(data);
         const newData = {};
         for (const league in data) {
@@ -104,6 +106,8 @@ exports.schedulerService = {
         const insertData = yield (0, matchData_1.matchDataTranslator)(newData);
         yield scheduler_dao_1.schedulerDao.post(insertData);
         list[league[0]] = data[league[0]];
-        yield db_redis_1.default.set(`prevMatchList_${date}`, JSON.stringify(list));
+        if (prevMatchListRedis) {
+            yield db_redis_1.default.set(`prevMatchList_${date}`, JSON.stringify(list));
+        }
     })
 };
