@@ -1,6 +1,6 @@
 import redisClient from "../../../config/db.redis";
 import { schedulerDao } from "../../models/scheduler/scheduler.dao";
-import { getSchedulerResDto, postSchedulerReqDto, schedulerDto } from "../../models/scheduler/scheduler.dto";
+import { getSchedulerResDto, postSchedulerReqDto } from "../../models/scheduler/scheduler.dto";
 import { matchDataTranslator, setPrevData } from "../../utils/matchData";
 
 export const schedulerService = {
@@ -42,23 +42,52 @@ export const schedulerService = {
     },
     post: async (data: postSchedulerReqDto, date: string) => {
         const prevMatchList = await redisClient.get(`prevMatchList_${date}`) as string;
-        let insertData: schedulerDto[] = [];
-        if (!prevMatchList) {
-            insertData = await matchDataTranslator(data);
-        } else {
-            const list = JSON.parse(prevMatchList) as postSchedulerReqDto;
-            const newData: postSchedulerReqDto = {};
-            for (const league in data) {
-                if (!newData[league]) newData[league] = [];
-                for (const item of data[league]) {
-                    if (!list[league].includes(item)) {
-                        newData[league].push(item);
+        const list = JSON.parse(prevMatchList) as postSchedulerReqDto;
+        const league = Object.keys(data);
+        const newData: postSchedulerReqDto = {};
+        for (const league in data) {
+            if (!newData[league]) newData[league] = [];
+            const prevItems = list[league] ?? [];
+            for (const item of data[league]) {
+                if (!prevItems.includes(item)) {
+                    // doubleHeader 판정
+                    let isDoubleHeader = false;
+
+                    // newData에서 검사
+                    for (const exist of newData[league]) {
+                        if (
+                            exist.date === item.date
+                            && exist.homeTeamId === item.homeTeamId
+                            && exist.awayTeamId === item.awayTeamId
+                            && exist.time !== item.time
+                        ) {
+                            isDoubleHeader = true;
+                            break;
+                        }
                     }
+
+                    // list에서 검사
+                    if (!isDoubleHeader) {
+                        for (const exist of prevItems) {
+                            if (
+                                exist.date === item.date
+                                && exist.homeTeamId === item.homeTeamId
+                                && exist.awayTeamId === item.awayTeamId
+                                && exist.time !== item.time
+                            ) {
+                                isDoubleHeader = true;
+                                break;
+                            }
+                        }
+                    }
+                    item.doubleHeader = isDoubleHeader ? 2 : 1;
+                    newData[league].push(item);
                 }
             }
-            insertData = await matchDataTranslator(newData);
         }
+        const insertData = await matchDataTranslator(newData);
         await schedulerDao.post(insertData);
-        await redisClient.set(`prevMatchList_${date}`, JSON.stringify(data));
+        list[league[0]] = data[league[0]];
+        await redisClient.set(`prevMatchList_${date}`, JSON.stringify(list));
     }
 };

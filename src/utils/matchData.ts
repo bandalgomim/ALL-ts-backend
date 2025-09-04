@@ -51,11 +51,18 @@ export async function setPrevData(date: string) {
     await redisClient.set(`prevMatchList_${date}`, JSON.stringify(prevMatchList));
     await redisClient.set(`prevRankList_${date}`, JSON.stringify(prevRankList));
 
-    const prevDate = getPrevDate(date, 2);
+    const prevDate = getPrevDate(date, 1);
+    const prev2Date = getPrevDate(date, 2);
 
-    await redisClient.del(`prevUriList_${prevDate}`);
-    await redisClient.del(`prevMatchList_${prevDate}`);
-    await redisClient.del(`prevRankList_${prevDate}`);
+    if (!await redisClient.get(`prevMatchList_${prevDate}`)) {
+        await redisClient.set(`prevUriList_${prevDate}`, JSON.stringify(prevUriList));
+        await redisClient.set(`prevMatchList_${prevDate}`, JSON.stringify(prevMatchList));
+        await redisClient.set(`prevRankList_${prevDate}`, JSON.stringify(prevRankList));
+    }
+
+    await redisClient.del(`prevUriList_${prev2Date}`);
+    await redisClient.del(`prevMatchList_${prev2Date}`);
+    await redisClient.del(`prevRankList_${prev2Date}`);
 }
 
 export const getPrevDate = (dateStr: string, count: number): string => {
@@ -131,6 +138,8 @@ export async function matchDataTranslator(data: postSchedulerReqDto) {
             item.awayTeamId = awayTeamId;
             item.status = parseMatchState(item.status) as string;
             item.date = parseMatchDate(item.date, item.time) as string;
+            if (item.homeTeamScore === "") { item.homeTeamScore = 0; }
+            if (item.awayTeamScore === "") { item.awayTeamScore = 0; }
             insertData.push(item);
         }
     }

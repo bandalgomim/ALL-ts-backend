@@ -63,10 +63,16 @@ function setPrevData(date) {
         yield db_redis_1.default.set(`prevUriList_${date}`, JSON.stringify(exports.prevUriList));
         yield db_redis_1.default.set(`prevMatchList_${date}`, JSON.stringify(exports.prevMatchList));
         yield db_redis_1.default.set(`prevRankList_${date}`, JSON.stringify(exports.prevRankList));
-        const prevDate = (0, exports.getPrevDate)(date, 2);
-        yield db_redis_1.default.del(`prevUriList_${prevDate}`);
-        yield db_redis_1.default.del(`prevMatchList_${prevDate}`);
-        yield db_redis_1.default.del(`prevRankList_${prevDate}`);
+        const prevDate = (0, exports.getPrevDate)(date, 1);
+        const prev2Date = (0, exports.getPrevDate)(date, 2);
+        if (!(yield db_redis_1.default.get(`prevMatchList_${prevDate}`))) {
+            yield db_redis_1.default.set(`prevUriList_${prevDate}`, JSON.stringify(exports.prevUriList));
+            yield db_redis_1.default.set(`prevMatchList_${prevDate}`, JSON.stringify(exports.prevMatchList));
+            yield db_redis_1.default.set(`prevRankList_${prevDate}`, JSON.stringify(exports.prevRankList));
+        }
+        yield db_redis_1.default.del(`prevUriList_${prev2Date}`);
+        yield db_redis_1.default.del(`prevMatchList_${prev2Date}`);
+        yield db_redis_1.default.del(`prevRankList_${prev2Date}`);
     });
 }
 const getPrevDate = (dateStr, count) => {
@@ -144,6 +150,12 @@ function matchDataTranslator(data) {
                 item.awayTeamId = awayTeamId;
                 item.status = (0, translator_1.parseMatchState)(item.status);
                 item.date = (0, translator_1.parseMatchDate)(item.date, item.time);
+                if (item.homeTeamScore === "") {
+                    item.homeTeamScore = 0;
+                }
+                if (item.awayTeamScore === "") {
+                    item.awayTeamScore = 0;
+                }
                 insertData.push(item);
             }
         }
