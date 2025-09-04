@@ -23,7 +23,7 @@ export const isSelectedDao = {
             connection.release();
         }
     },
-    patchMatch: async (userId: string, matchId: number) => {
+    patchMatch: async (userId: string, matchId: string) => {
         // isSelected 페이지의 달력과 선호팀에 들어갈 정보를 반환
         const connection = await getPool().getConnection();
         try {

@@ -5,7 +5,7 @@ export const isSelectedController = {
     patch: async (req: Request, res: Response) => {
         const userId = res.locals.id;
         const teamId = parseInt(req.query.teamId as string);
-        const matchId = parseInt(req.query.matchId as string);
+        const matchId = req.query.matchId as string;
         const leagueId = parseInt(req.query.leagueId as string);
         let result;
         if (teamId && !matchId && !leagueId) {

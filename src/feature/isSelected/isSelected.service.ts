@@ -12,7 +12,7 @@ export const isSelectedService = {
         const res = mainService.get(userId);
         return res;
     },
-    patchMatch: async (userId: string, matchId: number) => {
+    patchMatch: async (userId: string, matchId: string) => {
         await isSelectedDao.patchMatch(userId, matchId); // dao를 통해 업데이트
         const res = mainService.get(userId);
         return res;
