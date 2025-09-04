@@ -57,6 +57,11 @@ exports.schedulerService = {
     }),
     post: (data, date) => __awaiter(void 0, void 0, void 0, function* () {
         var _a;
+        if (date === null) {
+            const insertData = yield (0, matchData_1.matchDataTranslator)(data);
+            yield scheduler_dao_1.schedulerDao.post(insertData);
+            return;
+        }
         const prevMatchList = yield db_redis_1.default.get(`prevMatchList_${date}`);
         const list = JSON.parse(prevMatchList);
         const league = Object.keys(data);

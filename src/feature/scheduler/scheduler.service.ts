@@ -40,7 +40,14 @@ export const schedulerService = {
         }
         return res;
     },
-    post: async (data: postSchedulerReqDto, date: string) => {
+    post: async (data: postSchedulerReqDto, date: string | null) => {
+
+        if (date === null) {
+            const insertData = await matchDataTranslator(data);
+            await schedulerDao.post(insertData);
+            return;
+        }
+
         const prevMatchList = await redisClient.get(`prevMatchList_${date}`) as string;
         const list = JSON.parse(prevMatchList) as postSchedulerReqDto;
         const league = Object.keys(data);
