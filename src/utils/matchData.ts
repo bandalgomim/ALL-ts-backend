@@ -1,5 +1,6 @@
 import redisClient from "../../config/db.redis";
 import { getTagDao } from "../models/matchData/getTag/getTag.dao";
+import { postRankReqDto } from "../models/matchData/rank/rank.dto";
 import { uriDto } from "../models/matchData/uri/uri.dto";
 import { postSchedulerReqDto, schedulerDto } from "../models/scheduler/scheduler.dto";
 import { parseMatchDate, parseMatchState } from "./translator";
@@ -112,7 +113,7 @@ export async function mergePrevUri(date: string) {
     return merged;
 }
 
-export async function matchDataTranslator(data: postSchedulerReqDto) {
+export async function matchDataTranslator(data: postSchedulerReqDto | postRankReqDto) {
     const insertData: schedulerDto[] = [];
     const teamTag = await getTagDao.getTeamTag();
     const leagueTag = await getTagDao.getLeagueTag();

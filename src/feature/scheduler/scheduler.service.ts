@@ -44,12 +44,11 @@ export const schedulerService = {
         const prevMatchListRedis = await redisClient.get(`prevMatchList_${date}`) as string;
         let list: postSchedulerReqDto;
 
-        if (!prevMatchListRedis && date === null) {
+        if (!prevMatchListRedis && (date === undefined)) {
             list = prevMatchList;
         } else {
             list = JSON.parse(prevMatchListRedis);
         }
-        console.log("Match List:", data);
         const league = Object.keys(data);
         const newData: postSchedulerReqDto = {};
         for (const league in data) {
@@ -59,8 +58,6 @@ export const schedulerService = {
                 if (!prevItems.includes(item)) {
                     // doubleHeader 판정
                     let isDoubleHeader = false;
-
-                    // newData에서 검사
                     for (const exist of newData[league]) {
                         if (
                             exist.date === item.date
@@ -72,8 +69,6 @@ export const schedulerService = {
                             break;
                         }
                     }
-
-                    // list에서 검사
                     if (!isDoubleHeader) {
                         for (const exist of prevItems) {
                             if (
@@ -93,6 +88,7 @@ export const schedulerService = {
             }
         }
         const insertData = await matchDataTranslator(newData);
+        console.log("Inserting Data:", insertData);
         await schedulerDao.post(insertData);
         list[league[0]] = data[league[0]];
         if (prevMatchListRedis) {

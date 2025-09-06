@@ -85,11 +85,14 @@ export function parseMatchDate(dateStr: string, timeStr: string): string | null 
     try {
         let datePart: string | null = null;
 
+        // 공백 정리: "5월 1 일 (목)" → "5월 1일 (목)"
+        dateStr = dateStr.replace(/(\d{1,2})\s*일/, (m, d) => `${d}일`);
+
         // 1. YYYY-MM-DD 형태인지 확인
         if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
             datePart = dateStr;
         } else {
-        // 2. "05월 01일 (목)오늘" 형태에서 월/일 추출
+            // 2. "05월 01일 (목)오늘" 형태에서 월/일 추출
             const m = dateStr.match(/(\d{1,2})월\s*(\d{1,2})일/);
             if (m) {
                 const month = parseInt(m[1], 10);
@@ -109,7 +112,6 @@ export function parseMatchDate(dateStr: string, timeStr: string): string | null 
             return null;
         }
         const timePart = timeMatch[1];
-
         return `${datePart} ${timePart}:00`;
     } catch (e) {
         return null;

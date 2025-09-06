@@ -90,6 +90,8 @@ function parseMatchState(status) {
 function parseMatchDate(dateStr, timeStr) {
     try {
         let datePart = null;
+        // 공백 정리: "5월 1 일 (목)" → "5월 1일 (목)"
+        dateStr = dateStr.replace(/(\d{1,2})\s*일/, (m, d) => `${d}일`);
         // 1. YYYY-MM-DD 형태인지 확인
         if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
             datePart = dateStr;
