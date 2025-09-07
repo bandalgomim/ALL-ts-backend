@@ -73,7 +73,7 @@ export const leagueSql = {
         FROM team t
         LEFT JOIN
             icon i ON i.type = 'team' and t.team_id = i.id and i.user_id = ?
-        WHERE t.league_id = ?
+        WHERE t.league_id = ? and t.is_remained = 1
     ),
     team_match AS (
         SELECT * FROM team_list
