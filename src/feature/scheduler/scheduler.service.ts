@@ -55,6 +55,7 @@ export const schedulerService = {
             if (!newData[league]) newData[league] = [];
             const prevItems = list[league] ?? [];
             for (const item of data[league]) {
+                if (item.homeTeamId === "TBD" || item.awayTeamId === "TBD") { continue; }
                 if (!prevItems.includes(item)) {
                     // doubleHeader 판정
                     let isDoubleHeader = false;
