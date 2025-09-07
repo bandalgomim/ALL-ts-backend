@@ -85,20 +85,31 @@ export function parseMatchDate(dateStr: string, timeStr: string): string | null 
     try {
         let datePart: string | null = null;
 
-        // 공백 정리: "5월 1 일 (목)" → "5월 1일 (목)"
+        // 앞에 연월이 붙은 경우 분리: "2026-05 5월 1일 (목)" → year=2026, month=05, dateStr="5월 1일 (목)"
+        const ymMatch = dateStr.match(/^(\d{4})-(\d{2})\s*(.*)$/);
+        let year: number | undefined;
+        let month: number | undefined;
+        if (ymMatch) {
+            year = parseInt(ymMatch[1], 10);
+            month = parseInt(ymMatch[2], 10);
+            dateStr = ymMatch[3];
+        }
+
+        // "5월 1 일 (목)" → "5월 1일 (목)"로 공백 정리
         dateStr = dateStr.replace(/(\d{1,2})\s*일/, (m, d) => `${d}일`);
 
         // 1. YYYY-MM-DD 형태인지 확인
         if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
             datePart = dateStr;
         } else {
-            // 2. "05월 01일 (목)오늘" 형태에서 월/일 추출
+            // "5월 1일 (목)" 형태에서 월/일 추출
             const m = dateStr.match(/(\d{1,2})월\s*(\d{1,2})일/);
             if (m) {
-                const month = parseInt(m[1], 10);
+                // 앞에서 year, month 추출했으면 사용, 아니면 현재 연도/월 사용
+                const parsedMonth = year && month ? month : parseInt(m[1], 10);
+                const parsedYear = year ? year : new Date().getFullYear();
                 const day = parseInt(m[2], 10);
-                const year = new Date().getFullYear(); // 현재 연도 사용
-                datePart = `${year.toString().padStart(4, "0")}-${month
+                datePart = `${parsedYear.toString().padStart(4, "0")}-${parsedMonth
                     .toString()
                     .padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
             } else {
@@ -108,7 +119,6 @@ export function parseMatchDate(dateStr: string, timeStr: string): string | null 
 
         // 시간 추출 (HH:mm)
         let timeMatch = timeStr.match(/(\d{1,2}:\d{2})/);
-        console.log(timeMatch);
         if (!timeMatch) {
             timeMatch = [ "00:00", "00:00" ];
         }
