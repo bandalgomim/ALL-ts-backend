@@ -107,9 +107,10 @@ export function parseMatchDate(dateStr: string, timeStr: string): string | null 
         }
 
         // 시간 추출 (HH:mm)
-        const timeMatch = timeStr.match(/(\d{1,2}:\d{2})/);
+        let timeMatch = timeStr.match(/(\d{1,2}:\d{2})/);
+        console.log(timeMatch);
         if (!timeMatch) {
-            return "00:00";
+            timeMatch = [ "00:00", "00:00" ];
         }
         const timePart = timeMatch[1];
         return `${datePart} ${timePart}:00`;
