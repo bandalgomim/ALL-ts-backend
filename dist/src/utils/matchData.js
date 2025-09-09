@@ -16,6 +16,7 @@ exports.getPrevDate = exports.prevRankList = exports.prevMatchList = exports.pre
 exports.setPrevData = setPrevData;
 exports.mergePrevUri = mergePrevUri;
 exports.matchDataTranslator = matchDataTranslator;
+exports.rankTranslator = rankTranslator;
 const db_redis_1 = __importDefault(require("../../config/db.redis"));
 const getTag_dao_1 = require("../models/matchData/getTag/getTag.dao");
 const translator_1 = require("./translator");
@@ -132,21 +133,21 @@ function matchDataTranslator(data) {
         for (const [league, items] of Object.entries(data)) {
             for (const item of items) {
                 item.leagueId = ((_a = leagueTag.find((tag) => tag.league_tag === item.leagueId)) === null || _a === void 0 ? void 0 : _a.league_id) || item.leagueId;
-                const homeTag = item.homeTeamId;
+                const teamIdTag = item.teamId;
                 const awayTag = item.awayTeamId;
-                let homeTeamId = homeTag;
+                let teamId = teamIdTag;
                 let awayTeamId = awayTag;
                 for (const tag of teamTag) {
                     if (tag.league_id === item.leagueId) {
-                        if (tag.team_tag === homeTag)
-                            homeTeamId = tag.team_id;
+                        if (tag.team_tag === teamIdTag)
+                            teamId = tag.team_id;
                         if (tag.team_tag === awayTag)
                             awayTeamId = tag.team_id;
-                        if (homeTeamId !== homeTag && awayTeamId !== awayTag)
+                        if (teamId !== teamIdTag && awayTeamId !== awayTag)
                             break;
                     }
                 }
-                item.homeTeamId = homeTeamId;
+                item.teamId = teamId;
                 item.awayTeamId = awayTeamId;
                 item.status = (0, translator_1.parseMatchState)(item.status);
                 item.date = (0, translator_1.parseMatchDate)(item.date, item.time);
@@ -156,6 +157,28 @@ function matchDataTranslator(data) {
                 if (item.awayTeamScore === "") {
                     item.awayTeamScore = 0;
                 }
+                insertData.push(item);
+            }
+        }
+        return insertData;
+    });
+}
+function rankTranslator(data) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const insertData = [];
+        const teamTag = yield getTag_dao_1.getTagDao.getTeamTag();
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        for (const [league, items] of Object.entries(data)) {
+            for (const item of items) {
+                const teamIdTag = item.teamId;
+                let teamId = teamIdTag;
+                for (const tag of teamTag) {
+                    if (tag.league_id === item.leagueId) {
+                        if (tag.team_tag === teamIdTag)
+                            teamId = tag.team_id;
+                    }
+                }
+                item.teamId = teamId;
                 insertData.push(item);
             }
         }

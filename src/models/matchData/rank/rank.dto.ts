@@ -1,7 +1,7 @@
 export type rankDto =
 {
-    name: string,
-    league: number,
+    teamId: string,
+    leagueId: number,
     rank: number | string,
     win: number | string,
     draw: number | string,

@@ -1,6 +1,6 @@
 import redisClient from "../../config/db.redis";
 import { getTagDao } from "../models/matchData/getTag/getTag.dao";
-import { postRankReqDto } from "../models/matchData/rank/rank.dto";
+import { postRankReqDto, rankDto } from "../models/matchData/rank/rank.dto";
 import { uriDto } from "../models/matchData/uri/uri.dto";
 import { postSchedulerReqDto, schedulerDto } from "../models/scheduler/scheduler.dto";
 import { parseMatchDate, parseMatchState } from "./translator";
@@ -123,24 +123,45 @@ export async function matchDataTranslator(data: postSchedulerReqDto | postRankRe
         for (const item of items) {
             item.leagueId = leagueTag.find((tag) =>
                 tag.league_tag === item.leagueId)?.league_id || item.leagueId;
-            const homeTag = item.homeTeamId;
+            const teamIdTag = item.teamId;
             const awayTag = item.awayTeamId;
-            let homeTeamId = homeTag;
+            let teamId = teamIdTag;
             let awayTeamId = awayTag;
 
             for (const tag of teamTag) {
                 if (tag.league_id === item.leagueId) {
-                    if (tag.team_tag === homeTag) homeTeamId = tag.team_id;
+                    if (tag.team_tag === teamIdTag) teamId = tag.team_id;
                     if (tag.team_tag === awayTag) awayTeamId = tag.team_id;
-                    if (homeTeamId !== homeTag && awayTeamId !== awayTag) break;
+                    if (teamId !== teamIdTag && awayTeamId !== awayTag) break;
                 }
             }
-            item.homeTeamId = homeTeamId;
+            item.teamId = teamId;
             item.awayTeamId = awayTeamId;
             item.status = parseMatchState(item.status) as string;
             item.date = parseMatchDate(item.date, item.time) as string;
             if (item.homeTeamScore === "") { item.homeTeamScore = 0; }
             if (item.awayTeamScore === "") { item.awayTeamScore = 0; }
+            insertData.push(item);
+        }
+    }
+    return insertData;
+}
+
+export async function rankTranslator(data: postRankReqDto) {
+    const insertData: rankDto[] = [];
+    const teamTag = await getTagDao.getTeamTag();
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    for (const [ league, items ] of Object.entries(data)) {
+        for (const item of items) {
+            const teamIdTag = item.teamId;
+            let teamId = teamIdTag;
+            for (const tag of teamTag) {
+                if (tag.league_id === item.leagueId) {
+                    if (tag.team_tag === teamIdTag) teamId = tag.team_id;
+                }
+            }
+            item.teamId = teamId;
             insertData.push(item);
         }
     }

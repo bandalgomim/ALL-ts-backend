@@ -1,27 +1,41 @@
 "use strict";
-/* import redisClient from "../../../../config/db.redis";
-import { rankDao } from "../../models/rank/rank.dao";
-import { postRankReqDto } from "../../../models/matchData/rank/rank.dto";
-import { matchDataTranslator } from "../../../utils/matchData";
-
-export const rankService = {
-    post: async (data: postRankReqDto) => {
-        const prevRankList = await redisClient.get("prevRankList") as string;
-        const list = JSON.parse(prevRankList) as postRankReqDto;
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.rankService = void 0;
+const db_redis_1 = __importDefault(require("../../../../config/db.redis"));
+const rank_dao_1 = require("../../../models/matchData/rank/rank.dao");
+const matchData_1 = require("../../../utils/matchData");
+exports.rankService = {
+    post: (data) => __awaiter(void 0, void 0, void 0, function* () {
+        const prevRankList = yield db_redis_1.default.get("prevRankList");
+        const list = JSON.parse(prevRankList);
         const leagueList = Object.keys(data);
-        const newData: postRankReqDto = {};
-        for (const league in leagueList) {
-            // data에만 있는 값 newData에 추가
-            if (!newData[league]) newData[league] = [];
+        const newData = {};
+        console.log(leagueList);
+        for (const league of leagueList) {
+            console.log(league);
+            if (!newData[league])
+                newData[league] = [];
             for (const item of data[league]) {
                 if (!newData[league].includes(item)) {
                     newData[league].push(item);
                 }
             }
         }
-        const insertData = await matchDataTranslator(newData);
-        await rankDao.post(insertData);
+        const insertData = yield (0, matchData_1.rankTranslator)(newData);
+        yield rank_dao_1.rankDao.post(insertData);
         list[leagueList[0]] = data[leagueList[0]];
-        await redisClient.set("prevRankList", JSON.stringify(list));
-    }
-};*/
+        yield db_redis_1.default.set("prevRankList", JSON.stringify(list));
+    })
+};

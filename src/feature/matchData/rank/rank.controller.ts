@@ -1,4 +1,4 @@
-/* import { Request, Response } from "express";
+import { Request, Response } from "express";
 import { rankService } from "./rank.service";
 
 export const rankController = {
@@ -7,4 +7,4 @@ export const rankController = {
         res.json(result);
     }
 };
-*/
+
