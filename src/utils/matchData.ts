@@ -123,19 +123,19 @@ export async function matchDataTranslator(data: postSchedulerReqDto | postRankRe
         for (const item of items) {
             item.leagueId = leagueTag.find((tag) =>
                 tag.league_tag === item.leagueId)?.league_id || item.leagueId;
-            const teamIdTag = item.teamId;
+            const homeTag = item.homeTeamId;
             const awayTag = item.awayTeamId;
-            let teamId = teamIdTag;
+            let homeTeamId = homeTag;
             let awayTeamId = awayTag;
 
             for (const tag of teamTag) {
                 if (tag.league_id === item.leagueId) {
-                    if (tag.team_tag === teamIdTag) teamId = tag.team_id;
+                    if (tag.team_tag === homeTag) homeTeamId = tag.team_id;
                     if (tag.team_tag === awayTag) awayTeamId = tag.team_id;
-                    if (teamId !== teamIdTag && awayTeamId !== awayTag) break;
+                    if (homeTeamId !== homeTag && awayTeamId !== awayTag) break;
                 }
             }
-            item.teamId = teamId;
+            item.homeTeamId = homeTeamId;
             item.awayTeamId = awayTeamId;
             item.status = parseMatchState(item.status) as string;
             item.date = parseMatchDate(item.date, item.time) as string;
