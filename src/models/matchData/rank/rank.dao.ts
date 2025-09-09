@@ -11,9 +11,7 @@ export const rankDao = {
         const connection = await getPool().getConnection();
         try {
             await connection.beginTransaction();
-
             const { sql, params } = rankSql.updateBulk(data);
-            console.log(sql, params);
             const [ res ] = await connection.query<ResultSetHeader>(sql, params);
 
             await connection.commit();

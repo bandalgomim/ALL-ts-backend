@@ -32,7 +32,7 @@ export const translatorService = {
             item.type = parseRelativeType(item.type) as string;
             translatedData.push(item);
         }
-        console.log("Translated Data:", translatedData);
+
         await translatorDao.post(translatedData);
 
         // prevUriList를 저장하거나 반환 등 필요한 작업 수행

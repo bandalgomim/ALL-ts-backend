@@ -89,7 +89,6 @@ export const schedulerService = {
             }
         }
         const insertData = await matchDataTranslator(newData);
-        console.log("Inserting Data:", insertData);
         await schedulerDao.post(insertData);
         list[league[0]] = data[league[0]];
         if (prevMatchListRedis) {

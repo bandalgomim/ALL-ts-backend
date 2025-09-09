@@ -9,9 +9,8 @@ export const rankService = {
         const list = JSON.parse(prevRankList) as postRankReqDto;
         const leagueList = Object.keys(data);
         const newData: postRankReqDto = {};
-        console.log(leagueList);
+
         for (const league of leagueList) {
-            console.log(league);
             if (!newData[league]) newData[league] = [];
             for (const item of data[league]) {
                 if (!newData[league].includes(item)) {
@@ -19,7 +18,6 @@ export const rankService = {
                 }
             }
         }
-
         const insertData = await rankTranslator(newData);
         await rankDao.post(insertData);
         list[leagueList[0]] = data[leagueList[0]];

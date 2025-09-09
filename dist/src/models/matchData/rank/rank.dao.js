@@ -23,7 +23,6 @@ exports.rankDao = {
         try {
             yield connection.beginTransaction();
             const { sql, params } = rank_sql_1.rankSql.updateBulk(data);
-            console.log(sql, params);
             const [res] = yield connection.query(sql, params);
             yield connection.commit();
             return {

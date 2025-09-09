@@ -86,22 +86,23 @@ export function parseMatchDate(dateStr: string, timeStr: string): string | null 
         let datePart: string | null = null;
 
         // 앞에 연월이 붙은 경우 분리: "2026-05 5월 1일 (목)" → year=2026, month=05, dateStr="5월 1일 (목)"
-        const ymMatch = dateStr.match(/^(\d{4})-(\d{2})\s*(.*)$/);
-        let year: number | undefined;
-        let month: number | undefined;
-        if (ymMatch) {
-            year = parseInt(ymMatch[1], 10);
-            month = parseInt(ymMatch[2], 10);
-            dateStr = ymMatch[3];
-        }
-
-        // "5월 1 일 (목)" → "5월 1일 (목)"로 공백 정리
-        dateStr = dateStr.replace(/(\d{1,2})\s*일/, (m, d) => `${d}일`);
 
         // 1. YYYY-MM-DD 형태인지 확인
         if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
             datePart = dateStr;
         } else {
+            const ymMatch = dateStr.match(/^(\d{4})-(\d{2})\s*(.*)$/);
+            let year: number | undefined;
+            let month: number | undefined;
+            if (ymMatch) {
+                year = parseInt(ymMatch[1], 10);
+                month = parseInt(ymMatch[2], 10);
+                dateStr = ymMatch[3];
+            }
+
+            // "5월 1 일 (목)" → "5월 1일 (목)"로 공백 정리
+            dateStr = dateStr.replace(/(\d{1,2})\s*일/, (m, d) => `${d}일`);
+
             // "5월 1일 (목)" 형태에서 월/일 추출
             const m = dateStr.match(/(\d{1,2})월\s*(\d{1,2})일/);
             if (m) {

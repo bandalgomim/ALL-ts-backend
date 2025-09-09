@@ -45,7 +45,6 @@ exports.translatorService = {
             item.type = (0, translator_1.parseRelativeType)(item.type);
             translatedData.push(item);
         }
-        console.log("Translated Data:", translatedData);
         yield translator_dao_1.translatorDao.post(translatedData);
         // prevUriList를 저장하거나 반환 등 필요한 작업 수행
     })

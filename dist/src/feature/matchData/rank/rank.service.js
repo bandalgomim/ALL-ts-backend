@@ -22,9 +22,7 @@ exports.rankService = {
         const list = JSON.parse(prevRankList);
         const leagueList = Object.keys(data);
         const newData = {};
-        console.log(leagueList);
         for (const league of leagueList) {
-            console.log(league);
             if (!newData[league])
                 newData[league] = [];
             for (const item of data[league]) {
