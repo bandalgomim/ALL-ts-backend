@@ -18,7 +18,7 @@ export const schedulerService = {
                 scheduler.start = data.match_date;
                 scheduler.end = data.match_date;
             // eslint-disable-next-line @stylistic/max-len
-            } else if (data.league_name === result[index - 1].league || (new Date(data.match_date).getTime() - new Date(result[index - 1].match_date).getTime()) > 5 * 60 * 60 * 1000) {
+            } else if (data.league_name === result[index - 1].league || (new Date(data.match_date).getTime() - new Date(result[index - 1].match_date).getTime()) > 6 * 60 * 60 * 1000) {
                 res.push({ ...scheduler });
                 scheduler.start = data.match_date;
                 scheduler.end = data.match_date;

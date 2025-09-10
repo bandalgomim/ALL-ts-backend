@@ -50,7 +50,6 @@ export const prevRankList = {
 export async function setPrevData(date: string) {
     await redisClient.set(`prevUriList_${date}`, JSON.stringify(prevUriList));
     await redisClient.set(`prevMatchList_${date}`, JSON.stringify(prevMatchList));
-    await redisClient.set(`prevRankList_${date}`, JSON.stringify(prevRankList));
 
     const prevDate = getPrevDate(date, 1);
     const prev2Date = getPrevDate(date, 2);
@@ -58,12 +57,13 @@ export async function setPrevData(date: string) {
     if (!await redisClient.get(`prevMatchList_${prevDate}`)) {
         await redisClient.set(`prevUriList_${prevDate}`, JSON.stringify(prevUriList));
         await redisClient.set(`prevMatchList_${prevDate}`, JSON.stringify(prevMatchList));
-        await redisClient.set(`prevRankList_${prevDate}`, JSON.stringify(prevRankList));
+    }
+    if (!await redisClient.get("prevRankList")) {
+        await redisClient.set("prevRankList", JSON.stringify(prevRankList));
     }
 
     await redisClient.del(`prevUriList_${prev2Date}`);
     await redisClient.del(`prevMatchList_${prev2Date}`);
-    await redisClient.del(`prevRankList_${prev2Date}`);
 }
 
 export const getPrevDate = (dateStr: string, count: number): string => {
