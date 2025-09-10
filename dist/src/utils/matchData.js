@@ -61,8 +61,10 @@ exports.prevRankList = {
 };
 function setPrevData(date) {
     return __awaiter(this, void 0, void 0, function* () {
-        yield db_redis_1.default.set(`prevUriList_${date}`, JSON.stringify(exports.prevUriList));
-        yield db_redis_1.default.set(`prevMatchList_${date}`, JSON.stringify(exports.prevMatchList));
+        if (!(yield db_redis_1.default.get(`prevMatchList_${date}`))) {
+            yield db_redis_1.default.set(`prevUriList_${date}`, JSON.stringify(exports.prevUriList));
+            yield db_redis_1.default.set(`prevMatchList_${date}`, JSON.stringify(exports.prevMatchList));
+        }
         const prevDate = (0, exports.getPrevDate)(date, 1);
         const prev2Date = (0, exports.getPrevDate)(date, 2);
         if (!(yield db_redis_1.default.get(`prevMatchList_${prevDate}`))) {
