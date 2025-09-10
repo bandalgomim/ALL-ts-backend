@@ -34,7 +34,7 @@ export const schedulerService = {
                 const end = new Date(item.end);
                 if (!isNaN(end.getTime())) {
                     // eslint-disable-next-line @stylistic/no-mixed-operators
-                    item.end = new Date(end.getTime() + 5 * 60 * 60 * 1000).toISOString();
+                    item.end = new Date(end.getTime() + 6 * 60 * 60 * 1000).toISOString();
                 }
             }
         }
