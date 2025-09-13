@@ -38,6 +38,9 @@ exports.prevUriList = {
         coupang: [],
         youtube: []
     },
+    BUNDESLIGA: {
+        youtube: []
+    },
     MLB: {
         spotv: [],
         youtube: []
@@ -52,12 +55,12 @@ exports.prevMatchList = {
     BUNDESLIGA: []
 };
 exports.prevRankList = {
-    lck: [],
-    kbo: [],
-    mlb: [],
-    kLeague: [],
-    epl: [],
-    bundesliga: []
+    LCK: [],
+    KBO: [],
+    MLB: [],
+    K리그1: [],
+    EPL: [],
+    BUNDESLIGA: []
 };
 function setPrevData(date) {
     return __awaiter(this, void 0, void 0, function* () {

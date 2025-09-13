@@ -23,6 +23,9 @@ export const prevUriList = {
         coupang: [],
         youtube: []
     },
+    BUNDESLIGA: {
+        youtube: []
+    },
     MLB: {
         spotv: [],
         youtube: []
@@ -39,12 +42,12 @@ export const prevMatchList = {
 };
 
 export const prevRankList = {
-    lck: [],
-    kbo: [],
-    mlb: [],
-    kLeague: [],
-    epl: [],
-    bundesliga: []
+    LCK: [],
+    KBO: [],
+    MLB: [],
+    K리그1: [],
+    EPL: [],
+    BUNDESLIGA: []
 };
 
 export async function setPrevData(date: string) {
