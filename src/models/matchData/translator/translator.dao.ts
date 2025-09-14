@@ -14,7 +14,7 @@ export const translatorDao = {
             const placeholders = data.map(() => "(?, ?, ?, ?)").join(", ");
             for (const item of data) {
                 params.push(
-                    `${item.date.split(" ")[0]}-${item.homeTeamId}-${item.awayTeamId}-${item.doubleHeader}`,
+                    item.matchId,
                     item.platformId,
                     item.type,
                     item.url

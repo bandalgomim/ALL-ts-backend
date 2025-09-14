@@ -23,7 +23,7 @@ exports.translatorDao = {
             const params = [];
             const placeholders = data.map(() => "(?, ?, ?, ?)").join(", ");
             for (const item of data) {
-                params.push(`${item.date.split(" ")[0]}-${item.homeTeamId}-${item.awayTeamId}-${item.doubleHeader}`, item.platformId, item.type, item.url);
+                params.push(item.matchId, item.platformId, item.type, item.url);
             }
             yield connection.beginTransaction();
             yield connection.query(translator_sql_1.translatorSql.post(placeholders), params);

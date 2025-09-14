@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.translatorService = void 0;
+const getMatchId_dao_1 = require("../../../models/matchData/getMatchId/getMatchId.dao");
 const getTag_dao_1 = require("../../../models/matchData/getTag/getTag.dao");
 const translator_dao_1 = require("../../../models/matchData/translator/translator.dao");
 const translator_1 = require("../../../utils/translator");
@@ -41,7 +42,7 @@ exports.translatorService = {
             }
             item.homeTeamId = homeTeamId;
             item.awayTeamId = awayTeamId;
-            item.date = (0, translator_1.parseRelativeDate)(item.date);
+            item.matchId = yield getMatchId_dao_1.getMatchIdDao.get(homeTeamId, awayTeamId);
             item.type = (0, translator_1.parseRelativeType)(item.type);
             translatedData.push(item);
         }

@@ -7,7 +7,8 @@ export type translatorDto = {
     platformId: string,
     leagueId: string,
     doubleHeader: number,
-    raw_output: string
+    raw_output: string,
+    matchId: string | null
 };
 
 export interface translatorListDto {
