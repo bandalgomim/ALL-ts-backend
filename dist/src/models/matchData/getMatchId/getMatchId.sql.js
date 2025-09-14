@@ -8,8 +8,8 @@ exports.getMatchIdSql = {
     FROM
         match_info
     WHERE
-        SUBSTRING_INDEX(SUBSTRING_INDEX(match_id, '-', 4), '-', -1) = 52
-        AND SUBSTRING_INDEX(SUBSTRING_INDEX(match_id, '-', 5), '-', -1) = 58
+        SUBSTRING_INDEX(SUBSTRING_INDEX(match_id, '-', 4), '-', -1) = ?
+        AND SUBSTRING_INDEX(SUBSTRING_INDEX(match_id, '-', 5), '-', -1) = ?
     ORDER BY
         ABS(TIMESTAMPDIFF(SECOND, match_date, NOW()))
     LIMIT 1`

@@ -31,7 +31,7 @@ export const translatorService = {
             }
             item.homeTeamId = homeTeamId;
             item.awayTeamId = awayTeamId;
-            item.matchId = await getMatchIdDao.get(homeTeamId, awayTeamId);
+            item.matchId = await getMatchIdDao.get(item.homeTeamId, item.awayTeamId);
             console.log(item.matchId, item.homeTeamId, item.awayTeamId);
             item.type = parseRelativeType(item.type) as string;
             translatedData.push(item);
