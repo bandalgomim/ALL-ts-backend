@@ -11,6 +11,8 @@ export const translatorService = {
         const platformTag = await getTagDao.getPlatformTag();
         const translatedData = [];
         for (const item of data) {
+            console.log(item.homeTeamId, item.awayTeamId);
+
             // leagueTag의 league_tag와 item.leagueId를 비교해야 함
             item.leagueId = leagueTag.find((tag) => tag.league_tag === item.leagueId)?.league_id || item.leagueId;
             // eslint-disable-next-line @stylistic/max-len
@@ -30,6 +32,7 @@ export const translatorService = {
             item.homeTeamId = homeTeamId;
             item.awayTeamId = awayTeamId;
             item.matchId = await getMatchIdDao.get(homeTeamId, awayTeamId);
+            console.log(item.matchId, item.homeTeamId, item.awayTeamId);
             item.type = parseRelativeType(item.type) as string;
             translatedData.push(item);
         }
