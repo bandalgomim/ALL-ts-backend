@@ -8,7 +8,7 @@
   "scripts": {
     "prebuild": "yarn run lint",
     "lint": "eslint src/**/*.ts --fix",
-    "build": "tsc && git add .",
+    "build": "tsc",
     "start": "node dist/src/main.js",
     "start:dev": "nodemon"
   },
