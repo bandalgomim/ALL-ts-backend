@@ -18,6 +18,9 @@ export const translatorService = {
             item.platformId = platformTag.find((tag) => tag.platform_tag === item.platformId)?.platform_id || item.platformId;
             const homeTag = item.homeTeamId;
             const awayTag = item.awayTeamId;
+            if (homeTag === "TBD" || awayTag === "TBD") {
+                continue;
+            }
             let homeTeamId = homeTag;
             let awayTeamId = awayTag;
 

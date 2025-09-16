@@ -28,6 +28,9 @@ exports.translatorService = {
             item.platformId = ((_b = platformTag.find((tag) => tag.platform_tag === item.platformId)) === null || _b === void 0 ? void 0 : _b.platform_id) || item.platformId;
             const homeTag = item.homeTeamId;
             const awayTag = item.awayTeamId;
+            if (homeTag === "TBD" || awayTag === "TBD") {
+                continue;
+            }
             let homeTeamId = homeTag;
             let awayTeamId = awayTag;
             for (const tag of teamTag) {
