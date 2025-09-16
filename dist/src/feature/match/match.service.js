@@ -24,7 +24,7 @@ exports.matchService = {
                 platformlogo: data.platform_logo,
                 platformLeagueUrl: data.league_url,
                 platformMatchUrl: data.match_url,
-                platfromMatchUrlType: data.match_url_type ? data.match_url_type : "root"
+                platformMatchUrlType: data.match_url_type ? data.match_url_type : "root"
             });
         });
         const res = Object.assign(Object.assign({}, response_status_1.status.SUCCESS.body), { result: {
