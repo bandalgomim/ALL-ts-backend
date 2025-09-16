@@ -23,7 +23,7 @@ exports.matchService = {
                 platformName: data.platform_name,
                 platformlogo: data.platform_logo,
                 platformLeagueUrl: data.league_url,
-                platformMatchUrl: data.match_url,
+                platformMatchUrl: data.match_url ? data.match_url : data.league_url,
                 platformMatchUrlType: data.match_url_type ? data.match_url_type : "root"
             });
         });
