@@ -4,7 +4,7 @@ export interface platform {
     platformlogo: string,
     platformLeagueUrl: string,
     platformMatchUrl: string,
-    platformMatchUrlType: string
+    platfromMatchUrlType: string
 }
 
 export interface getMatchDto {
