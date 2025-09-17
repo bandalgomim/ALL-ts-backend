@@ -5,6 +5,9 @@ import { config } from "dotenv";
 import axios from "axios";
 import { ApiError } from "../../config/error";
 import { IAMController } from "../feature/auth/IAM/IAM.controller";
+import { OAuth2Client } from "google-auth-library";
+import { createRemoteJWKSet, jwtVerify } from 'jose';
+import { app } from "firebase-admin";
 
 config();
 
@@ -24,106 +27,76 @@ export const tokenMinddleware = {
             throw new ApiError(status.THERE_IS_NO_ACCESS_TOKEN);
         }
     },
-    google: async (req: Request, res: Response, next: NextFunction) => {
-
-        const urlPath = req.originalUrl;  // 쿼리스트링을 제외한 경로만 가져옵니다.
-        const signUpRegex = /\/signUp\//;
-        let redirectUri = null;
-
-        if (signUpRegex.test(urlPath)) {
-            redirectUri = process.env.GOOGLE_REDIRECT_URI_SIGN_UP;
-        } else {
-            redirectUri = process.env.GOOGLE_REDIRECT_URI_LOGIN;
+    sns: async (req: Request, res: Response, next: NextFunction) => {
+        const type = req.body.type;
+        if (type === "google") {
+            await tokenMinddleware.googleMiddleware(req, res, next);
+        } else if (type === "apple") {
+            await tokenMinddleware.appleMiddleware(req, res, next);
         }
-        const { code } = req.query;
-        const token = await axios.post(process.env.GOOGLE_TOKEN_URL as string, {
-            code,
-            client_id: process.env.GOOGLE_CLIENT_ID,
-            client_secret: process.env.GOOGLE_CLIENT_SECRET,
-            redirect_uri: redirectUri,
-            grant_type: "authorization_code"
-        });
-        const userInfo = await axios.get(process.env.GOOGLE_USERINFO_URL as string, {
-            headers: {
-                Authorization: "Bearer " + token.data.access_token
-            }
-        });
-        res.locals = {
-            id: "google" + userInfo.data.id,
-            email: userInfo.data.email,
-            name: userInfo.data.name,
-            icon: userInfo.data.picture
-        };
-        next();
     },
-    naver: async (req: Request, res: Response, next: NextFunction) => {
-        const code = req.query.code;
-        const state = req.query.state;
-
-        const data = {
-            grant_type: "authorization_code",
-            response_type: "code",
-            client_id: process.env.NAVER_CLIENT_ID as string,
-            client_secret: process.env.NAVER_CLIENT_SECRET as string,
-            redirect_uri: process.env.NAVER_REDIRECT_URI as string,
-            code: code as string,
-            state: state as string
-        };
-
-        const naverToken = await axios.post(
-            process.env.NAVER_TOKEN_URL as string,
-            data,
-            {
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded"
-                }
-            }
-        );
-
-        const header = {
-            Authorization: "Bearer " + naverToken.data.access_token
-        };
-        const userInfo = await axios.get(process.env.NAVER_USERINFO_URL as string, {
-            headers: header
-        });
-        res.locals = {
-            id: "naver" + userInfo.data.response.id,
-            email: userInfo.data.response.email,
-            name: userInfo.data.response.name,
-            icon: userInfo.data.response.profile_image
-        };
-        next();
+    googleMiddleware: async (req: Request, res: Response, next: NextFunction) => {
+        const client = new OAuth2Client(
+            process.env.GOOGLE_WEB_CLIENT_ID // Web Client ID
+          );
+        try {
+          const { idToken } = req.body.idToken; // 프론트에서 전달받은 idToken
+      
+          // ✅ 토큰 검증 및 디코드
+          const ticket = await client.verifyIdToken({
+            idToken,
+            audience: process.env.GOOGLE_WEB_CLIENT_ID,
+          });
+      
+          const payload = ticket.getPayload();
+          if (!payload) throw new Error("Invalid token");
+      
+          // payload 안에 들어 있는 값
+          // sub: 구글 고유 ID, email, name, picture 등
+          res.locals = {
+            id: "google" + payload.sub,
+            email: payload.email,
+            name: payload.name,
+            icon: payload.picture,
+          };
+      
+          next();
+        } catch (err) {
+          console.error("Google ID Token 검증 실패:", err);
+          res.status(401).json({ success: false, error: "Invalid Google token" });
+        }
     },
-    kakao: async (req: Request, res: Response, next: NextFunction) => {
-        const { code } = req.query;
-        const data = {
-            grant_type: "authorization_code",
-            client_id: process.env.KAKAO_CLIENT_ID as string,
-            code: code as string
-        };
-
-        const queryString = `grant_type=${data.grant_type}&client_id=${data.client_id}&code=${data.code}`;
-
-        const kakaoToken = await axios.post(
-            process.env.KAKAO_TOKEN_URL as string,
-            queryString
-        );
-
-        const header = {
-            "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
-            Authorization: "Bearer " + kakaoToken.data.access_token
-        };
-
-        const userInfo = await axios.get(process.env.KAKAO_USERINFO_URL as string, {
-            headers: header
-        });
-
-        res.locals = {
-            id: "kakao" + userInfo.data.id,
-            email: userInfo.data.kakao_account.email,
-            name: "test",
-            icon: userInfo.data.properties.profile_image
-        };
-        next();
+    appleMiddleware: async (req: Request, res: Response, next: NextFunction) => {
+        const APP_BUNDLE_ID = process.env.APP_BUNDLE_ID!; // e.g. com.yourcompany.yourapp
+        const JWKS = createRemoteJWKSet(new URL('https://appleid.appleid.com/auth/keys'.replace('appleid.', 'appleid.')));
+        try {
+          const { identityToken, user, nonce } = req.body;
+          if (!identityToken) throw new Error('identityToken 누락');
+      
+          // jwtVerify: iss, aud 등 검증
+          const { payload } = await jwtVerify(identityToken, JWKS, {
+            issuer: 'https://appleid.apple.com',
+            audience: APP_BUNDLE_ID,
+          });
+      
+          // 필요시 nonce 검증(프론트에서 보낸 rawNonce를 SHA-256 한 값이 토큰의 nonce와 일치하는지)
+          // if (payload.nonce && nonce) { ... }
+      
+          // payload.sub: Apple 고유 사용자 ID (user와 동일 계열)
+          // payload.email: 최초에만 있을 수 있음
+          // 여기서 우리 서비스 유저로 매핑
+          res.locals = {
+            id: 'apple' + (user ?? payload.sub),
+            email: payload.email,          // null일 수 있음
+            name: req.body.name ?? null,   // 최초 동의 때만 오므로 body에서 보낸 값을 우선
+            icon: null,                    // 애플은 기본 프로필 이미지를 제공하지 않음
+            raw: payload,
+          };
+      
+          next();
+        } catch (err) {
+          console.error('Apple ID Token 검증 실패:', err);
+          res.status(401).json({ message: 'Unauthorized' });
+        }
     }
 };
