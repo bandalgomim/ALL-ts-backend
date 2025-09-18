@@ -26,6 +26,7 @@ exports.translatorService = {
             item.leagueId = ((_a = leagueTag.find((tag) => tag.league_tag === item.leagueId)) === null || _a === void 0 ? void 0 : _a.league_id) || item.leagueId;
             // eslint-disable-next-line @stylistic/max-len
             item.platformId = ((_b = platformTag.find((tag) => tag.platform_tag === item.platformId)) === null || _b === void 0 ? void 0 : _b.platform_id) || item.platformId;
+            console.log("in translatorService | homeTeamId: ", item.homeTeamId, " | awayTeamId: ", item.awayTeamId, item.date ? item.date : "no date");
             const homeTag = item.homeTeamId;
             const awayTag = item.awayTeamId;
             if (homeTag === "TBD" || awayTag === "TBD") {
@@ -47,7 +48,7 @@ exports.translatorService = {
             item.awayTeamId = awayTeamId;
             item.date = (0, translator_1.parseRelativeDate)(item.date);
             item.matchId = yield getMatchId_dao_1.getMatchIdDao.get(item.date, item.homeTeamId, item.awayTeamId, item.doubleHeader);
-            console.log("in translatorService | matchId: ", item.matchId, " | homeTeamId: ", item.homeTeamId, " | awayTeamId: ", item.awayTeamId, item.date);
+            console.log("in translatorService | matchId: ", item.matchId, " | homeTeamId: ", item.homeTeamId, " | awayTeamId: ", item.awayTeamId, item.date, "\n");
             item.type = (0, translator_1.parseRelativeType)(item.type);
             translatedData.push(item);
         }
