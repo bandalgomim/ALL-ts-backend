@@ -23,7 +23,7 @@ exports.IAMDao = {
             if (isEmailExist) {
                 return -1;
             }
-            const [result] = yield connection.query(IAM_sql_1.IAMSql.postSignUp, [body.userId, body.email, body.nickname, body.icon]);
+            const [result] = yield connection.query(IAM_sql_1.IAMSql.postSignUp, [body.userId, body.name, body.email, body.icon]);
             return result.insertId;
         }
         catch (err) {

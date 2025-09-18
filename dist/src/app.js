@@ -40,6 +40,6 @@ function App() {
     app.use("/matchData", (0, express_async_handler_1.default)(matchData_route_1.matchDataRouter));
     // chackDailyMatch를 1분마다 실행
     (0, fcm_1.chackDailyMatch)(); // 최초 한번 실행
-    setInterval(fcm_1.chackDailyMatch, 300000); // 1분(60000ms)마다 실행
+    setInterval(fcm_1.chackDailyMatch, 60000); // 1분(60000ms)마다 실행
     return app;
 }

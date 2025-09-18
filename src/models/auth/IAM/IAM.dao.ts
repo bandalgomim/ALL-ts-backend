@@ -15,7 +15,7 @@ export const IAMDao = {
                 return -1;
             }
             const [ result ] = await connection.query<ResultSetHeader>(IAMSql.postSignUp,
-                [ body.userId, body.email, body.nickname, body.icon ]);
+                [ body.userId, body.name, body.email, body.icon ]);
             return result.insertId;
         } catch (err) {
             console.error(err);
