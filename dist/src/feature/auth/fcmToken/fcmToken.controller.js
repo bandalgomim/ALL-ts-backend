@@ -13,7 +13,7 @@ exports.fcmTokenController = void 0;
 const fcmToken_service_1 = require("./fcmToken.service");
 exports.fcmTokenController = {
     fcmToken: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        const userId = res.locals.id;
+        const userId = res.locals.userId;
         const body = req.body;
         try {
             yield fcmToken_service_1.fcmTokenService.fcmToken(userId, body);

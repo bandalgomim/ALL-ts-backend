@@ -14,7 +14,7 @@ const team_service_1 = require("./team.service");
 exports.teamController = {
     get: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const teamId = parseInt(req.query.teamId);
-        const userId = res.locals.id;
+        const userId = res.locals.userId;
         if (teamId) {
             const result = yield team_service_1.teamService.get(userId, teamId);
             res.json(result);

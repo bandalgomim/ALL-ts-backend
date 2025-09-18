@@ -4,7 +4,7 @@ import { fcmTokenService } from "./fcmToken.service";
 
 export const fcmTokenController = {
     patch: async (req: Request, res: Response) => {
-        const userId = res.locals.id;
+        const userId = res.locals.userId;
         const body = req.body;
         try {
             await fcmTokenService.patch(userId, body);

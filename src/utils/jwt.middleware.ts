@@ -16,7 +16,7 @@ export const tokenMinddleware = {
             const token = accessToken.split(" ")[1];
             const result = tokenUtils.verify(token); // token을 검증합니다.
             if (result.ok) {
-                res.locals.id = result.sub;
+                res.locals.userId = result.sub;
                 next();
             } else {
                 await IAMController.refreshToken(req, res);
@@ -25,22 +25,12 @@ export const tokenMinddleware = {
             throw new ApiError(status.THERE_IS_NO_ACCESS_TOKEN);
         }
     },
-    sns: async (req: Request, res: Response, next: NextFunction) => {
-        console.log(req.body);
-        const type = req.body.type;
-        if (type === "google") {
-            await tokenMinddleware.googleMiddleware(req, res, next);
-        } else if (type === "apple") {
-            await tokenMinddleware.appleMiddleware(req, res, next);
-        }
-    },
     googleMiddleware: async (req: Request, res: Response, next: NextFunction) => {
         const client = new OAuth2Client(
             process.env.GOOGLE_WEB_CLIENT_ID // Web Client ID
         );
         try {
             const { idToken } = req.body; // 프론트에서 전달받은 idToken
-            console.log("Google ID Token:", req.body);
 
             // ✅ 토큰 검증 및 디코드
             const ticket = await client.verifyIdToken({
@@ -59,7 +49,6 @@ export const tokenMinddleware = {
                 name: payload.name,
                 icon: payload.picture
             };
-            console.log(res.locals);
             next();
         } catch (err) {
             console.error("Google ID Token 검증 실패:", err);

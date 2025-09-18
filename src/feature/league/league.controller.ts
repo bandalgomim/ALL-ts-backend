@@ -3,7 +3,7 @@ import { leagueService } from "./league.service";
 
 export const leagueController = {
     get: async (req: Request, res: Response) => {
-        const userId = res.locals.id;
+        const userId = res.locals.userId;
         const leagueId = parseInt(req.query.leagueId as string);
         if (leagueId) {
             const result = await leagueService.get(userId, leagueId);

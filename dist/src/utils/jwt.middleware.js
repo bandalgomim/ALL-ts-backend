@@ -25,7 +25,7 @@ exports.tokenMinddleware = {
             const token = accessToken.split(" ")[1];
             const result = jwt_utils_1.tokenUtils.verify(token); // token을 검증합니다.
             if (result.ok) {
-                res.locals.id = result.sub;
+                res.locals.userId = result.sub;
                 next();
             }
             else {
