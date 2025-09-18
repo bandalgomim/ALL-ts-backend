@@ -11,14 +11,18 @@ export const translatorDao = {
         const connection = await getPool().getConnection();
         try {
             const params = [];
+            const fcmMatchId = [];
             const placeholders = data.map(() => "(?, ?, ?, ?)").join(", ");
             for (const item of data) {
-                params.push(
-                    item.matchId,
-                    item.platformId,
-                    item.type,
-                    item.url
-                );
+                if (!item.matchId) {
+                    fcmMatchId.push(item.matchId);
+                    params.push(
+                        item.matchId,
+                        item.platformId,
+                        item.type,
+                        item.url
+                    );
+                }
             }
             await connection.beginTransaction();
             await connection.query<ResultSetHeader>(translatorSql.post(placeholders), params);

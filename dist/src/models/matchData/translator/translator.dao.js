@@ -21,9 +21,13 @@ exports.translatorDao = {
         const connection = yield (0, db_pool_1.getPool)().getConnection();
         try {
             const params = [];
+            const fcmMatchId = [];
             const placeholders = data.map(() => "(?, ?, ?, ?)").join(", ");
             for (const item of data) {
-                params.push(item.matchId, item.platformId, item.type, item.url);
+                if (!item.matchId) {
+                    fcmMatchId.push(item.matchId);
+                    params.push(item.matchId, item.platformId, item.type, item.url);
+                }
             }
             yield connection.beginTransaction();
             yield connection.query(translator_sql_1.translatorSql.post(placeholders), params);
