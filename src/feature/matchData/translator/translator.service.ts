@@ -36,7 +36,7 @@ export const translatorService = {
             item.awayTeamId = awayTeamId;
             item.date = parseRelativeDate(item.date);
             item.matchId = await getMatchIdDao.get(item.date, item.homeTeamId, item.awayTeamId, item.doubleHeader);
-            console.log("in translatorService | matchId: ", item.matchId, " | homeTeamId: ", item.homeTeamId, " | awayTeamId: ", item.awayTeamId, item.date, "\n");
+            console.log("in translatorService | matchId: ", item.matchId, " | homeTeamId: ", item.homeTeamId, " | awayTeamId: ", item.awayTeamId, item.date ? item.date : "no date", "\n");
             item.type = parseRelativeType(item.type) as string;
             translatedData.push(item);
         }
