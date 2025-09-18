@@ -96,57 +96,50 @@ function parseMatchState(status) {
 }
 function parseMatchDate(dateStr, timeStr) {
     try {
-        let datePart = null;
-        // 앞에 연월이 붙은 경우 분리: "2026-05 5월 1일 (목)" → year=2026, month=05, dateStr="5월 1일 (목)"
-        // 1. YYYY-MM-DD 형태인지 확인
-        if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
-            datePart = dateStr;
+        let yearFromPrefix;
+        let body = dateStr.trim();
+        // "YYYY-MM ..." 접두 처리: 연도만 사용, 월은 본문에서 추출
+        const ym = body.match(/^(\d{4})-(\d{1,2})\s+(.*)$/);
+        if (ym) {
+            yearFromPrefix = parseInt(ym[1], 10);
+            body = ym[3].trim();
+        }
+        // 1) 이미 YYYY-MM-DD 형태면 그대로 사용
+        if (/^\d{4}-\d{2}-\d{2}$/.test(body)) {
+            const datePart = body;
+            const timePart = /^\d{1,2}:\d{2}(:\d{2})?$/.test(timeStr)
+                ? (timeStr.length === 5 ? `${timeStr}:00` : timeStr)
+                : "00:00:00";
+            return `${datePart} ${timePart}`;
+        }
+        // 2) MM/DD 또는 MM.DD
+        let month;
+        let day;
+        const m = body.match(/^(\d{1,2})[/.](\d{1,2})/);
+        if (m) {
+            month = parseInt(m[1], 10);
+            day = parseInt(m[2], 10);
         }
         else {
-            const ymMatch = dateStr.match(/^(\d{4})-(\d{2})\s*(.*)$/);
-            let year;
-            let month;
-            if (ymMatch) {
-                year = parseInt(ymMatch[1], 10);
-                month = parseInt(ymMatch[2], 10);
-                dateStr = ymMatch[3];
-            }
-            // MM/DD 또는 MM.DD -> 현재 연도(또는 앞에서 year 추출 시 그 연도) 사용
-            const md = dateStr.trim().match(/^(\d{1,2})[/.](\d{1,2})$/);
-            if (md) {
-                const mm = parseInt(md[1], 10);
-                const dd = parseInt(md[2], 10);
-                const y = year !== null && year !== void 0 ? year : new Date().getFullYear();
-                datePart = `${y.toString().padStart(4, "0")}-${mm.toString().padStart(2, "0")}-${dd.toString().padStart(2, "0")}`;
-            }
-            else {
-                // "5월 1 일 (목)" → "5월 1일 (목)"로 공백 정리
-                dateStr = dateStr.replace(/(\d{1,2})\s*일/, (m, d) => `${d}일`);
-                // "5월 1일 (목)" 형태에서 월/일 추출
-                const m = dateStr.match(/(\d{1,2})월\s*(\d{1,2})일/);
-                if (m) {
-                    // 앞에서 year, month 추출했으면 사용, 아니면 현재 연도/월 사용
-                    const parsedMonth = year && month ? month : parseInt(m[1], 10);
-                    const parsedYear = year ? year : new Date().getFullYear();
-                    const day = parseInt(m[2], 10);
-                    datePart = `${parsedYear.toString().padStart(4, "0")}-${parsedMonth
-                        .toString()
-                        .padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
-                }
-                else {
-                    return null;
-                }
+            // 3) 한글 "N월 N일"
+            const kr = body
+                .replace(/(\d{1,2})\s*일/, (_s, d) => `${d}일`)
+                .match(/(\d{1,2})월\s*(\d{1,2})일/);
+            if (kr) {
+                month = parseInt(kr[1], 10);
+                day = parseInt(kr[2], 10);
             }
         }
-        // 시간 추출 (HH:mm)
-        let timeMatch = timeStr.match(/(\d{1,2}:\d{2})/);
-        if (!timeMatch) {
-            timeMatch = ["00:00", "00:00"];
-        }
-        const timePart = timeMatch[1];
-        return `${datePart} ${timePart}:00`;
+        if (month == null || day == null)
+            return null;
+        const year = yearFromPrefix !== null && yearFromPrefix !== void 0 ? yearFromPrefix : new Date().getFullYear();
+        const datePart = `${year.toString().padStart(4, "0")}-${month.toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
+        const timePart = /^\d{1,2}:\d{2}(:\d{2})?$/.test(timeStr)
+            ? (timeStr.length === 5 ? `${timeStr}:00` : timeStr)
+            : "00:00:00";
+        return `${datePart} ${timePart}`;
     }
-    catch (e) {
+    catch (_a) {
         return null;
     }
 }
