@@ -45,7 +45,8 @@ exports.translatorService = {
             }
             item.homeTeamId = homeTeamId;
             item.awayTeamId = awayTeamId;
-            item.matchId = yield getMatchId_dao_1.getMatchIdDao.get(item.homeTeamId, item.awayTeamId);
+            item.date = (0, translator_1.parseRelativeDate)(item.date);
+            item.matchId = yield getMatchId_dao_1.getMatchIdDao.get(item.date, item.homeTeamId, item.awayTeamId, item.doubleHeader);
             console.log("in translatorService | matchId: ", item.matchId, " | homeTeamId: ", item.homeTeamId, " | awayTeamId: ", item.awayTeamId);
             item.type = (0, translator_1.parseRelativeType)(item.type);
             translatedData.push(item);

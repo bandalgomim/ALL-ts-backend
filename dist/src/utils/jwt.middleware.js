@@ -36,22 +36,11 @@ exports.tokenMinddleware = {
             throw new error_1.ApiError(response_status_1.status.THERE_IS_NO_ACCESS_TOKEN);
         }
     }),
-    sns: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-        console.log(req.body);
-        const type = req.body.type;
-        if (type === "google") {
-            yield exports.tokenMinddleware.googleMiddleware(req, res, next);
-        }
-        else if (type === "apple") {
-            yield exports.tokenMinddleware.appleMiddleware(req, res, next);
-        }
-    }),
     googleMiddleware: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         const client = new google_auth_library_1.OAuth2Client(process.env.GOOGLE_WEB_CLIENT_ID // Web Client ID
         );
         try {
             const { idToken } = req.body; // 프론트에서 전달받은 idToken
-            console.log("Google ID Token:", req.body);
             // ✅ 토큰 검증 및 디코드
             const ticket = yield client.verifyIdToken({
                 idToken,
@@ -68,7 +57,6 @@ exports.tokenMinddleware = {
                 name: payload.name,
                 icon: payload.picture
             };
-            console.log(res.locals);
             next();
         }
         catch (err) {

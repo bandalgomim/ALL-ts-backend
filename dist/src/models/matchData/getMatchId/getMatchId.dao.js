@@ -15,10 +15,10 @@ const error_1 = require("../../../../config/error");
 const response_status_1 = require("../../../../config/response.status");
 const getMatchId_sql_1 = require("./getMatchId.sql");
 exports.getMatchIdDao = {
-    get: (homeTeamId, awayTeamId) => __awaiter(void 0, void 0, void 0, function* () {
+    get: (date, homeTeamId, awayTeamId, dh) => __awaiter(void 0, void 0, void 0, function* () {
         const connection = yield (0, db_pool_1.getPool)().getConnection();
         try {
-            const [result] = yield connection.query(getMatchId_sql_1.getMatchIdSql.get, [homeTeamId, awayTeamId]);
+            const [result] = yield connection.query(getMatchId_sql_1.getMatchIdSql.get, [dh, homeTeamId, awayTeamId, date]);
             return result.length > 0 ? result[0].match_id : null;
         }
         catch (err) {

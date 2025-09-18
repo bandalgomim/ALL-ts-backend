@@ -2,7 +2,7 @@ import { getMatchIdDao } from "../../../models/matchData/getMatchId/getMatchId.d
 import { getTagDao } from "../../../models/matchData/getTag/getTag.dao";
 import { translatorDao } from "../../../models/matchData/translator/translator.dao";
 import { translatorListDto } from "../../../models/matchData/translator/translator.dto";
-import { parseRelativeType } from "../../../utils/translator";
+import { parseRelativeDate, parseRelativeType } from "../../../utils/translator";
 
 export const translatorService = {
     post: async (data: translatorListDto) => {
@@ -33,7 +33,8 @@ export const translatorService = {
             }
             item.homeTeamId = homeTeamId;
             item.awayTeamId = awayTeamId;
-            item.matchId = await getMatchIdDao.get(item.homeTeamId, item.awayTeamId);
+            item.date = parseRelativeDate(item.date);
+            item.matchId = await getMatchIdDao.get(item.date, item.homeTeamId, item.awayTeamId, item.doubleHeader);
             console.log("in translatorService | matchId: ", item.matchId, " | homeTeamId: ", item.homeTeamId, " | awayTeamId: ", item.awayTeamId);
             item.type = parseRelativeType(item.type) as string;
             translatedData.push(item);

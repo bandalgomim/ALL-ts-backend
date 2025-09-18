@@ -46,6 +46,13 @@ function parseRelativeDate(dateStr) {
         const [_, year, month, day] = m;
         return `${year}-${month}-${day}`;
     }
+    // MM/DD 또는 MM.DD -> 현재 연도 사용
+    m = dateStr.trim().match(/^(\d{1,2})[/.](\d{1,2})$/);
+    if (m) {
+        const [_, month, day] = m;
+        const year = now.getFullYear();
+        return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+    }
     m = dateStr.match(/(\d{1,2})월\s*(\d{1,2})일/);
     if (m) {
         const month = m[1];
@@ -104,21 +111,31 @@ function parseMatchDate(dateStr, timeStr) {
                 month = parseInt(ymMatch[2], 10);
                 dateStr = ymMatch[3];
             }
-            // "5월 1 일 (목)" → "5월 1일 (목)"로 공백 정리
-            dateStr = dateStr.replace(/(\d{1,2})\s*일/, (m, d) => `${d}일`);
-            // "5월 1일 (목)" 형태에서 월/일 추출
-            const m = dateStr.match(/(\d{1,2})월\s*(\d{1,2})일/);
-            if (m) {
-                // 앞에서 year, month 추출했으면 사용, 아니면 현재 연도/월 사용
-                const parsedMonth = year && month ? month : parseInt(m[1], 10);
-                const parsedYear = year ? year : new Date().getFullYear();
-                const day = parseInt(m[2], 10);
-                datePart = `${parsedYear.toString().padStart(4, "0")}-${parsedMonth
-                    .toString()
-                    .padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
+            // MM/DD 또는 MM.DD -> 현재 연도(또는 앞에서 year 추출 시 그 연도) 사용
+            const md = dateStr.trim().match(/^(\d{1,2})[/.](\d{1,2})$/);
+            if (md) {
+                const mm = parseInt(md[1], 10);
+                const dd = parseInt(md[2], 10);
+                const y = year !== null && year !== void 0 ? year : new Date().getFullYear();
+                datePart = `${y.toString().padStart(4, "0")}-${mm.toString().padStart(2, "0")}-${dd.toString().padStart(2, "0")}`;
             }
             else {
-                return null;
+                // "5월 1 일 (목)" → "5월 1일 (목)"로 공백 정리
+                dateStr = dateStr.replace(/(\d{1,2})\s*일/, (m, d) => `${d}일`);
+                // "5월 1일 (목)" 형태에서 월/일 추출
+                const m = dateStr.match(/(\d{1,2})월\s*(\d{1,2})일/);
+                if (m) {
+                    // 앞에서 year, month 추출했으면 사용, 아니면 현재 연도/월 사용
+                    const parsedMonth = year && month ? month : parseInt(m[1], 10);
+                    const parsedYear = year ? year : new Date().getFullYear();
+                    const day = parseInt(m[2], 10);
+                    datePart = `${parsedYear.toString().padStart(4, "0")}-${parsedMonth
+                        .toString()
+                        .padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
+                }
+                else {
+                    return null;
+                }
             }
         }
         // 시간 추출 (HH:mm)

@@ -14,16 +14,27 @@ const IAM_service_1 = require("./IAM.service");
 const setHeader = (res, Authorization, RefreshToken) => {
     res.setHeader("Authorization", "Bearer " + Authorization); // 액세스 토큰을 헤더에 설정
     res.setHeader("RefreshToken", RefreshToken); // 리프레시 토큰을 헤더에 설정
-    res.send("Tokens sent in headers");
 };
 exports.IAMController = {
     login: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const result = yield IAM_service_1.IAMService.login(res.locals.userId);
         setHeader(res, result[0], result[1]);
+        try {
+            res.status(200).json({ success: true, icon: res.locals.icon });
+        }
+        catch (error) {
+            res.status(500).json({ message: error });
+        }
     }),
     signUp: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const result = yield IAM_service_1.IAMService.signUp(res.locals);
         setHeader(res, result[0], result[1]);
+        try {
+            res.status(200).json({ success: true, icon: res.locals.icon });
+        }
+        catch (error) {
+            res.status(500).json({ message: error });
+        }
     }),
     refreshToken: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const headers = {
