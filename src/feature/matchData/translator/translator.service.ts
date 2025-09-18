@@ -16,6 +16,7 @@ export const translatorService = {
             item.leagueId = leagueTag.find((tag) => tag.league_tag === item.leagueId)?.league_id || item.leagueId;
             // eslint-disable-next-line @stylistic/max-len
             item.platformId = platformTag.find((tag) => tag.platform_tag === item.platformId)?.platform_id || item.platformId;
+            console.log("in translatorService | homeTeamId: ", item.homeTeamId, " | awayTeamId: ", item.awayTeamId, item.date);
             const homeTag = item.homeTeamId;
             const awayTag = item.awayTeamId;
             if (homeTag === "TBD" || awayTag === "TBD") {
@@ -35,7 +36,7 @@ export const translatorService = {
             item.awayTeamId = awayTeamId;
             item.date = parseRelativeDate(item.date);
             item.matchId = await getMatchIdDao.get(item.date, item.homeTeamId, item.awayTeamId, item.doubleHeader);
-            console.log("in translatorService | matchId: ", item.matchId, " | homeTeamId: ", item.homeTeamId, " | awayTeamId: ", item.awayTeamId, item.date);
+            console.log("in translatorService | matchId: ", item.matchId, " | homeTeamId: ", item.homeTeamId, " | awayTeamId: ", item.awayTeamId, item.date, "\n");
             item.type = parseRelativeType(item.type) as string;
             translatedData.push(item);
         }
