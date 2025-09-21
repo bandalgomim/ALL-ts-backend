@@ -1,10 +1,10 @@
 "use strict";
+/* eslint-disable @typescript-eslint/no-unused-vars */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.parseRelativeDate = parseRelativeDate;
 exports.parseRelativeType = parseRelativeType;
 exports.parseMatchState = parseMatchState;
 exports.parseMatchDate = parseMatchDate;
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @stylistic/no-mixed-operators */
 function parseRelativeDate(dateStr) {
     const now = new Date();
@@ -96,32 +96,59 @@ function parseMatchState(status) {
 }
 function parseMatchDate(dateStr, timeStr) {
     try {
+        // 시간 문자열 정규화
+        const normalizeTime = (raw) => {
+            if (!raw)
+                return "00:00:00";
+            const t = raw.trim();
+            // 공백 제거된 "경기 시간18:30" / "경기시간18:30" 대응
+            // 한글/공백 제거 후 첫 시간 패턴만 추출
+            // 1) "18:30" 또는 "18:30:45"
+            let m = t.match(/(\d{1,2}:\d{2}(:\d{2})?)/);
+            if (m) {
+                const val = m[1];
+                return val.length === 5 ? `${val}:00` : val;
+            }
+            // 2) "18시30분", "18시 30분", "18시30"
+            m = t.match(/(\d{1,2})\s*시\s*(\d{1,2})\s*분?/);
+            if (m) {
+                const hh = m[1].padStart(2, "0");
+                const mm = m[2].padStart(2, "0");
+                return `${hh}:${mm}:00`;
+            }
+            // 3) "1830" → 18:30
+            m = t.match(/\b(\d{3,4})\b/);
+            if (m) {
+                const digits = m[1];
+                if (digits.length === 4) {
+                    return `${digits.slice(0, 2)}:${digits.slice(2)}:00`;
+                }
+                else if (digits.length === 3) {
+                    return `0${digits[0]}:${digits.slice(1)}:00`;
+                }
+            }
+            console.log(`시간 파싱 실패: '${raw}'`);
+            return "00:00:00";
+        };
+        const timePart = normalizeTime(timeStr);
         let yearFromPrefix;
         let body = dateStr.trim();
-        // "YYYY-MM ..." 접두 처리: 연도만 사용, 월은 본문에서 추출
         const ym = body.match(/^(\d{4})-(\d{1,2})\s+(.*)$/);
         if (ym) {
             yearFromPrefix = parseInt(ym[1], 10);
             body = ym[3].trim();
         }
-        // 1) 이미 YYYY-MM-DD 형태면 그대로 사용
         if (/^\d{4}-\d{2}-\d{2}$/.test(body)) {
-            const datePart = body;
-            const timePart = /^\d{1,2}:\d{2}(:\d{2})?$/.test(timeStr)
-                ? (timeStr.length === 5 ? `${timeStr}:00` : timeStr)
-                : "00:00:00";
-            return `${datePart} ${timePart}`;
+            return `${body} ${timePart}`;
         }
-        // 2) MM/DD 또는 MM.DD
         let month;
         let day;
-        const m = body.match(/^(\d{1,2})[/.](\d{1,2})/);
-        if (m) {
-            month = parseInt(m[1], 10);
-            day = parseInt(m[2], 10);
+        const md = body.match(/^(\d{1,2})[/.](\d{1,2})/);
+        if (md) {
+            month = parseInt(md[1], 10);
+            day = parseInt(md[2], 10);
         }
         else {
-            // 3) 한글 "N월 N일"
             const kr = body
                 .replace(/(\d{1,2})\s*일/, (_s, d) => `${d}일`)
                 .match(/(\d{1,2})월\s*(\d{1,2})일/);
@@ -134,9 +161,6 @@ function parseMatchDate(dateStr, timeStr) {
             return null;
         const year = yearFromPrefix !== null && yearFromPrefix !== void 0 ? yearFromPrefix : new Date().getFullYear();
         const datePart = `${year.toString().padStart(4, "0")}-${month.toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
-        const timePart = /^\d{1,2}:\d{2}(:\d{2})?$/.test(timeStr)
-            ? (timeStr.length === 5 ? `${timeStr}:00` : timeStr)
-            : "00:00:00";
         return `${datePart} ${timePart}`;
     }
     catch (_a) {

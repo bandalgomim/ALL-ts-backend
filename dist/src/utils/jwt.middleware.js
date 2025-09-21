@@ -67,28 +67,20 @@ exports.tokenMinddleware = {
     appleMiddleware: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         var _a;
         const APP_BUNDLE_ID = process.env.APP_BUNDLE_ID; // e.g. com.yourcompany.yourapp
-        const JWKS = (0, jose_1.createRemoteJWKSet)(new URL("https://appleid.appleid.com/auth/keys".replace("appleid.", "appleid.")));
+        const JWKS = (0, jose_1.createRemoteJWKSet)(new URL("https://appleid.apple.com/auth/keys".replace("appleid.", "appleid.")));
         try {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { identityToken, user, nonce } = req.body.idToken; // 프론트에서 전달받은 idToken
+            const { identityToken } = req.body.idToken; // 프론트에서 전달받은 idToken
             if (!identityToken)
                 throw new Error("identityToken 누락");
-            // jwtVerify: iss, aud 등 검증
             const { payload } = yield (0, jose_1.jwtVerify)(identityToken, JWKS, {
                 issuer: "https://appleid.apple.com",
                 audience: APP_BUNDLE_ID
             });
-            // 필요시 nonce 검증(프론트에서 보낸 rawNonce를 SHA-256 한 값이 토큰의 nonce와 일치하는지)
-            // if (payload.nonce && nonce) { ... }
-            // payload.sub: Apple 고유 사용자 ID (user와 동일 계열)
-            // payload.email: 최초에만 있을 수 있음
-            // 여기서 우리 서비스 유저로 매핑
             res.locals = {
-                id: "apple" + (user !== null && user !== void 0 ? user : payload.sub),
-                email: payload.email, // null일 수 있음
-                name: (_a = req.body.name) !== null && _a !== void 0 ? _a : null, // 최초 동의 때만 오므로 body에서 보낸 값을 우선
-                icon: null, // 애플은 기본 프로필 이미지를 제공하지 않음
-                raw: payload
+                userId: "apple" + payload.sub,
+                email: payload.email,
+                name: (_a = req.body.name) !== null && _a !== void 0 ? _a : null,
+                icon: null
             };
             next();
         }
