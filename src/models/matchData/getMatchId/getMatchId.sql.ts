@@ -10,6 +10,8 @@ export const getMatchIdSql = {
         AND SUBSTRING_INDEX(SUBSTRING_INDEX(match_id, '-', 4), '-', -1) = ?
         AND SUBSTRING_INDEX(SUBSTRING_INDEX(match_id, '-', 5), '-', -1) = ?
     ORDER BY
-        ABS(TIMESTAMPDIFF(SECOND, match_date, ?))
-    LIMIT 1`
+        ABS(DATEDIFF(match_date, ?)),   -- 날짜 차이 (일 단위)
+        DATEDIFF(match_date, ?) ASC     -- 동일하면 과거(음수)가 먼저
+    LIMIT 1;
+    `
 };
