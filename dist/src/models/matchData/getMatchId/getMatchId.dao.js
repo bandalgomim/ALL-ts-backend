@@ -18,7 +18,7 @@ exports.getMatchIdDao = {
     get: (date, homeTeamId, awayTeamId, dh) => __awaiter(void 0, void 0, void 0, function* () {
         const connection = yield (0, db_pool_1.getPool)().getConnection();
         try {
-            const [result] = yield connection.query(getMatchId_sql_1.getMatchIdSql.get, [dh, homeTeamId, awayTeamId, date]);
+            const [result] = yield connection.query(getMatchId_sql_1.getMatchIdSql.get, [dh, homeTeamId, awayTeamId, date, date]);
             return result.length > 0 ? result[0].match_id : null;
         }
         catch (err) {
