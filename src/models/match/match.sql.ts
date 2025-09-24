@@ -57,8 +57,7 @@ export const matchSql = {
         lp.url AS league_url,
         mp.url as match_url,
         mp.type as match_url_type,
-        p.platform_name,
-        p.platform_logo
+        p.platform_name
     FROM
         match_info_cte mi
     LEFT JOIN

@@ -12,7 +12,6 @@ export const matchService = {
             platform.push({
                 platformId: data.platform_id,
                 platformName: data.platform_name,
-                platformlogo: data.platform_logo,
                 platformLeagueUrl: data.league_url,
                 platformMatchUrl: data.match_url,
                 platfromMatchUrlType: data.match_url_type ? data.match_url_type : "root"
