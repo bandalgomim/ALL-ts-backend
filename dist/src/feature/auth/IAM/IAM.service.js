@@ -21,7 +21,6 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 exports.IAMService = {
     login: (userId) => __awaiter(void 0, void 0, void 0, function* () {
         const success = yield IAM_dao_1.IAMDao.getLogin(userId);
-        console.log("IAMService - login: ", success);
         if (success) {
             const [accessToken, refreshToken] = yield jwt_utils_1.tokenUtils.login(userId);
             return [true, accessToken, refreshToken];

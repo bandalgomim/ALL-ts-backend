@@ -9,7 +9,6 @@ import jwt  from "jsonwebtoken";
 export const IAMService = {
     login: async (userId: string) => {
         const success = await IAMDao.getLogin(userId);
-        console.log("IAMService - login: ", success);
         if (success) {
             const [ accessToken, refreshToken ] = await tokenUtils.login(userId);
             return [ true, accessToken, refreshToken ];

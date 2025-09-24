@@ -15,7 +15,6 @@ exports.mainController = {
     get: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const userId = res.locals.userId;
         const result = yield main_service_1.mainService.get(userId);
-        console.log(userId);
         res.json(result);
     }),
     patch: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
