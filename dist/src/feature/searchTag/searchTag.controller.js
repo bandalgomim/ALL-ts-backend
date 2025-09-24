@@ -8,15 +8,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.searchTagController = void 0;
-const db_redis_1 = __importDefault(require("../../../config/db.redis"));
+const searchTag_service_1 = require("./searchTag.service");
 exports.searchTagController = {
     get: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        const result = yield db_redis_1.default.get("searchTag");
+        const result = yield searchTag_service_1.searchTagService.get();
         res.json(result);
     })
 };

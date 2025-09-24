@@ -15,7 +15,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.searchTagService = void 0;
 const serchTag_dao_1 = require("../../models/searchTag/serchTag.dao");
 const db_redis_1 = __importDefault(require("../../../config/db.redis"));
+const response_status_1 = require("../../../config/response.status");
 exports.searchTagService = {
+    get: () => __awaiter(void 0, void 0, void 0, function* () {
+        const result = yield db_redis_1.default.get("searchTag");
+        const res = Object.assign(Object.assign({}, response_status_1.status.SUCCESS.body), { result: result ? JSON.parse(result) : [] });
+        return res;
+    }),
     patch: () => __awaiter(void 0, void 0, void 0, function* () {
         const result = yield serchTag_dao_1.searchTagDao.patch(); // dao의 정보를 반환
         const searchTag = [];

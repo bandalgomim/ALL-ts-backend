@@ -1,10 +1,10 @@
 
 import { Request, Response } from "express";
-import redisClient from "../../../config/db.redis";
+import { searchTagService } from "./searchTag.service";
 
 export const searchTagController = {
     get: async (req: Request, res: Response) => {
-        const result = await redisClient.get("searchTag");
+        const result = await searchTagService.get();
         res.json(result);
     }
 };
