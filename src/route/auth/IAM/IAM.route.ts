@@ -8,6 +8,5 @@ IAMRouter.post("/login/google", asyncHandler(tokenMinddleware.googleMiddleware),
 IAMRouter.post("/signUp/google", asyncHandler(tokenMinddleware.googleMiddleware), asyncHandler(IAMController.signUp));
 IAMRouter.post("/login/apple", asyncHandler(tokenMinddleware.appleMiddleware), asyncHandler(IAMController.login));
 IAMRouter.post("/signUp/apple", asyncHandler(tokenMinddleware.appleMiddleware), asyncHandler(IAMController.signUp));
-IAMRouter.post("/signUpTest", asyncHandler(IAMController.signUpTest));
 IAMRouter.get("/refreshToken", asyncHandler(IAMController.refreshToken));
-IAMRouter.post("/loginTest", asyncHandler(IAMController.loginTest));
+IAMRouter.delete("/delete", asyncHandler(tokenMinddleware.auth), asyncHandler(IAMController.delete));

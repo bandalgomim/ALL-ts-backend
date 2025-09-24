@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Request, Response } from "express";
 import { IAMService } from "./IAM.service";
 import { postSignUpDto, headers } from "../../../models/auth/IAM/IAM.dto";
@@ -9,21 +10,26 @@ const setHeader = (res: Response, Authorization: string, RefreshToken: string) =
 
 export const IAMController = {
     login: async (req: Request, res: Response) => {
+        console.log("IAMController - login: ", res.locals);
         const result = await IAMService.login(res.locals.userId);
-        setHeader(res, result[0], result[1]);
+        if (result[0] === true) {
+            setHeader(res, result[1] as string, result[2] as string);
+        }
         try {
-            res.status(200).json({ success: true, icon: res.locals.icon });
+            res.status(200).json({ success: result[0], icon: res.locals.icon });
         } catch (error) {
-            res.status(500).json({ message: error });
+            res.status(500).json({ error: (error as Error).message });
         }
     },
     signUp: async (req: Request, res: Response) => {
         const result = await IAMService.signUp(res.locals as postSignUpDto);
-        setHeader(res, result[0], result[1]);
+        if (result[0] === true) {
+            setHeader(res, result[1] as string, result[2] as string);
+        }
         try {
-            res.status(200).json({ success: true, icon: res.locals.icon });
+            res.status(200).json({ success: result[0], icon: res.locals.icon });
         } catch (error) {
-            res.status(500).json({ message: error });
+            res.status(500).json({ error: (error as Error).message });
         }
     },
     refreshToken: async (req: Request, res: Response) => {
@@ -34,13 +40,13 @@ export const IAMController = {
         const result = await IAMService.refreshToken(headers);
         setHeader(res, result, headers.RefreshToken);
     },
-    loginTest: async (req: Request, res: Response) => {
-        const id = req.body.id;
-        const result = await IAMService.login(id);
-        setHeader(res, result[0], result[1]);
-    },
-    signUpTest: async (req: Request, res: Response) => {
-        const result = await IAMService.signUp(req.body);
-        setHeader(res, result[0], result[1]);
+    delete: async (req: Request, res: Response) => {
+        const userId = res.locals.userId;
+        try {
+            await IAMService.delete(userId);
+            res.status(200).json({ success: true });
+        } catch (error) {
+            res.status(200).json({ success: false });
+        }
     }
 };
