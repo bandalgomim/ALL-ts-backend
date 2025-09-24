@@ -17,23 +17,28 @@ const setHeader = (res, Authorization, RefreshToken) => {
 };
 exports.IAMController = {
     login: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        console.log("IAMController - login: ", res.locals);
         const result = yield IAM_service_1.IAMService.login(res.locals.userId);
-        setHeader(res, result[0], result[1]);
+        if (result[0] === true) {
+            setHeader(res, result[1], result[2]);
+        }
         try {
-            res.status(200).json({ success: true, icon: res.locals.icon });
+            res.status(200).json({ success: result[0], icon: res.locals.icon });
         }
         catch (error) {
-            res.status(500).json({ message: error });
+            res.status(500).json({ error: error.message });
         }
     }),
     signUp: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const result = yield IAM_service_1.IAMService.signUp(res.locals);
-        setHeader(res, result[0], result[1]);
+        if (result[0] === true) {
+            setHeader(res, result[1], result[2]);
+        }
         try {
-            res.status(200).json({ success: true, icon: res.locals.icon });
+            res.status(200).json({ success: result[0], icon: res.locals.icon });
         }
         catch (error) {
-            res.status(500).json({ message: error });
+            res.status(500).json({ error: error.message });
         }
     }),
     refreshToken: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -44,13 +49,14 @@ exports.IAMController = {
         const result = yield IAM_service_1.IAMService.refreshToken(headers);
         setHeader(res, result, headers.RefreshToken);
     }),
-    loginTest: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        const id = req.body.id;
-        const result = yield IAM_service_1.IAMService.login(id);
-        setHeader(res, result[0], result[1]);
-    }),
-    signUpTest: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        const result = yield IAM_service_1.IAMService.signUp(req.body);
-        setHeader(res, result[0], result[1]);
+    delete: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const userId = res.locals.userId;
+        try {
+            yield IAM_service_1.IAMService.delete(userId);
+            res.status(200).json({ success: true });
+        }
+        catch (error) {
+            res.status(200).json({ success: false });
+        }
     })
 };
