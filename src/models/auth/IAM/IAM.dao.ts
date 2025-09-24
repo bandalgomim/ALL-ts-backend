@@ -39,5 +39,18 @@ export const IAMDao = {
         // 연결 반환 보장
             connection.release();
         }
+    },
+    delete: async (userId: string): Promise<void> => {
+        const connection = await getPool().getConnection();
+        try {
+            await connection.query(IAMSql.delete, [ userId ]);
+        } catch (err) {
+            console.error(err);
+            throw new ApiError(status.DATA_DELETED_SQL_ERROR);
+        } finally {
+        // 연결 반환 보장
+            connection.release();
+        }
     }
 };
+

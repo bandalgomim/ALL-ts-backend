@@ -11,18 +11,18 @@ export const IAMService = {
         const success = await IAMDao.getLogin(userId);
         if (success) {
             const [ accessToken, refreshToken ] = await tokenUtils.login(userId);
-            return [ accessToken, refreshToken ];
+            return [ true, accessToken, refreshToken ];
         } else {
-            throw new ApiError(status.LOGIN_INFO_UNMATCHED);
+            return [ false, "", "" ];
         }
     },
     signUp: async (body: postSignUpDto) => {
         const result = await IAMDao.postSignUp(body);
         if (result === -1) {
-            throw new ApiError(status.EMAIL_ALREADY_EXIST);
+            return [ false, "", "" ];
         } else {
             const [ accessToken, refreshToken ] = await tokenUtils.login(body.userId);
-            return [ accessToken, refreshToken ];
+            return [ true, accessToken, refreshToken ];
         }
     },
     refreshToken: async (headers: headers) => {
@@ -58,5 +58,8 @@ export const IAMService = {
                 throw new ApiError(status.THERE_IS_NO_ACCESS_TOKEN);
             }
         }
+    },
+    delete: async (userId: string): Promise<void> => {
+        await IAMDao.delete(userId);
     }
 };

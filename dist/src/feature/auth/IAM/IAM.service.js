@@ -23,20 +23,20 @@ exports.IAMService = {
         const success = yield IAM_dao_1.IAMDao.getLogin(userId);
         if (success) {
             const [accessToken, refreshToken] = yield jwt_utils_1.tokenUtils.login(userId);
-            return [accessToken, refreshToken];
+            return [true, accessToken, refreshToken];
         }
         else {
-            throw new error_1.ApiError(response_status_1.status.LOGIN_INFO_UNMATCHED);
+            return [false, "", ""];
         }
     }),
     signUp: (body) => __awaiter(void 0, void 0, void 0, function* () {
         const result = yield IAM_dao_1.IAMDao.postSignUp(body);
         if (result === -1) {
-            throw new error_1.ApiError(response_status_1.status.EMAIL_ALREADY_EXIST);
+            return [false, "", ""];
         }
         else {
             const [accessToken, refreshToken] = yield jwt_utils_1.tokenUtils.login(body.userId);
-            return [accessToken, refreshToken];
+            return [true, accessToken, refreshToken];
         }
     }),
     refreshToken: (headers) => __awaiter(void 0, void 0, void 0, function* () {
@@ -76,5 +76,8 @@ exports.IAMService = {
                 throw new error_1.ApiError(response_status_1.status.THERE_IS_NO_ACCESS_TOKEN);
             }
         }
+    }),
+    delete: (userId) => __awaiter(void 0, void 0, void 0, function* () {
+        yield IAM_dao_1.IAMDao.delete(userId);
     })
 };

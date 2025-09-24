@@ -2,11 +2,11 @@ import { PoolOptions } from "mysql2";
 
 export default function getDbConfig(): PoolOptions {
     return {
-        host: process.env.DB_HOST || "localhost",
-        port: Number(process.env.DB_PORT) || 3306,
-        database: process.env.DB_DATABASE || "ballog",
-        user: process.env.DB_USER || "user",
-        password: process.env.DB_PASSWORD || "password",
+        host: process.env.MYSQLHOST || "localhost",
+        port: Number(process.env.MYSQLPORT) || 3306,
+        database: process.env.MYSQLDATABASE || "ballog",
+        user: process.env.MYSQLUSER || "user",
+        password: process.env.MYSQLPASSWORD || "password",
         waitForConnections: true,
         connectionLimit: 10,
         queueLimit: 0

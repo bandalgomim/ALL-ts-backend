@@ -1,7 +1,6 @@
 export interface platform {
     platformId: number,
     platformName: string,
-    platformlogo: string,
     platformLeagueUrl: string,
     platformMatchUrl: string,
     platfromMatchUrlType: string
