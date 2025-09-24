@@ -2,13 +2,12 @@ import { searchTagDao } from "../../models/searchTag/serchTag.dao";
 import redisClient from "../../../config/db.redis";
 import { searchTagResDto } from "../../models/searchTag/serchTag.dto";
 import { BaseApiResponse } from "../../../config/response";
-import { getMainDto } from "../../models/main/main.dto";
 import { status } from "../../../config/response.status";
 
 export const searchTagService = {
     get: async () => {
         const result = await redisClient.get("searchTag");
-        const res: BaseApiResponse<getMainDto> = {
+        const res: BaseApiResponse<searchTagResDto> = {
             ...status.SUCCESS.body,
             result: result ? JSON.parse(result) : []
         };
