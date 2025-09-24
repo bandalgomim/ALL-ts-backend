@@ -16,10 +16,12 @@ const isSelected_route_1 = require("./route/isSelected/isSelected.route");
 const icon_route_1 = require("./route/icon/icon.route");
 const auth_route_1 = require("./route/auth/auth.route");
 const fcmToken_route_1 = require("./route/fcmToken/fcmToken.route");
-const fcm_1 = require("./utils/fcm/fcm");
+const node_cron_1 = __importDefault(require("node-cron"));
 const league_route_1 = require("./route/league/league.route");
 const scheduler_route_1 = require("./route/scheduler/scheduler.route");
 const matchData_route_1 = require("./route/matchData/matchData.route");
+const searchTag_service_1 = require("./feature/searchTag/searchTag.service");
+const searchTag_route_1 = require("./route/searchTag/searchTag.route");
 (0, dotenv_1.config)();
 function App() {
     const app = (0, express_1.default)();
@@ -38,8 +40,11 @@ function App() {
     app.use("/icon", (0, express_async_handler_1.default)(jwt_middleware_1.tokenMinddleware.auth), (0, express_async_handler_1.default)(icon_route_1.iconRouter));
     app.use("/scheduler", (0, express_async_handler_1.default)(scheduler_route_1.schedulerRouter));
     app.use("/matchData", (0, express_async_handler_1.default)(matchData_route_1.matchDataRouter));
+    app.use("/searchTag", (0, express_async_handler_1.default)(searchTag_route_1.searchTagRouter));
     // chackDailyMatch를 1분마다 실행
-    (0, fcm_1.chackDailyMatch)(); // 최초 한번 실행
-    setInterval(fcm_1.chackDailyMatch, 60000); // 1분(60000ms)마다 실행
+    searchTag_service_1.searchTagService.patch();
+    node_cron_1.default.schedule("0 0 * * *", () => {
+        searchTag_service_1.searchTagService.patch();
+    });
     return app;
 }

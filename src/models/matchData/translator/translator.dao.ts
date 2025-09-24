@@ -4,6 +4,7 @@ import { ResultSetHeader } from "mysql2/promise";
 import { status } from "../../../../config/response.status";
 import { ApiError } from "../../../../config/error";
 import { translatorDto } from "./translator.dto";
+import { sentNotifi } from "../../../utils/fcm/fcm";
 
 export const translatorDao = {
     post: async (data: translatorDto[]) => {
@@ -18,14 +19,13 @@ export const translatorDao = {
 
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const params: any[] = [];
-            const fcmMatchId: string[] = [];
 
             // 2) 유효 항목 개수만큼 플레이스홀더 생성
             const placeholders = valid.map(() => "(?, ?, ?, ?)").join(", ");
 
             // 3) params 구성 (match_id, platform_id, type, url)
             for (const item of valid) {
-                fcmMatchId.push(item.matchId as string);
+                sentNotifi(item.matchId as string); // matchId가 확실히 있으므로 as string 사용
                 params.push(
                     item.matchId,
                     item.platformId,
@@ -33,7 +33,6 @@ export const translatorDao = {
                     item.url
                 );
             }
-
             await connection.beginTransaction();
             await connection.query<ResultSetHeader>(
                 translatorSql.post(placeholders),

@@ -14,6 +14,7 @@ const translator_sql_1 = require("./translator.sql");
 const db_pool_1 = require("../../../../config/db.pool");
 const response_status_1 = require("../../../../config/response.status");
 const error_1 = require("../../../../config/error");
+const fcm_1 = require("../../../utils/fcm/fcm");
 exports.translatorDao = {
     post: (data) => __awaiter(void 0, void 0, void 0, function* () {
         if (!Array.isArray(data) || data.length === 0)
@@ -27,12 +28,11 @@ exports.translatorDao = {
             }
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const params = [];
-            const fcmMatchId = [];
             // 2) 유효 항목 개수만큼 플레이스홀더 생성
             const placeholders = valid.map(() => "(?, ?, ?, ?)").join(", ");
             // 3) params 구성 (match_id, platform_id, type, url)
             for (const item of valid) {
-                fcmMatchId.push(item.matchId);
+                (0, fcm_1.sentNotifi)(item.matchId); // matchId가 확실히 있으므로 as string 사용
                 params.push(item.matchId, item.platformId, item.type, item.url);
             }
             yield connection.beginTransaction();

@@ -1,9 +1,9 @@
 import { messaging } from "../../../config/firebase";
-import { chackDailyMatchDto } from "../../models/fcm/fcm.dto";
+import { highlightInfoDto } from "../../models/fcm/fcm.dto";
 
 export async function sendFCMToManyDevices(
     tokens: string[],
-    item: chackDailyMatchDto
+    item: highlightInfoDto
 ) {
     const BATCH_SIZE = 500; // 한 번에 보내는 토큰의 수
     for (let i = 0; i < tokens.length; i += BATCH_SIZE) {
@@ -11,11 +11,11 @@ export async function sendFCMToManyDevices(
         const message = {
             notification: {
                 title: "하이라이트",
-                body: `${item.home_team_name} vs ${item.away_team_name}`
+                body: `${item.homeTeamName} vs ${item.awayTeamName}`
             },
             data: {
                 screen: "match",
-                matchId: String(item.match_id)
+                matchId: String(item.matchId)
             },
             tokens: batch,
             android: {
@@ -31,7 +31,7 @@ export async function sendFCMToManyDevices(
                     aps: {
                         alert: {
                             title: "하이라이트",
-                            body: `${item.home_team_name} vs ${item.away_team_name}`
+                            body: `${item.homeTeamName} vs ${item.awayTeamName}`
                         },
                         sound: "default",
                         contentAvailable: true

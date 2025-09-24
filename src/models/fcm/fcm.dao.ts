@@ -17,10 +17,10 @@ export const fcmDao = {
             connection.release();
         }
     },
-    chackDailyMatch: async (date: string) => {
+    get: async (matchId: string) => {
         const connection = await getPool().getConnection();
         try {
-            const [ rows ] = await connection.query<RowDataPacket[]>(fcmSql.chackDailyMatch, [ date ]);
+            const [ rows ] = await connection.query<RowDataPacket[]>(fcmSql.get, [ matchId ]);
             return rows;
         } catch (err) {
             console.error(err);
@@ -30,7 +30,7 @@ export const fcmDao = {
             connection.release();
         }
     },
-    getFcmToken: async (matchId: number) => {
+    getFcmToken: async (matchId: string) => {
         const connection = await getPool().getConnection();
         try {
             const [ rows ] = await connection.query<RowDataPacket[]>(fcmSql.getFcmToken, [ matchId ]);

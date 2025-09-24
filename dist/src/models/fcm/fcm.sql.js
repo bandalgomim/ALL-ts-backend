@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.fcmSql = void 0;
 exports.fcmSql = {
     patchFcmToken: "UPDATE user SET fcm_token = ? WHERE user_id = ?",
-    chackDailyMatch: `SELECT
+    get: `SELECT
         mi.match_id,
         t1.team_name as home_team_name,
         t2.team_name as away_team_name
@@ -16,7 +16,7 @@ exports.fcmSql = {
     LEFT JOIN
         team t2 ON mi.away_team_id = t2.team_id
     WHERE
-        DATE(mi.match_date) = ?
+        mi.match_id = ?
     AND
         mu.platform_id = 1
     AND

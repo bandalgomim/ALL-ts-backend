@@ -19,11 +19,11 @@ function sendFCMToManyDevices(tokens, item) {
             const message = {
                 notification: {
                     title: "하이라이트",
-                    body: `${item.home_team_name} vs ${item.away_team_name}`
+                    body: `${item.homeTeamName} vs ${item.awayTeamName}`
                 },
                 data: {
                     screen: "match",
-                    matchId: String(item.match_id)
+                    matchId: String(item.matchId)
                 },
                 tokens: batch,
                 android: {
@@ -39,7 +39,7 @@ function sendFCMToManyDevices(tokens, item) {
                         aps: {
                             alert: {
                                 title: "하이라이트",
-                                body: `${item.home_team_name} vs ${item.away_team_name}`
+                                body: `${item.homeTeamName} vs ${item.awayTeamName}`
                             },
                             sound: "default",
                             contentAvailable: true

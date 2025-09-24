@@ -29,10 +29,10 @@ exports.fcmDao = {
             connection.release();
         }
     }),
-    chackDailyMatch: (date) => __awaiter(void 0, void 0, void 0, function* () {
+    get: (matchId) => __awaiter(void 0, void 0, void 0, function* () {
         const connection = yield (0, db_pool_1.getPool)().getConnection();
         try {
-            const [rows] = yield connection.query(fcm_sql_1.fcmSql.chackDailyMatch, [date]);
+            const [rows] = yield connection.query(fcm_sql_1.fcmSql.get, [matchId]);
             return rows;
         }
         catch (err) {
