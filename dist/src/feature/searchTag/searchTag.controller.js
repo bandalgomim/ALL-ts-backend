@@ -18,6 +18,6 @@ exports.searchTagController = {
     get: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const result = yield db_redis_1.default.get("searchTag");
         console.log(result);
-        return result ? JSON.parse(result) : null;
+        res.json(result);
     })
 };
