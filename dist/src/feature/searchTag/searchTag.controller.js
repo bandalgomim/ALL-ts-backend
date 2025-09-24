@@ -17,7 +17,6 @@ const db_redis_1 = __importDefault(require("../../../config/db.redis"));
 exports.searchTagController = {
     get: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const result = yield db_redis_1.default.get("searchTag");
-        console.log(result);
         res.json(result);
     })
 };

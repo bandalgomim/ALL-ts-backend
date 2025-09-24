@@ -5,7 +5,6 @@ import redisClient from "../../../config/db.redis";
 export const searchTagController = {
     get: async (req: Request, res: Response) => {
         const result = await redisClient.get("searchTag");
-        console.log(result);
         res.json(result);
     }
 };
