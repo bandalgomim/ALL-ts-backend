@@ -24,6 +24,7 @@ exports.tokenMinddleware = {
             const accessToken = req.headers.authorization;
             const token = accessToken.split(" ")[1];
             const result = jwt_utils_1.tokenUtils.verify(token); // token을 검증합니다.
+            console.log("in 미들웨어 auth: ", result);
             if (result.ok) {
                 res.locals.userId = result.sub;
                 next();
