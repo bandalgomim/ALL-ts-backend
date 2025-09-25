@@ -4,7 +4,7 @@ import { config } from "dotenv";
 config();
 
 const redisUser = process.env.REDISUSER || "default";
-const redisPassword = process.env.REDISPASSWORD || "";
+const redisPassword = process.env.REDISPASSWORD || "qksekfrha1.";
 const redisHost = process.env.REDISHOST || "localhost";
 const redisPort = process.env.REDISPORT || 6379;
 

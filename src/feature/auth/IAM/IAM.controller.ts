@@ -40,6 +40,11 @@ export const IAMController = {
         const result = await IAMService.refreshToken(headers);
         console.log("in IAM refreshToken result: ", result);
         setHeader(res, result, headers.RefreshToken);
+        try {
+            res.status(200).json();
+        } catch (error) {
+            res.status(500).json({ error: (error as Error).message });
+        }
     },
     delete: async (req: Request, res: Response) => {
         const userId = res.locals.userId;
