@@ -8,6 +8,7 @@ import jwt  from "jsonwebtoken";
 
 export const IAMService = {
     login: async (userId: string) => {
+        console.log("in IAM login: ", userId);
         const success = await IAMDao.getLogin(userId);
         if (success) {
             const [ accessToken, refreshToken ] = await tokenUtils.login(userId);
@@ -17,6 +18,7 @@ export const IAMService = {
         }
     },
     signUp: async (body: postSignUpDto) => {
+        console.log("in IAM signUp: ", body);
         const result = await IAMDao.postSignUp(body);
         if (result === -1) {
             return [ false, "", "" ];

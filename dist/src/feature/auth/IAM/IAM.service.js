@@ -20,6 +20,7 @@ const jwt_utils_1 = require("../../../utils/jwt.utils");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 exports.IAMService = {
     login: (userId) => __awaiter(void 0, void 0, void 0, function* () {
+        console.log("in IAM login: ", userId);
         const success = yield IAM_dao_1.IAMDao.getLogin(userId);
         if (success) {
             const [accessToken, refreshToken] = yield jwt_utils_1.tokenUtils.login(userId);
@@ -30,6 +31,7 @@ exports.IAMService = {
         }
     }),
     signUp: (body) => __awaiter(void 0, void 0, void 0, function* () {
+        console.log("in IAM signUp: ", body);
         const result = yield IAM_dao_1.IAMDao.postSignUp(body);
         if (result === -1) {
             return [false, "", ""];
