@@ -11,6 +11,7 @@ const setHeader = (res: Response, Authorization: string, RefreshToken: string) =
 export const IAMController = {
     login: async (req: Request, res: Response) => {
         const result = await IAMService.login(res.locals.userId);
+        console.log("in IAM login: ", res.locals.userId);
         if (result[0] === true) {
             setHeader(res, result[1] as string, result[2] as string);
         }
@@ -22,6 +23,7 @@ export const IAMController = {
     },
     signUp: async (req: Request, res: Response) => {
         const result = await IAMService.signUp(res.locals as postSignUpDto);
+        console.log("in IAM signUp: ", res.locals.userId);
         if (result[0] === true) {
             setHeader(res, result[1] as string, result[2] as string);
         }

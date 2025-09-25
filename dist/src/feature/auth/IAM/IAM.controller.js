@@ -18,6 +18,7 @@ const setHeader = (res, Authorization, RefreshToken) => {
 exports.IAMController = {
     login: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const result = yield IAM_service_1.IAMService.login(res.locals.userId);
+        console.log("in IAM login: ", res.locals.userId);
         if (result[0] === true) {
             setHeader(res, result[1], result[2]);
         }
@@ -30,6 +31,7 @@ exports.IAMController = {
     }),
     signUp: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const result = yield IAM_service_1.IAMService.signUp(res.locals);
+        console.log("in IAM signUp: ", res.locals.userId);
         if (result[0] === true) {
             setHeader(res, result[1], result[2]);
         }
