@@ -9,9 +9,10 @@ export const IAMDao = {
     postSignUp: async (body: postSignUpDto): Promise<number> => {
         const connection = await getPool().getConnection();
         try {
-            const [ CheckEamil ] = await connection.query<RowDataPacket[]>(IAMSql.getEmail, [ body.email ]);
-            const isEmailExist = CheckEamil[0].isExistEmail;
-            if (isEmailExist) {
+            const [ CheckId ] = await connection.query<RowDataPacket[]>(IAMSql.getLogin, [ body.userId ]);
+            const isExistUser = CheckId[0].isExistUser;
+            console.log("in IAM DAO, isEmailExist: ", CheckId);
+            if (isExistUser) {
                 return -1;
             }
             const [ result ] = await connection.query<ResultSetHeader>(IAMSql.postSignUp,

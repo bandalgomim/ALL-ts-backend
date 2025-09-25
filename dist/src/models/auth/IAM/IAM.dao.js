@@ -18,9 +18,10 @@ exports.IAMDao = {
     postSignUp: (body) => __awaiter(void 0, void 0, void 0, function* () {
         const connection = yield (0, db_pool_1.getPool)().getConnection();
         try {
-            const [CheckEamil] = yield connection.query(IAM_sql_1.IAMSql.getEmail, [body.email]);
-            const isEmailExist = CheckEamil[0].isExistEmail;
-            if (isEmailExist) {
+            const [CheckId] = yield connection.query(IAM_sql_1.IAMSql.getLogin, [body.userId]);
+            const isExistUser = CheckId[0].isExistUser;
+            console.log("in IAM DAO, isEmailExist: ", CheckId);
+            if (isExistUser) {
                 return -1;
             }
             const [result] = yield connection.query(IAM_sql_1.IAMSql.postSignUp, [body.userId, body.name, body.email, body.icon]);

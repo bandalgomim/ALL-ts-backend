@@ -10,6 +10,7 @@ export const IAMService = {
     login: async (userId: string) => {
         console.log("in IAM login: ", userId);
         const success = await IAMDao.getLogin(userId);
+        console.log("in IAM login, success: ", success);
         if (success) {
             const [ accessToken, refreshToken ] = await tokenUtils.login(userId);
             return [ true, accessToken, refreshToken ];

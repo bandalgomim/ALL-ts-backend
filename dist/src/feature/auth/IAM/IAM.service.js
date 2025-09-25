@@ -22,6 +22,7 @@ exports.IAMService = {
     login: (userId) => __awaiter(void 0, void 0, void 0, function* () {
         console.log("in IAM login: ", userId);
         const success = yield IAM_dao_1.IAMDao.getLogin(userId);
+        console.log("in IAM login, success: ", success);
         if (success) {
             const [accessToken, refreshToken] = yield jwt_utils_1.tokenUtils.login(userId);
             return [true, accessToken, refreshToken];
