@@ -36,7 +36,6 @@ export const IAMController = {
             Authorization: req.headers.authorization as string,
             RefreshToken: req.headers.refreshtoken as string
         };
-        console.log("in IAM refreshToken: ", headers);
         const result = await IAMService.refreshToken(headers);
         console.log("in IAM refreshToken result: ", result);
         setHeader(res, result, headers.RefreshToken);
