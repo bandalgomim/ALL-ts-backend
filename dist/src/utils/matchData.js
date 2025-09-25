@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getPrevDate = exports.prevRankList = exports.prevMatchList = exports.prevUriList = void 0;
+exports.getNextDate = exports.getPrevDate = exports.prevRankList = exports.prevMatchList = exports.prevUriList = void 0;
 exports.setPrevData = setPrevData;
 exports.mergePrevUri = mergePrevUri;
 exports.matchDataTranslator = matchDataTranslator;
@@ -70,12 +70,17 @@ function setPrevData(date) {
         }
         const prevDate = (0, exports.getPrevDate)(date, 1);
         const prev2Date = (0, exports.getPrevDate)(date, 2);
+        const nextDate = (0, exports.getNextDate)(date, 1);
         if (!(yield db_redis_1.default.get(`prevMatchList_${prevDate}`))) {
             yield db_redis_1.default.set(`prevUriList_${prevDate}`, JSON.stringify(exports.prevUriList));
             yield db_redis_1.default.set(`prevMatchList_${prevDate}`, JSON.stringify(exports.prevMatchList));
         }
         if (!(yield db_redis_1.default.get("prevRankList"))) {
             yield db_redis_1.default.set("prevRankList", JSON.stringify(exports.prevRankList));
+        }
+        if (!(yield db_redis_1.default.get(`prevMatchList_${nextDate}`))) {
+            yield db_redis_1.default.set(`prevUriList_${nextDate}`, JSON.stringify(exports.prevUriList));
+            yield db_redis_1.default.set(`prevMatchList_${nextDate}`, JSON.stringify(exports.prevMatchList));
         }
         yield db_redis_1.default.del(`prevUriList_${prev2Date}`);
         yield db_redis_1.default.del(`prevMatchList_${prev2Date}`);
@@ -93,6 +98,18 @@ const getPrevDate = (dateStr, count) => {
     return (0, exports.getPrevDate)(`${year}-${month}-${day}`, count - 1);
 };
 exports.getPrevDate = getPrevDate;
+const getNextDate = (dateStr, count) => {
+    if (count === 0) {
+        return dateStr;
+    }
+    const date = new Date(dateStr);
+    date.setDate(date.getDate() + 1);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return (0, exports.getNextDate)(`${year}-${month}-${day}`, count - 1);
+};
+exports.getNextDate = getNextDate;
 // 안전 파서
 const safeJsonParse = (raw, fallback) => {
     try {

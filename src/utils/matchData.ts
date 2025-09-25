@@ -58,6 +58,7 @@ export async function setPrevData(date: string) {
 
     const prevDate = getPrevDate(date, 1);
     const prev2Date = getPrevDate(date, 2);
+    const nextDate = getNextDate(date, 1);
 
     if (!await redisClient.get(`prevMatchList_${prevDate}`)) {
         await redisClient.set(`prevUriList_${prevDate}`, JSON.stringify(prevUriList));
@@ -65,6 +66,10 @@ export async function setPrevData(date: string) {
     }
     if (!await redisClient.get("prevRankList")) {
         await redisClient.set("prevRankList", JSON.stringify(prevRankList));
+    }
+    if (!await redisClient.get(`prevMatchList_${nextDate}`)) {
+        await redisClient.set(`prevUriList_${nextDate}`, JSON.stringify(prevUriList));
+        await redisClient.set(`prevMatchList_${nextDate}`, JSON.stringify(prevMatchList));
     }
 
     await redisClient.del(`prevUriList_${prev2Date}`);
@@ -81,6 +86,18 @@ export const getPrevDate = (dateStr: string, count: number): string => {
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const day = String(date.getDate()).padStart(2, "0");
     return getPrevDate(`${year}-${month}-${day}`, count - 1);
+};
+
+export const getNextDate = (dateStr: string, count: number): string => {
+    if (count === 0) {
+        return dateStr;
+    }
+    const date = new Date(dateStr);
+    date.setDate(date.getDate() + 1);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return getNextDate(`${year}-${month}-${day}`, count - 1);
 };
 
 // 안전 파서
