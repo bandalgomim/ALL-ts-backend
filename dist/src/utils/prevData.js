@@ -26,7 +26,7 @@ exports.prevUriList = {
         tving: [],
         youtube: []
     },
-    K리그1: {
+    'K LEAGUE1': {
         coupang: [],
         youtube: []
     },

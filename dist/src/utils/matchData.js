@@ -30,7 +30,7 @@ exports.prevUriList = {
         tving: [],
         youtube: []
     },
-    K리그1: {
+    "K LEAGUE1": {
         coupang: [],
         youtube: []
     },
@@ -50,7 +50,7 @@ exports.prevMatchList = {
     LCK: [],
     KBO: [],
     MLB: [],
-    K리그1: [],
+    "K LEAGUE1": [],
     EPL: [],
     BUNDESLIGA: []
 };
@@ -58,7 +58,7 @@ exports.prevRankList = {
     LCK: [],
     KBO: [],
     MLB: [],
-    K리그1: [],
+    "K LEAGUE1": [],
     EPL: [],
     BUNDESLIGA: []
 };

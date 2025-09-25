@@ -15,7 +15,7 @@ export const prevUriList = {
         tving: [],
         youtube: []
     },
-    K리그1: {
+    "K LEAGUE1": {
         coupang: [],
         youtube: []
     },
@@ -36,7 +36,7 @@ export const prevMatchList = {
     LCK: [],
     KBO: [],
     MLB: [],
-    K리그1: [],
+    "K LEAGUE1": [],
     EPL: [],
     BUNDESLIGA: []
 };
@@ -45,7 +45,7 @@ export const prevRankList = {
     LCK: [],
     KBO: [],
     MLB: [],
-    K리그1: [],
+    "K LEAGUE1": [],
     EPL: [],
     BUNDESLIGA: []
 };
