@@ -19,6 +19,7 @@ exports.translatorDao = {
     post: (data) => __awaiter(void 0, void 0, void 0, function* () {
         if (!Array.isArray(data) || data.length === 0)
             return;
+        const fcmMatchId = [];
         const connection = yield (0, db_pool_1.getPool)().getConnection();
         try {
             // 1) matchId 있는 항목만 사용
@@ -32,7 +33,7 @@ exports.translatorDao = {
             const placeholders = valid.map(() => "(?, ?, ?, ?)").join(", ");
             // 3) params 구성 (match_id, platform_id, type, url)
             for (const item of valid) {
-                (0, fcm_1.sentNotifi)(item.matchId); // matchId가 확실히 있으므로 as string 사용
+                fcmMatchId.push(item.matchId); // matchId가 확실히 있으므로 as string 사용
                 params.push(item.matchId, item.platformId, item.type, item.url);
             }
             yield connection.beginTransaction();
@@ -48,6 +49,9 @@ exports.translatorDao = {
         }
         finally {
             connection.release();
+            for (const matchId of fcmMatchId) {
+                yield (0, fcm_1.sentNotifi)(matchId);
+            }
         }
     })
 };

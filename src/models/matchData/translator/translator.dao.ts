@@ -9,6 +9,7 @@ import { sentNotifi } from "../../../utils/fcm/fcm";
 export const translatorDao = {
     post: async (data: translatorDto[]) => {
         if (!Array.isArray(data) || data.length === 0) return;
+        const fcmMatchId: string[] = [];
         const connection = await getPool().getConnection();
         try {
             // 1) matchId 있는 항목만 사용
@@ -25,7 +26,9 @@ export const translatorDao = {
 
             // 3) params 구성 (match_id, platform_id, type, url)
             for (const item of valid) {
-                sentNotifi(item.matchId as string); // matchId가 확실히 있으므로 as string 사용
+                fcmMatchId.push(
+                    item.matchId as string
+                ); // matchId가 확실히 있으므로 as string 사용
                 params.push(
                     item.matchId,
                     item.platformId,
@@ -48,6 +51,9 @@ export const translatorDao = {
             throw new ApiError(status.DATA_INSERTED_SQL_ERROR);
         } finally {
             connection.release();
+            for (const matchId of fcmMatchId) {
+                await sentNotifi(matchId);
+            }
         }
     }
 };
