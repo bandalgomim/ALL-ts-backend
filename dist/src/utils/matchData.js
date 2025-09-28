@@ -44,6 +44,18 @@ exports.prevUriList = {
     MLB: {
         spotv: [],
         youtube: []
+    },
+    LALIGA: {
+        youtube: []
+    },
+    LEAGUE1: {
+        youtube: []
+    },
+    "SERIE A": {
+        youtube: []
+    },
+    MLS: {
+        youtube: []
     }
 };
 exports.prevMatchList = {
@@ -52,7 +64,11 @@ exports.prevMatchList = {
     MLB: [],
     "K LEAGUE1": [],
     EPL: [],
-    BUNDESLIGA: []
+    BUNDESLIGA: [],
+    LALIGA: [],
+    LEAGUE1: [],
+    "SERIE A": [],
+    MLS: []
 };
 exports.prevRankList = {
     LCK: [],
@@ -60,7 +76,11 @@ exports.prevRankList = {
     MLB: [],
     "K LEAGUE1": [],
     EPL: [],
-    BUNDESLIGA: []
+    BUNDESLIGA: [],
+    LALIGA: [],
+    LEAGUE1: [],
+    "SERIE A": [],
+    MLS: []
 };
 function setPrevData(date) {
     return __awaiter(this, void 0, void 0, function* () {

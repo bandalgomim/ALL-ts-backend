@@ -90,7 +90,7 @@ export const schedulerService = {
         const insertData = await matchDataTranslator(newData);
         await schedulerDao.post(insertData);
         list[league[0]] = data[league[0]];
-        if (prevMatchListRedis) {
+        if (date !== undefined) {
             await redisClient.set(`prevMatchList_${date}`, JSON.stringify(list));
         }
     }

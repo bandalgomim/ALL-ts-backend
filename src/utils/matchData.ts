@@ -29,6 +29,18 @@ export const prevUriList = {
     MLB: {
         spotv: [],
         youtube: []
+    },
+    LALIGA: {
+        youtube: []
+    },
+    LEAGUE1: {
+        youtube: []
+    },
+    "SERIE A": {
+        youtube: []
+    },
+    MLS: {
+        youtube: []
     }
 };
 
@@ -38,7 +50,11 @@ export const prevMatchList = {
     MLB: [],
     "K LEAGUE1": [],
     EPL: [],
-    BUNDESLIGA: []
+    BUNDESLIGA: [],
+    LALIGA: [],
+    LEAGUE1: [],
+    "SERIE A": [],
+    MLS: []
 };
 
 export const prevRankList = {
@@ -47,7 +63,11 @@ export const prevRankList = {
     MLB: [],
     "K LEAGUE1": [],
     EPL: [],
-    BUNDESLIGA: []
+    BUNDESLIGA: [],
+    LALIGA: [],
+    LEAGUE1: [],
+    "SERIE A": [],
+    MLS: []
 };
 
 export async function setPrevData(date: string) {

@@ -106,7 +106,7 @@ exports.schedulerService = {
         const insertData = yield (0, matchData_1.matchDataTranslator)(newData);
         yield scheduler_dao_1.schedulerDao.post(insertData);
         list[league[0]] = data[league[0]];
-        if (prevMatchListRedis) {
+        if (date !== undefined) {
             yield db_redis_1.default.set(`prevMatchList_${date}`, JSON.stringify(list));
         }
     })
