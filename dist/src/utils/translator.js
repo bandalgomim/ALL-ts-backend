@@ -133,10 +133,10 @@ function parseMatchDate(dateStr, timeStr) {
         const timePart = normalizeTime(timeStr);
         let yearFromPrefix;
         let body = dateStr.trim();
-        const ym = body.match(/^(\d{4})-(\d{1,2})(?:-(\d{1,2}))?\s*(.*)$/);
+        const ym = body.match(/^(\d{4})-(\d{1,2})\s+(.*)$/);
         if (ym) {
             yearFromPrefix = parseInt(ym[1], 10);
-            body = ym[4].trim();
+            body = ym[3].trim();
         }
         if (/^\d{4}-\d{2}-\d{2}$/.test(body)) {
             return `${body} ${timePart}`;
@@ -161,6 +161,7 @@ function parseMatchDate(dateStr, timeStr) {
             return null;
         const year = yearFromPrefix !== null && yearFromPrefix !== void 0 ? yearFromPrefix : new Date().getFullYear();
         const datePart = `${year.toString().padStart(4, "0")}-${month.toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
+        console.log(`파싱된 날짜: '${dateStr}' -> '${datePart} ${timePart}'`);
         return `${datePart} ${timePart}`;
     }
     catch (_a) {
