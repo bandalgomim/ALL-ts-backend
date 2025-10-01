@@ -38,7 +38,8 @@ export const prevMatchList = {
     MLB: [],
     "K LEAGUE1": [],
     EPL: [],
-    BUNDESLIGA: []
+    BUNDESLIGA: [],
+    LALIGA: []
 };
 
 export const prevRankList = {
@@ -47,7 +48,8 @@ export const prevRankList = {
     MLB: [],
     "K LEAGUE1": [],
     EPL: [],
-    BUNDESLIGA: []
+    BUNDESLIGA: [],
+    LALIGA: []
 };
 
 export async function setPrevData(date: string) {

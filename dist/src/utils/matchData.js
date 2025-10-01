@@ -52,7 +52,8 @@ exports.prevMatchList = {
     MLB: [],
     "K LEAGUE1": [],
     EPL: [],
-    BUNDESLIGA: []
+    BUNDESLIGA: [],
+    LALIGA: []
 };
 exports.prevRankList = {
     LCK: [],
@@ -60,7 +61,8 @@ exports.prevRankList = {
     MLB: [],
     "K LEAGUE1": [],
     EPL: [],
-    BUNDESLIGA: []
+    BUNDESLIGA: [],
+    LALIGA: []
 };
 function setPrevData(date) {
     return __awaiter(this, void 0, void 0, function* () {

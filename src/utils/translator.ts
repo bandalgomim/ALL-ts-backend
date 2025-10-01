@@ -135,10 +135,10 @@ export function parseMatchDate(dateStr: string, timeStr: string): string | null 
         let yearFromPrefix: number | undefined;
         let body = dateStr.trim();
 
-        const ym = body.match(/^(\d{4})-(\d{1,2})\s+(.*)$/);
+        const ym = body.match(/^(\d{4})-(\d{1,2})(?:-(\d{1,2}))?\s*(.*)$/);
         if (ym) {
             yearFromPrefix = parseInt(ym[1], 10);
-            body = ym[3].trim();
+            body = ym[4].trim();
         }
 
         if (/^\d{4}-\d{2}-\d{2}$/.test(body)) {
