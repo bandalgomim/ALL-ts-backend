@@ -91,11 +91,12 @@ export const schedulerService = {
             }
         }
         const insertData = await matchDataTranslator(newData);
+        console.log(insertData);
         const supplementRes = await supplement(insertData);
 
         if (supplementRes.status) {
             const res = await schedulerDao.post(insertData);
-            if (res) {
+            if (res && supplementRes.filterdMatch.length > 0) {
                 await supplementMatchList(supplementRes.filterdMatch);
             }
         }

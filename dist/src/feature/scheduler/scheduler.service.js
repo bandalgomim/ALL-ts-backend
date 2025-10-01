@@ -104,10 +104,11 @@ exports.schedulerService = {
             }
         }
         const insertData = yield (0, matchData_1.matchDataTranslator)(newData);
+        console.log(insertData);
         const supplementRes = yield (0, matchData_1.supplement)(insertData);
         if (supplementRes.status) {
             const res = yield scheduler_dao_1.schedulerDao.post(insertData);
-            if (res) {
+            if (res && supplementRes.filterdMatch.length > 0) {
                 yield (0, matchData_1.supplementMatchList)(supplementRes.filterdMatch);
             }
         }
