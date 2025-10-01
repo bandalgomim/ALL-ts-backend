@@ -59,8 +59,8 @@ exports.schedulerService = {
         var _a;
         const prevMatchListRedis = yield db_redis_1.default.get(`prevMatchList_${date}`);
         let list;
-        if (!prevMatchListRedis && (date === undefined)) {
-            list = matchData_1.prevMatchList;
+        if (!prevMatchListRedis && (date === null)) {
+            list = (0, matchData_1.makePrevMatchList)();
         }
         else {
             list = JSON.parse(prevMatchListRedis);
@@ -104,10 +104,33 @@ exports.schedulerService = {
             }
         }
         const insertData = yield (0, matchData_1.matchDataTranslator)(newData);
-        yield scheduler_dao_1.schedulerDao.post(insertData);
-        list[league[0]] = data[league[0]];
-        if (date !== undefined) {
+        const supplementRes = yield (0, matchData_1.supplement)(insertData);
+        if (supplementRes.status) {
+            const res = yield scheduler_dao_1.schedulerDao.post(insertData);
+            if (res) {
+                yield (0, matchData_1.supplementMatchList)(supplementRes.filterdMatch);
+            }
+        }
+        for (const leagueName of league) {
+            list[leagueName] = data[leagueName];
+        }
+        if (date !== null) {
             yield db_redis_1.default.set(`prevMatchList_${date}`, JSON.stringify(list));
+        }
+    }),
+    batch: (data) => __awaiter(void 0, void 0, void 0, function* () {
+        if (!(yield db_redis_1.default.get("batch_matchList"))) {
+            yield db_redis_1.default.set("batch_matchList", JSON.stringify({}));
+        }
+        const raw = yield db_redis_1.default.get("batch_matchList");
+        const prevList = JSON.parse(raw);
+        const matchList = Object.assign(Object.assign({}, prevList), data.matchList);
+        if (data.isLast) {
+            yield db_redis_1.default.del("batch_matchList");
+            yield exports.schedulerService.post(matchList, null);
+        }
+        else {
+            yield db_redis_1.default.set("batch_matchList", JSON.stringify(matchList));
         }
     })
 };

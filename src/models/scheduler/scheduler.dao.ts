@@ -41,6 +41,35 @@ export const schedulerDao = {
             await connection.beginTransaction();
             await connection.query<ResultSetHeader>(schedulerSql.post(placeholders), params);
             await connection.commit();
+            return true;
+        } catch (err) {
+            console.error(err);
+            throw new ApiError(status.DATA_SEARCH_SQL_ERROR);
+        } finally {
+            // 연결 반환 보장
+            connection.release();
+        }
+    },
+    getSupplement: async (date: string) => {
+        const connection = await getPool().getConnection();
+        try {
+            const [ rows ] = await connection.query<RowDataPacket[]>(schedulerSql.getSupplement, [ date ]);
+            return rows; // 쿼리 결과 반환 추가
+        } catch (err) {
+            console.error(err);
+            throw new ApiError(status.DATA_SEARCH_SQL_ERROR);
+        } finally {
+            // 연결 반환 보장
+            connection.release();
+        }
+    },
+    getUserMatchList: async (teamId: number[], minDate: string, maxDate: string) => {
+        const connection = await getPool().getConnection();
+        try {
+            const teamIdStr = teamId.join(", ");
+            // eslint-disable-next-line @stylistic/max-len
+            const [ rows ] = await connection.query<RowDataPacket[]>(schedulerSql.getUserMatchList(teamIdStr, minDate, maxDate));
+            return rows; // 쿼리 결과 반환 추가
         } catch (err) {
             console.error(err);
             throw new ApiError(status.DATA_SEARCH_SQL_ERROR);

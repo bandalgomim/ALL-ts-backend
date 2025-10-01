@@ -5,3 +5,4 @@ import { schedulerController } from "../../feature/scheduler/scheduler.controlle
 export const schedulerRouter = Router();
 schedulerRouter.get("/", asyncHandler(schedulerController.get));
 schedulerRouter.post("/", asyncHandler(schedulerController.post));
+schedulerRouter.post("/batch", asyncHandler(schedulerController.batch));

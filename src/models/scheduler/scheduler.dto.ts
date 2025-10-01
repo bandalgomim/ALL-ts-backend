@@ -8,10 +8,17 @@ export type schedulerDto =
     homeTeamScore: number | string,
     awayTeamScore: number | string,
     leagueId: number | string,
-    doubleHeader: number
+    doubleHeader: number,
+    matchId?: string
 };
 export type postSchedulerReqDto = {
     [league: string]: schedulerDto[]
 };
+
+export type postBatchSchedulerReqDto = {
+    matchList: postSchedulerReqDto,
+    isLast: boolean
+};
+
 export type getSchedulerResDto = { league: string, start: string, end: string }[];
 

@@ -2,75 +2,47 @@ import redisClient from "../../config/db.redis";
 import { getTagDao } from "../models/matchData/getTag/getTag.dao";
 import { postRankReqDto, rankDto } from "../models/matchData/rank/rank.dto";
 import { uriDto } from "../models/matchData/uri/uri.dto";
+import { schedulerDao } from "../models/scheduler/scheduler.dao";
 import { postSchedulerReqDto, schedulerDto } from "../models/scheduler/scheduler.dto";
 import { parseMatchDate, parseMatchState } from "./translator";
 
-export const prevUriList = {
-    LCK: {
-        soop: [],
-        youtube: [],
-        youtube_lck: []
-    },
-    KBO: {
-        tving: [],
-        youtube: []
-    },
-    "K LEAGUE1": {
-        coupang: [],
-        youtube: []
-    },
-    EPL: {
-        coupang: [],
-        youtube: []
-    },
-    BUNDESLIGA: {
-        youtube: []
-    },
-    MLB: {
-        spotv: [],
-        youtube: []
-    },
-    LALIGA: {
-        youtube: []
-    },
-    LEAGUE1: {
-        youtube: []
-    },
-    "SERIE A": {
-        youtube: []
-    },
-    MLS: {
-        youtube: []
-    }
-};
+export function makePrevMatchList() {
+    return {
+        LCK: [], KBO: [], MLB: [], "K LEAGUE1": [],
+        EPL: [], BUNDESLIGA: [], LALIGA: [],
+        LEAGUE1: [], "SERIE A": [], MLS: []
+    };
+}
 
-export const prevMatchList = {
-    LCK: [],
-    KBO: [],
-    MLB: [],
-    "K LEAGUE1": [],
-    EPL: [],
-    BUNDESLIGA: [],
-    LALIGA: [],
-    LEAGUE1: [],
-    "SERIE A": [],
-    MLS: []
-};
+export function makePrevUriList() {
+    return {
+        LCK: { soop: [], youtube: [], youtube_lck: [] },
+        KBO: { tving: [], youtube: [] },
+        "K LEAGUE1": { coupang: [], youtube: [] },
+        EPL: { coupang: [], youtube: [] },
+        BUNDESLIGA: { youtube: [] },
+        MLB: { spotv: [], youtube: [] },
+        LALIGA: { youtube: [] },
+        LEAGUE1: { youtube: [] },
+        "SERIE A": { youtube: [] },
+        MLS: { youtube: [] }
+    };
+}
 
-export const prevRankList = {
-    LCK: [],
-    KBO: [],
-    MLB: [],
-    "K LEAGUE1": [],
-    EPL: [],
-    BUNDESLIGA: [],
-    LALIGA: [],
-    LEAGUE1: [],
-    "SERIE A": [],
-    MLS: []
-};
+export function makePrevRankList() {
+    return {
+        LCK: [], KBO: [], MLB: [], "K LEAGUE1": [],
+        EPL: [], BUNDESLIGA: [], LALIGA: [],
+        LEAGUE1: [], "SERIE A": [], MLS: []
+    };
+}
 
 export async function setPrevData(date: string) {
+
+    const prevUriList = makePrevUriList();
+    const prevMatchList = makePrevMatchList();
+    const prevRankList = makePrevRankList();
+
     if (!await redisClient.get(`prevMatchList_${date}`)) {
         await redisClient.set(`prevUriList_${date}`, JSON.stringify(prevUriList));
         await redisClient.set(`prevMatchList_${date}`, JSON.stringify(prevMatchList));
@@ -181,6 +153,9 @@ export async function matchDataTranslator(data: postSchedulerReqDto | postRankRe
             item.awayTeamId = awayTeamId;
             item.status = parseMatchState(item.status) as string;
             item.date = parseMatchDate(item.date, item.time) as string;
+            if (!item.date) {
+                continue;
+            }
             if (item.homeTeamScore === "") { item.homeTeamScore = 0; }
             if (item.awayTeamScore === "") { item.awayTeamScore = 0; }
             insertData.push(item);
@@ -208,4 +183,44 @@ export async function rankTranslator(data: postRankReqDto) {
         }
     }
     return insertData;
+}
+
+export async function supplement(data: schedulerDto[]) {
+    const now = new Date();
+    const date = now.toLocaleDateString("ko-KR", {
+        timeZone: "Asia/Seoul",
+        year: "numeric",
+        month: "2-digit"
+    }).replace(/\.\s?/g, "-")
+        .slice(0, 7);
+
+    const prevData = await schedulerDao.getSupplement(date);
+    data.map((item) => {
+        item.matchId = `${item.date.split(" ")[0]}-${item.homeTeamId}-${item.awayTeamId}-${item.doubleHeader}`;
+    });
+    const prevDataIds = new Set(prevData.map((item) => item.match_id));
+
+    const filterdData = data.filter((item) => !prevDataIds.has(item.matchId));
+
+    return { status: true, filterdMatch: filterdData };
+}
+
+export async function supplementMatchList(data: schedulerDto[]) {
+    const teamIdSet = new Set(
+        data.flatMap((item) => [ item.homeTeamId, item.awayTeamId ])
+    );
+    const matchDateSet = new Set(
+        data.map((item) => item.date.split(" ")[0]) // "YYYY-MM-DD"
+    );
+    const dates = Array.from(matchDateSet).sort();
+
+    // 문자열 정렬이라 YYYY-MM-DD 형식이면 올바르게 날짜순 정렬됨
+    const minDate = dates[0] + "-";
+    const maxDate = dates[dates.length - 1];
+    const nextDate = new Date(maxDate);
+    nextDate.setDate(nextDate.getDate() + 1);
+
+    // YYYY-MM-DD 형식으로 출력
+    const maxNext = nextDate.toISOString().split("T")[0] + "-";
+    await schedulerDao.getUserMatchList([ ...teamIdSet ].map((id) => Number(id)), minDate, maxNext);
 }

@@ -22,5 +22,10 @@ exports.schedulerController = {
         const data = req.body;
         yield scheduler_service_1.schedulerService.post(data, date);
         res.status(201).end();
+    }),
+    batch: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const data = req.body;
+        yield scheduler_service_1.schedulerService.batch(data);
+        res.status(201).end();
     })
 };

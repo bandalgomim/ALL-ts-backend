@@ -10,3 +10,4 @@ const scheduler_controller_1 = require("../../feature/scheduler/scheduler.contro
 exports.schedulerRouter = (0, express_1.Router)();
 exports.schedulerRouter.get("/", (0, express_async_handler_1.default)(scheduler_controller_1.schedulerController.get));
 exports.schedulerRouter.post("/", (0, express_async_handler_1.default)(scheduler_controller_1.schedulerController.post));
+exports.schedulerRouter.post("/batch", (0, express_async_handler_1.default)(scheduler_controller_1.schedulerController.batch));

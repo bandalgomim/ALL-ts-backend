@@ -159,9 +159,11 @@ function parseMatchDate(dateStr, timeStr) {
         }
         if (month == null || day == null)
             return null;
+        if (ym && month.toString().padStart(2, "0") !== ym[2]) {
+            return null;
+        }
         const year = yearFromPrefix !== null && yearFromPrefix !== void 0 ? yearFromPrefix : new Date().getFullYear();
         const datePart = `${year.toString().padStart(4, "0")}-${month.toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
-        console.log(`파싱된 날짜: '${dateStr}' -> '${datePart} ${timePart}'`);
         return `${datePart} ${timePart}`;
     }
     catch (_a) {

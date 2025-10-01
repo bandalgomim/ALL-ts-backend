@@ -12,5 +12,10 @@ export const schedulerController = {
         const data = req.body;
         await schedulerService.post(data, date);
         res.status(201).end();
+    },
+    batch: async (req: Request, res: Response) => {
+        const data = req.body;
+        await schedulerService.batch(data);
+        res.status(201).end();
     }
 };

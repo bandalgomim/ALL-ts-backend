@@ -43,6 +43,39 @@ exports.schedulerDao = {
             yield connection.beginTransaction();
             yield connection.query(scheduler_sql_1.schedulerSql.post(placeholders), params);
             yield connection.commit();
+            return true;
+        }
+        catch (err) {
+            console.error(err);
+            throw new error_1.ApiError(response_status_1.status.DATA_SEARCH_SQL_ERROR);
+        }
+        finally {
+            // 연결 반환 보장
+            connection.release();
+        }
+    }),
+    getSupplement: (date) => __awaiter(void 0, void 0, void 0, function* () {
+        const connection = yield (0, db_pool_1.getPool)().getConnection();
+        try {
+            const [rows] = yield connection.query(scheduler_sql_1.schedulerSql.getSupplement, [date]);
+            return rows; // 쿼리 결과 반환 추가
+        }
+        catch (err) {
+            console.error(err);
+            throw new error_1.ApiError(response_status_1.status.DATA_SEARCH_SQL_ERROR);
+        }
+        finally {
+            // 연결 반환 보장
+            connection.release();
+        }
+    }),
+    getUserMatchList: (teamId, minDate, maxDate) => __awaiter(void 0, void 0, void 0, function* () {
+        const connection = yield (0, db_pool_1.getPool)().getConnection();
+        try {
+            const teamIdStr = teamId.join(", ");
+            // eslint-disable-next-line @stylistic/max-len
+            const [rows] = yield connection.query(scheduler_sql_1.schedulerSql.getUserMatchList(teamIdStr, minDate, maxDate));
+            return rows; // 쿼리 결과 반환 추가
         }
         catch (err) {
             console.error(err);
