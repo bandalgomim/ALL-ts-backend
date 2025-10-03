@@ -9,7 +9,8 @@ export type schedulerDto =
     awayTeamScore: number | string,
     leagueId: number | string,
     doubleHeader: number,
-    matchId?: string
+    matchId?: string,
+    seasonId?: number
 };
 export type postSchedulerReqDto = {
     [league: string]: schedulerDto[]

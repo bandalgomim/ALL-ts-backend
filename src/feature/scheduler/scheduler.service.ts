@@ -41,7 +41,6 @@ export const schedulerService = {
         }
         return res;
     },
-
     post: async (data: postSchedulerReqDto, date: string | null) => {
         const prevMatchListRedis = await redisClient.get(`prevMatchList_${date}`) as string;
         let list: postSchedulerReqDto;

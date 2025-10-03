@@ -135,8 +135,9 @@ export async function matchDataTranslator(data: postSchedulerReqDto | postRankRe
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     for (const [ league, items ] of Object.entries(data)) {
         for (const item of items) {
-            item.leagueId = leagueTag.find((tag) =>
-                tag.league_tag === item.leagueId)?.league_id || item.leagueId;
+            const found = leagueTag.find((tag) => tag.league_tag === item.leagueId);
+            item.leagueId = found?.league_id ?? item.leagueId;
+            item.seasonId = found?.seasonId ?? null; // 기존 로직 유지
             const homeTag = item.homeTeamId;
             const awayTag = item.awayTeamId;
             let homeTeamId = homeTag;

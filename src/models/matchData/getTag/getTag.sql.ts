@@ -19,15 +19,19 @@ export const getTagSql = {
     `
     SELECT 
         league_id,
+        season_id,
         league_name as league_tag
     FROM 
         league
     UNION
     SELECT
-        league_id,
-        tag as league_tag
+        lt.league_id,
+        l.season_id,
+        lt.tag as league_tag
     FROM
         league_tag
+    JOIN
+        league l ON lt.league_id = l.league_id
     `,
     getPlatformTag:
     `
