@@ -36,11 +36,10 @@ export const translatorService = {
             item.awayTeamId = awayTeamId;
             item.date = parseRelativeDate(item.date);
             item.matchId = await getMatchIdDao.get(item.date, item.homeTeamId, item.awayTeamId, item.doubleHeader);
-            console.log("in translatorService | matchId: ", item.matchId, " | homeTeamId: ", item.homeTeamId, " | awayTeamId: ", item.awayTeamId, item.date ? item.date : "no date", "\n");
+            console.log("in translatorService | matchId: ", item.matchId ? item.matchId : "⚠️  Team id error", " | homeTeamId: ", item.homeTeamId, " | awayTeamId: ", item.awayTeamId, item.date ? item.date : "no date", "\n");
             item.type = parseRelativeType(item.type) as string;
             translatedData.push(item);
         }
-
         await translatorDao.post(translatedData);
 
         // prevUriList를 저장하거나 반환 등 필요한 작업 수행

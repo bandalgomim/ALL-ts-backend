@@ -64,16 +64,22 @@ export const leagueSql = {
             t.team_name,
             t.team_initial,
             i.icon as team_logo,
-            t.\`rank\`,
-            t.win,
-            t.draw,
-            t.rose,
-            t.point,
-            t.section
-        FROM team t
+            str.\`rank\`,
+            str.win,
+            str.draw,
+            str.lose,
+            str.point,
+            str.section
+        FROM 
+            team t
+        LEFT JOIN
+            season_team_record str on t.team_id = str.team_id
+        LEFT JOIN 
+            league l ON l.league_id = str.league_id AND str.season_id = l.season_id
         LEFT JOIN
             icon i ON i.type = 'team' and t.team_id = i.id and i.user_id = ?
-        WHERE t.league_id = ? and t.is_remained = 1
+        WHERE
+            l.league_id = ?
     ),
     team_match AS (
         SELECT * FROM team_list

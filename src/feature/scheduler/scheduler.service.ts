@@ -2,7 +2,7 @@
 import redisClient from "../../../config/db.redis";
 import { schedulerDao } from "../../models/scheduler/scheduler.dao";
 import { getSchedulerResDto, postBatchSchedulerReqDto, postSchedulerReqDto } from "../../models/scheduler/scheduler.dto";
-import { makePrevMatchList, matchDataTranslator, setPrevData, supplement, supplementMatchList } from "../../utils/matchData";
+import { concatByLeague, makePrevMatchList, matchDataTranslator, setPrevData, supplement, supplementMatchList } from "../../utils/matchData";
 
 export const schedulerService = {
     get: async (date: string) => {
@@ -41,7 +41,6 @@ export const schedulerService = {
         }
         return res;
     },
-
     post: async (data: postSchedulerReqDto, date: string | null) => {
         const prevMatchListRedis = await redisClient.get(`prevMatchList_${date}`) as string;
         let list: postSchedulerReqDto;
@@ -91,7 +90,6 @@ export const schedulerService = {
             }
         }
         const insertData = await matchDataTranslator(newData);
-        console.log(insertData);
         const supplementRes = await supplement(insertData);
 
         if (supplementRes.status) {
@@ -113,7 +111,7 @@ export const schedulerService = {
         }
         const raw = await redisClient.get("batch_matchList") as string;
         const prevList = JSON.parse(raw) as postSchedulerReqDto;
-        const matchList = { ...prevList, ...data.matchList  } as postSchedulerReqDto;
+        const matchList = concatByLeague(prevList, data.matchList) as postSchedulerReqDto;
         if (data.isLast) {
             await redisClient.del("batch_matchList");
             await schedulerService.post(matchList, null);
