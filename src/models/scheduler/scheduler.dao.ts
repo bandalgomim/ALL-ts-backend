@@ -24,7 +24,7 @@ export const schedulerDao = {
         const connection = await getPool().getConnection();
         try {
             const params = [];
-            const placeholders = data.map(() => "(?, ?, ?, ?, ?, ?, ?, ?,?)").join(", ");
+            const placeholders = data.map(() => "(?, ?, ?, ?, ?, ?, ?, ?,?,?)").join(", ");
             for (const item of data) {
                 params.push(
                     `${item.date.split(" ")[0]}-${item.homeTeamId}-${item.awayTeamId}-${item.doubleHeader}`,
@@ -35,7 +35,8 @@ export const schedulerDao = {
                     item.status,
                     item.homeTeamScore,
                     item.awayTeamScore,
-                    item.doubleHeader
+                    item.doubleHeader,
+                    item.seasonId
                 );
             }
             await connection.beginTransaction();

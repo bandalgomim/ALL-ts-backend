@@ -1,53 +1,20 @@
 // src/models/matchData/rank/rank.sql.ts
-import { rankDto } from "./rank.dto";
 
 export const rankSql = {
 
-    // 여러 팀을 한 번에 UPDATE
-    updateBulk: (rows: rankDto[]) => {
-    // team_id IN (...) 절
-        const idsPlaceholders = rows.map(() => "?").join(", ");
-
-        // 각 컬럼의 CASE WHEN 절을 동적으로 생성
-        const buildCase = <T extends keyof rankDto>(
-            col: T
-        ) => `\`${String(col)}\` = CASE \`team_id\`
-        ${rows.map(() => "  WHEN ? THEN ?").join("\n")}
-        ELSE \`${String(col)}\` END`;
-
-        const sql = `
-            UPDATE \`team\`
-            SET
-            ${buildCase("win")},
-            ${buildCase("draw")},
-            ${buildCase("rose")},
-            ${buildCase("point")},
-            ${buildCase("rank")},
-            ${buildCase("section")}
-            WHERE \`team_id\` IN (${idsPlaceholders});
-            `.trim();
-
-        // 파라미터 순서: 각 컬럼별로 (team_id, 값) * N 을 쌓고, 마지막에 IN (...)의 team_id 들
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const params: any[] = [];
-
-        const pushPairs = <K extends keyof rankDto>(key: K) => {
-            for (const r of rows) {
-                params.push(r.teamId, r[key]);
-            }
-        };
-
-        pushPairs("win");
-        pushPairs("draw");
-        pushPairs("rose");
-        pushPairs("point");
-        pushPairs("rank");
-        pushPairs("section");
-
-        // WHERE IN (...) team_id 들
-        for (const r of rows) params.push(r.teamId);
-
-        return { sql, params };
+    update: (data: string) => {
+        return `INSERT INTO season_team_record (season_id, league_id, team_id, win, draw, lose, point, \`rank\`, \`section\`) 
+        VALUES ${data}
+    ON DUPLICATE KEY UPDATE
+        season_id = VALUES(season_id),
+        league_id = VALUES(league_id),
+        team_id = VALUES(team_id),
+        win = VALUES(win),
+        draw = VALUES(draw),
+        lose = VALUES(lose),
+        point = VALUES(point),
+        \`rank\` = VALUES(\`rank\`),
+        \`section\` = VALUES(\`section\`);`;
     }
 };
 

@@ -10,16 +10,25 @@ export const rankDao = {
         if (!Array.isArray(data) || data.length === 0) return;
         const connection = await getPool().getConnection();
         try {
+            const params = [];
+            const placeholders = data.map(() => "(?, ?, ?, ?, ?, ?, ?, ?,?)").join(", ");
+            for (const item of data) {
+                params.push(
+                    item.seasonId,
+                    item.leagueId,
+                    item.teamId,
+                    item.rank,
+                    item.win,
+                    item.draw,
+                    item.rose,
+                    item.point,
+                    item.section
+                );
+            }
             await connection.beginTransaction();
-            const { sql, params } = rankSql.updateBulk(data);
-            const [ res ] = await connection.query<ResultSetHeader>(sql, params);
-
+            const [ res ] = await connection.query<ResultSetHeader>(rankSql.update(placeholders), params);
             await connection.commit();
-            return {
-                affectedRows: res.affectedRows,
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                changedRows: (res as any).changedRows ?? undefined // mysql2 타입 보완
-            };
+            return res;
         } catch (err) {
             console.error(err);
             try { await connection.rollback(); } catch { /* empty */ }

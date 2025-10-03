@@ -45,11 +45,15 @@ export const matchSql = {
             country c2 ON t2.country_id = c2.country_id
         LEFT JOIN
             sport s ON t1.sport_id = s.sport_id
+        LEFT JOIN
+            affiliation a1 on t1.team_id = a1.team_id
+        LEFT JOIN
+            affiliation a2 on t2.team_id = a2.team_id
         LEFT JOIN 
-            league l1 ON t1.league_id = l1.league_id
+            league l1 ON a1.league_id = l1.league_id
         LEFT JOIN 
-            league l2 ON t2.league_id = l2.league_id
-        WHERE m.match_id = ?
+            league l2 ON a2.league_id = l2.league_id
+        WHERE l1.league_type = 'regular' and l2.league_type = 'regular' and m.match_id = ?
     )
     SELECT
         mi.*,

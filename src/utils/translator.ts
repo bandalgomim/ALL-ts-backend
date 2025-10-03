@@ -65,7 +65,7 @@ export function parseRelativeType(typeStr: string | null | undefined): string | 
     if (!typeStr) {
         return typeStr;
     }
-    const highlightList = [ "H/L", "하이라이트", "HL", "5분 하이라이트", "풀 하이라이트", "2분 하이라이트" ];
+    const highlightList = [ "H/L", "하이라이트", "HL", "5분 하이라이트", "풀 하이라이트", "2분 하이라이트", "3분 하이라이트" ];
     const replayList = [ "풀영상", "전체보기", "다시보기" ];
 
     if (highlightList.includes(typeStr)) {
@@ -98,25 +98,17 @@ export function parseMatchDate(dateStr: string, timeStr: string): string | null 
         const normalizeTime = (raw: string): string => {
             if (!raw) return "00:00:00";
             const t = raw.trim();
-
-            // 공백 제거된 "경기 시간18:30" / "경기시간18:30" 대응
-            // 한글/공백 제거 후 첫 시간 패턴만 추출
-            // 1) "18:30" 또는 "18:30:45"
             let m = t.match(/(\d{1,2}:\d{2}(:\d{2})?)/);
             if (m) {
                 const val = m[1];
                 return val.length === 5 ? `${val}:00` : val;
             }
-
-            // 2) "18시30분", "18시 30분", "18시30"
             m = t.match(/(\d{1,2})\s*시\s*(\d{1,2})\s*분?/);
             if (m) {
                 const hh = m[1].padStart(2, "0");
                 const mm = m[2].padStart(2, "0");
                 return `${hh}:${mm}:00`;
             }
-
-            // 3) "1830" → 18:30
             m = t.match(/\b(\d{3,4})\b/);
             if (m) {
                 const digits = m[1];
@@ -126,21 +118,32 @@ export function parseMatchDate(dateStr: string, timeStr: string): string | null 
                     return `0${digits[0]}:${digits.slice(1)}:00`;
                 }
             }
-            console.log(`시간 파싱 실패: '${raw}'`);
             return "00:00:00";
         };
 
         const timePart = normalizeTime(timeStr);
 
         let yearFromPrefix: number | undefined;
+        let prefixMonthStr: string | undefined;
         let body = dateStr.trim();
 
-        const ym = body.match(/^(\d{4})-(\d{1,2})\s+(.*)$/);
-        if (ym) {
-            yearFromPrefix = parseInt(ym[1], 10);
-            body = ym[3].trim();
+        // NEW: YYYY-MM-DD 접두어 처리 (예: "2026-01-01 1월 25일 (일)")
+        const ymd = body.match(/^(\d{4})-(\d{1,2})-(\d{1,2})\s+(.*)$/);
+        if (ymd) {
+            yearFromPrefix = parseInt(ymd[1], 10);
+            prefixMonthStr = ymd[2].padStart(2, "0");
+            body = ymd[4].trim();
+        } else {
+            // 기존: YYYY-MM 접두어 처리 (예: "2026-05 5월 1일 (목)")
+            const ym = body.match(/^(\d{4})-(\d{1,2})\s+(.*)$/);
+            if (ym) {
+                yearFromPrefix = parseInt(ym[1], 10);
+                prefixMonthStr = ym[2].padStart(2, "0");
+                body = ym[3].trim();
+            }
         }
 
+        // 단독 YYYY-MM-DD 형식
         if (/^\d{4}-\d{2}-\d{2}$/.test(body)) {
             return `${body} ${timePart}`;
         }
@@ -163,11 +166,15 @@ export function parseMatchDate(dateStr: string, timeStr: string): string | null 
         }
 
         if (month == null || day == null) return null;
-        if (ym && month.toString().padStart(2, "0") !== ym[2]) {
+
+        // 접두어의 월과 불일치 시 무효 처리
+        if (prefixMonthStr && month.toString().padStart(2, "0") !== prefixMonthStr) {
             return null;
         }
+
         const year = yearFromPrefix ?? new Date().getFullYear();
         const datePart = `${year.toString().padStart(4, "0")}-${month.toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
+        console.log(datePart);
         return `${datePart} ${timePart}`;
     } catch {
         return null;

@@ -1,17 +1,17 @@
 export const teamSql = {
     get:
     `WITH team_info AS (
-        SELECT 
+        SELECT
             t.team_id,
             t.team_name,
             t.team_initial,
             i.icon as team_logo,
-            t.\`rank\`,
-            t.win,
-            t.draw,
-            t.rose,
-            t.point,
-            t.section,
+            str.\`rank\`,
+            str.win,
+            str.draw,
+            str.lose,
+            str.point,
+            str.section,
             l.league_id,
             l.league_name,
             s.sport_id,
@@ -23,18 +23,22 @@ export const teamSql = {
                 FROM team_list tl 
                 WHERE tl.team_id = t.team_id AND tl.is_selected = 1 AND tl.user_id = ?
             ) AS is_team_selected
-        FROM 
+        FROM
             team t
         LEFT JOIN
             icon i ON i.type = 'team' and t.team_id = i.id and i.user_id = ?
         LEFT JOIN
-            league l ON t.league_id = l.league_id
+            affiliation a ON t.team_id = a.team_id
+        LEFT JOIN
+            league l ON a.league_id = l.league_id
+        LEFT JOIN
+            season_team_record str on t.team_id = str.team_id AND l.league_id = str.league_id AND l.season_id = str.season_id
         LEFT JOIN
             sport s ON t.sport_id = s.sport_id
         LEFT JOIN
             country c ON t.country_id = c.country_id
-        WHERE 
-            t.team_id = ?
+        WHERE
+            l.league_type = 'regular' and t.team_id = ?
     ),
     match_list AS (
         SELECT 

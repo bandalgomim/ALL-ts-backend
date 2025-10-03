@@ -10,7 +10,7 @@ export function makePrevMatchList() {
     return {
         LCK: [], KBO: [], MLB: [], "K LEAGUE1": [],
         EPL: [], BUNDESLIGA: [], LALIGA: [],
-        LEAGUE1: [], "SERIE A": [], MLS: []
+        LEAGUE1: [], "SERIE A": [], MLS: [], UCL: []
     };
 }
 
@@ -25,7 +25,8 @@ export function makePrevUriList() {
         LALIGA: { youtube: [] },
         LEAGUE1: { youtube: [] },
         "SERIE A": { youtube: [] },
-        MLS: { youtube: [] }
+        MLS: { youtube: [] },
+        UCL: { youtube: [] }
     };
 }
 
@@ -33,7 +34,7 @@ export function makePrevRankList() {
     return {
         LCK: [], KBO: [], MLB: [], "K LEAGUE1": [],
         EPL: [], BUNDESLIGA: [], LALIGA: [],
-        LEAGUE1: [], "SERIE A": [], MLS: []
+        LEAGUE1: [], "SERIE A": [], MLS: [], UCL: []
     };
 }
 
@@ -127,6 +128,20 @@ export async function mergePrevUri(date: string) {
     return merged;
 }
 
+export function concatByLeague(
+    prev: Record<string, schedulerDto[]> = {},
+    next: Record<string, schedulerDto[]> = {}
+) {
+    const leagues = new Set([ ...Object.keys(prev), ...Object.keys(next) ]);
+    const out: Record<string, schedulerDto[]> = {};
+    for (const lg of leagues) {
+        const a = prev[lg] ?? [];
+        const b = next[lg] ?? [];
+        out[lg] = a.concat(b);   // 순서: prev 뒤에 now 붙임
+    }
+    return out;
+}
+
 export async function matchDataTranslator(data: postSchedulerReqDto | postRankReqDto) {
     const insertData: schedulerDto[] = [];
     const teamTag = await getTagDao.getTeamTag();
@@ -137,12 +152,11 @@ export async function matchDataTranslator(data: postSchedulerReqDto | postRankRe
         for (const item of items) {
             const found = leagueTag.find((tag) => tag.league_tag === item.leagueId);
             item.leagueId = found?.league_id ?? item.leagueId;
-            item.seasonId = found?.seasonId ?? null; // 기존 로직 유지
+            item.seasonId = found?.season_id ?? null; // 기존 로직 유지
             const homeTag = item.homeTeamId;
             const awayTag = item.awayTeamId;
             let homeTeamId = homeTag;
             let awayTeamId = awayTag;
-
             for (const tag of teamTag) {
                 if (tag.league_id === item.leagueId) {
                     if (tag.team_tag === homeTag) homeTeamId = tag.team_id;
@@ -168,11 +182,15 @@ export async function matchDataTranslator(data: postSchedulerReqDto | postRankRe
 export async function rankTranslator(data: postRankReqDto) {
     const insertData: rankDto[] = [];
     const teamTag = await getTagDao.getTeamTag();
+    const leagueTag = await getTagDao.getLeagueTag();
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     for (const [ league, items ] of Object.entries(data)) {
         for (const item of items) {
+            const found = leagueTag.find((tag) => tag.league_tag === item.leagueId);
             const teamIdTag = item.teamId;
+            item.leagueId = found?.league_id ?? item.leagueId;
+            item.seasonId = found?.season_id ?? null; // 기존 로직 유지
             let teamId = teamIdTag;
             for (const tag of teamTag) {
                 if (tag.league_id === item.leagueId) {
