@@ -6,6 +6,7 @@ export const mainController = {
         const userId = res.locals.userId;
         const result = await mainService.get(userId);
         res.json(result);
+        console.log(userId);
     },
     patch: async (req: Request, res: Response) => {
         const userId = res.locals.userId;

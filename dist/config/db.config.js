@@ -10,6 +10,7 @@ function getDbConfig() {
         password: process.env.MYSQLPASSWORD,
         waitForConnections: true,
         connectionLimit: 50,
-        queueLimit: 0
+        queueLimit: 0,
+        dateStrings: ['DATE'],
     };
 }

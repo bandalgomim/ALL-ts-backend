@@ -182,7 +182,7 @@ function matchDataTranslator(data) {
                 item.homeTeamId = homeTeamId;
                 item.awayTeamId = awayTeamId;
                 item.status = (0, translator_1.parseMatchState)(item.status);
-                item.date = (0, translator_1.parseMatchDate)(item.date, item.time);
+                [item.date, item.time] = (0, translator_1.parseMatchDate)(item.date, item.time);
                 if (!item.date) {
                     continue;
                 }
