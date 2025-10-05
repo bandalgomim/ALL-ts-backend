@@ -21,7 +21,7 @@ export const matchService = {
             ...status.SUCCESS.body,
             result: {
                 matchId: result[0].match_id,
-                matchDate: result[0].match_date,
+                matchDate: new Date(result[0].match_date),
                 matchTime: result[0].match_time,
                 homeTeamId: result[0].home_team_id,
                 awayTeamId: result[0].away_team_id,

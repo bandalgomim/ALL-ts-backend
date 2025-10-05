@@ -8,7 +8,7 @@ export interface platform {
 
 export interface getMatchDto {
     matchId: string,
-    matchDate: string,
+    matchDate: string | Date,
     matchTime: string,
     homeTeamId: number,
     awayTeamId: number,
