@@ -9,11 +9,27 @@ export const searchTagSql = {
                 t.team_name AS itemName
             FROM team t
         ),
+        search_tag_team_init AS (
+            SELECT 
+                t.team_id AS teamId,
+                CAST(NULL AS SIGNED) AS leagueId,
+                t.team_initial AS tag,
+                t.team_name AS itemName
+            FROM team t
+        ),
         search_tag_league AS (
             SELECT 
                 CAST(NULL AS SIGNED) AS teamId,
                 l.league_id AS leagueId,
                 l.league_name AS tag,
+                l.league_name AS itemName
+            FROM league l
+        ),
+        search_tag_league_init AS (
+            SELECT 
+                CAST(NULL AS SIGNED) AS teamId,
+                l.league_id AS leagueId,
+                l.league_initial AS tag,
                 l.league_name AS itemName
             FROM league l
         ),
@@ -41,6 +57,10 @@ export const searchTagSql = {
         UNION ALL
         SELECT * FROM search_tag_team_tag
         UNION ALL
-        SELECT * FROM search_tag_league_tag;
+        SELECT * FROM search_tag_league_tag
+        UNION ALL
+        SELECT * FROM search_tag_team_init
+        UNION ALL
+        SELECT * FROM search_tag_league_init;
     `
 };

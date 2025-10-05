@@ -24,7 +24,7 @@ exports.IAMDao = {
             if (isExistUser) {
                 return -1;
             }
-            const [result] = yield connection.query(IAM_sql_1.IAMSql.postSignUp, [body.userId, body.name, body.email, body.icon]);
+            const [result] = yield connection.query(IAM_sql_1.IAMSql.postSignUp, [body.userId, body.name, body.email]);
             return result.insertId;
         }
         catch (err) {
