@@ -20,7 +20,7 @@ export interface team {
     rank: string,
     win: string,
     draw: string,
-    rose: string,
+    lose: string,
     point: string,
     section: string
 }

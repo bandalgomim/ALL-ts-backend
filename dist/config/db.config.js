@@ -3,13 +3,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = getDbConfig;
 function getDbConfig() {
     return {
-        host: process.env.MYSQLHOST || "localhost",
-        port: Number(process.env.MYSQLPORT) || 3306,
-        database: process.env.MYSQLDATABASE || "ballog",
-        user: process.env.MYSQLUSER || "user",
-        password: process.env.MYSQLPASSWORD || "password",
+        host: process.env.MYSQLHOST,
+        port: parseInt(process.env.MYSQLPORT) || 3306,
+        database: process.env.MYSQLDATABASE,
+        user: process.env.MYSQLUSER,
+        password: process.env.MYSQLPASSWORD,
         waitForConnections: true,
-        connectionLimit: 10,
+        connectionLimit: 50,
         queueLimit: 0
     };
 }

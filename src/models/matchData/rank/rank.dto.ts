@@ -6,7 +6,7 @@ export type rankDto =
     rank: number | string,
     win: number | string,
     draw: number | string,
-    rose: number | string,
+    lose: number | string,
     point: number | string,
     section: string | null
 };

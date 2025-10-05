@@ -104,7 +104,6 @@ exports.schedulerService = {
             }
         }
         const insertData = yield (0, matchData_1.matchDataTranslator)(newData);
-        console.log(insertData);
         const supplementRes = yield (0, matchData_1.supplement)(insertData);
         if (supplementRes.status) {
             const res = yield scheduler_dao_1.schedulerDao.post(insertData);
@@ -125,7 +124,7 @@ exports.schedulerService = {
         }
         const raw = yield db_redis_1.default.get("batch_matchList");
         const prevList = JSON.parse(raw);
-        const matchList = Object.assign(Object.assign({}, prevList), data.matchList);
+        const matchList = (0, matchData_1.concatByLeague)(prevList, data.matchList);
         if (data.isLast) {
             yield db_redis_1.default.del("batch_matchList");
             yield exports.schedulerService.post(matchList, null);

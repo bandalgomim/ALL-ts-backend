@@ -15,7 +15,7 @@ exports.schedulerSql = {
     ORDER BY
         m.league_id ASC, m.match_date ASC;`,
     post: (data) => {
-        return `INSERT INTO match_info (match_id, league_id, home_team_id, away_team_id, match_date, match_state, home_team_score, away_team_score, double_header) 
+        return `INSERT INTO match_info (match_id, league_id, home_team_id, away_team_id, match_date, match_state, home_team_score, away_team_score, double_header, season_id) 
         VALUES ${data}
     ON DUPLICATE KEY UPDATE
         league_id = VALUES(league_id),
@@ -25,7 +25,8 @@ exports.schedulerSql = {
         match_state = VALUES(match_state),
         home_team_score = VALUES(home_team_score),
         away_team_score = VALUES(away_team_score),
-        double_header = VALUES(double_header);`;
+        double_header = VALUES(double_header),
+        season_id = VALUES(season_id);`;
     },
     getSupplement: `SELECT 
         match_id
@@ -35,7 +36,6 @@ exports.schedulerSql = {
         DATE_FORMAT(match_date, '%Y-%m') = ?
     `,
     getUserMatchList: (teamId, minDate, maxDate) => {
-        console.log();
         return `INSERT INTO match_list (user_id, match_id, is_selected)
         SELECT tl.user_id, mi.match_id, 1
         FROM match_info mi
@@ -48,7 +48,7 @@ exports.schedulerSql = {
         AND mi.match_id >= '${minDate}' 
   		AND mi.match_id <  '${maxDate}'
 
-        UNION ALL
+        UNION
 
         SELECT tl.user_id, mi.match_id, 1
         FROM match_info mi

@@ -30,7 +30,7 @@ export const leagueSql = {
             NULL AS \`rank\`,
             NULL AS win,
             NULL AS draw,
-            NULL AS rose,
+            NULL AS lose,
             NULL AS point,
             NULL AS section
         FROM match_info m

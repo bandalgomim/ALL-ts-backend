@@ -17,11 +17,11 @@ export const rankDao = {
                     item.seasonId,
                     item.leagueId,
                     item.teamId,
-                    item.rank,
                     item.win,
                     item.draw,
-                    item.rose,
+                    item.lose,
                     item.point,
+                    item.rank,
                     item.section
                 );
             }

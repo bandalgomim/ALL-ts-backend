@@ -59,7 +59,7 @@ export const leagueService = {
                     rank: data.rank,
                     win: data.win,
                     draw: data.draw,
-                    rose: data.rose,
+                    lose: data.lose,
                     point: data.point,
                     section: data.section
                 });

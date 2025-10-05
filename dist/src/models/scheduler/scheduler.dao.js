@@ -36,9 +36,9 @@ exports.schedulerDao = {
         const connection = yield (0, db_pool_1.getPool)().getConnection();
         try {
             const params = [];
-            const placeholders = data.map(() => "(?, ?, ?, ?, ?, ?, ?, ?,?)").join(", ");
+            const placeholders = data.map(() => "(?, ?, ?, ?, ?, ?, ?, ?,?,?)").join(", ");
             for (const item of data) {
-                params.push(`${item.date.split(" ")[0]}-${item.homeTeamId}-${item.awayTeamId}-${item.doubleHeader}`, item.leagueId, item.homeTeamId, item.awayTeamId, item.date, item.status, item.homeTeamScore, item.awayTeamScore, item.doubleHeader);
+                params.push(`${item.date.split(" ")[0]}-${item.homeTeamId}-${item.awayTeamId}-${item.doubleHeader}`, item.leagueId, item.homeTeamId, item.awayTeamId, item.date, item.status, item.homeTeamScore, item.awayTeamScore, item.doubleHeader, item.seasonId);
             }
             yield connection.beginTransaction();
             yield connection.query(scheduler_sql_1.schedulerSql.post(placeholders), params);

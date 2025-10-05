@@ -18,6 +18,7 @@ exports.makePrevUriList = makePrevUriList;
 exports.makePrevRankList = makePrevRankList;
 exports.setPrevData = setPrevData;
 exports.mergePrevUri = mergePrevUri;
+exports.concatByLeague = concatByLeague;
 exports.matchDataTranslator = matchDataTranslator;
 exports.rankTranslator = rankTranslator;
 exports.supplement = supplement;
@@ -30,7 +31,7 @@ function makePrevMatchList() {
     return {
         LCK: [], KBO: [], MLB: [], "K LEAGUE1": [],
         EPL: [], BUNDESLIGA: [], LALIGA: [],
-        LEAGUE1: [], "SERIE A": [], MLS: []
+        LEAGUE1: [], "SERIE A": [], MLS: [], UCL: []
     };
 }
 function makePrevUriList() {
@@ -44,14 +45,15 @@ function makePrevUriList() {
         LALIGA: { youtube: [] },
         LEAGUE1: { youtube: [] },
         "SERIE A": { youtube: [] },
-        MLS: { youtube: [] }
+        MLS: { youtube: [] },
+        UCL: { youtube: [] }
     };
 }
 function makePrevRankList() {
     return {
         LCK: [], KBO: [], MLB: [], "K LEAGUE1": [],
         EPL: [], BUNDESLIGA: [], LALIGA: [],
-        LEAGUE1: [], "SERIE A": [], MLS: []
+        LEAGUE1: [], "SERIE A": [], MLS: [], UCL: []
     };
 }
 function setPrevData(date) {
@@ -140,16 +142,29 @@ function mergePrevUri(date) {
         return merged;
     });
 }
+function concatByLeague(prev = {}, next = {}) {
+    var _a, _b;
+    const leagues = new Set([...Object.keys(prev), ...Object.keys(next)]);
+    const out = {};
+    for (const lg of leagues) {
+        const a = (_a = prev[lg]) !== null && _a !== void 0 ? _a : [];
+        const b = (_b = next[lg]) !== null && _b !== void 0 ? _b : [];
+        out[lg] = a.concat(b); // 순서: prev 뒤에 now 붙임
+    }
+    return out;
+}
 function matchDataTranslator(data) {
     return __awaiter(this, void 0, void 0, function* () {
-        var _a;
+        var _a, _b;
         const insertData = [];
         const teamTag = yield getTag_dao_1.getTagDao.getTeamTag();
         const leagueTag = yield getTag_dao_1.getTagDao.getLeagueTag();
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         for (const [league, items] of Object.entries(data)) {
             for (const item of items) {
-                item.leagueId = ((_a = leagueTag.find((tag) => tag.league_tag === item.leagueId)) === null || _a === void 0 ? void 0 : _a.league_id) || item.leagueId;
+                const found = leagueTag.find((tag) => tag.league_tag === item.leagueId);
+                item.leagueId = (_a = found === null || found === void 0 ? void 0 : found.league_id) !== null && _a !== void 0 ? _a : item.leagueId;
+                item.seasonId = (_b = found === null || found === void 0 ? void 0 : found.season_id) !== null && _b !== void 0 ? _b : null; // 기존 로직 유지
                 const homeTag = item.homeTeamId;
                 const awayTag = item.awayTeamId;
                 let homeTeamId = homeTag;
@@ -185,12 +200,17 @@ function matchDataTranslator(data) {
 }
 function rankTranslator(data) {
     return __awaiter(this, void 0, void 0, function* () {
+        var _a, _b;
         const insertData = [];
         const teamTag = yield getTag_dao_1.getTagDao.getTeamTag();
+        const leagueTag = yield getTag_dao_1.getTagDao.getLeagueTag();
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         for (const [league, items] of Object.entries(data)) {
             for (const item of items) {
+                const found = leagueTag.find((tag) => tag.league_tag === item.leagueId);
                 const teamIdTag = item.teamId;
+                item.leagueId = (_a = found === null || found === void 0 ? void 0 : found.league_id) !== null && _a !== void 0 ? _a : item.leagueId;
+                item.seasonId = (_b = found === null || found === void 0 ? void 0 : found.season_id) !== null && _b !== void 0 ? _b : null; // 기존 로직 유지
                 let teamId = teamIdTag;
                 for (const tag of teamTag) {
                     if (tag.league_id === item.leagueId) {
