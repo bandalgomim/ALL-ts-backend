@@ -24,14 +24,15 @@ export const schedulerDao = {
         const connection = await getPool().getConnection();
         try {
             const params = [];
-            const placeholders = data.map(() => "(?, ?, ?, ?, ?, ?, ?, ?,?,?)").join(", ");
+            const placeholders = data.map(() => "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)").join(", ");
             for (const item of data) {
                 params.push(
-                    `${item.date.split(" ")[0]}-${item.homeTeamId}-${item.awayTeamId}-${item.doubleHeader}`,
+                    `${item.date}-${item.homeTeamId}-${item.awayTeamId}-${item.doubleHeader}`,
                     item.leagueId,
                     item.homeTeamId,
                     item.awayTeamId,
                     item.date,
+                    item.time,
                     item.status,
                     item.homeTeamScore,
                     item.awayTeamScore,

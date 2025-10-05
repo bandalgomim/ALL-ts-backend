@@ -92,7 +92,7 @@ export function parseMatchState(status: string): "next" | "off" | "end" | "live"
     }
 }
 
-export function parseMatchDate(dateStr: string, timeStr: string): string | null {
+export function parseMatchDate(dateStr: string, timeStr: string): string[] | null {
     try {
         // 시간 문자열 정규화
         const normalizeTime = (raw: string): string => {
@@ -145,7 +145,7 @@ export function parseMatchDate(dateStr: string, timeStr: string): string | null 
 
         // 단독 YYYY-MM-DD 형식
         if (/^\d{4}-\d{2}-\d{2}$/.test(body)) {
-            return `${body} ${timePart}`;
+            return [body, timePart];
         }
 
         let month: number | undefined;
@@ -174,7 +174,7 @@ export function parseMatchDate(dateStr: string, timeStr: string): string | null 
 
         const year = yearFromPrefix ?? new Date().getFullYear();
         const datePart = `${year.toString().padStart(4, "0")}-${month.toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
-        return `${datePart} ${timePart}`;
+        return [ datePart, timePart ];
     } catch {
         return null;
     }

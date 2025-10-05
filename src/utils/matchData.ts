@@ -167,7 +167,7 @@ export async function matchDataTranslator(data: postSchedulerReqDto | postRankRe
             item.homeTeamId = homeTeamId;
             item.awayTeamId = awayTeamId;
             item.status = parseMatchState(item.status) as string;
-            item.date = parseMatchDate(item.date, item.time) as string;
+            [ item.date, item.time ] = parseMatchDate(item.date, item.time) as string[];
             if (!item.date) {
                 continue;
             }
