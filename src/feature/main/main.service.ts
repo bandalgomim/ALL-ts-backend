@@ -69,7 +69,6 @@ export const mainService = {
                 teamAndLeagueList: [ ...teamList, ...leagueList ].sort((a, b) => a.index - b.index)
             }
         };
-        console.log(res);
         return res;
     },
     patch: async (userId: string, index: patchMainReqDto[]) => {
