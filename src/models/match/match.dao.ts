@@ -7,11 +7,12 @@ import { matchSql } from "./match.sql";
 
 export const matchDao = {
     get: async (userId: string, matchId: string) => {
+
         // match 페이지의 달력과 선호팀에 들어갈 정보를 반환
         const connection = await getPool().getConnection();
         try {
             const [ result ] = await connection.query<RowDataPacket[]>(matchSql.get,
-                [ userId, userId, matchId, matchId ]);
+                [ matchId, matchId, userId, userId, matchId ]);
             return result;
         } catch (err) {
             console.error(err);

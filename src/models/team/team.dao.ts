@@ -11,7 +11,22 @@ export const teamDao = {
         const connection = await getPool().getConnection();
         try {
             const [ result ] = await connection.query<RowDataPacket[]>(teamSql.get,
-                [ userId, userId, teamId, userId, userId, userId ]);
+                [
+                    teamId,   // selected_league WHERE a.team_id=?
+                    userId,   // team_info: team_list EXISTS user_id
+                    userId,   // team_info: icon user_id
+                    teamId,   // team_info WHERE t.team_id=?
+
+                    userId,   // match_list(home) EXISTS user_id
+                    userId,   // match_list(home) icon i1.user_id
+                    userId,   // match_list(home) icon i2.user_id
+                    teamId,   // match_list(home) WHERE m.home_team_id=?
+
+                    userId,   // match_list(away) EXISTS user_id
+                    userId,   // match_list(away) icon i1.user_id
+                    userId,   // match_list(away) icon i2.user_id
+                    teamId    // match_list(away) WHERE m.away_team_id=?
+                ]);
             return result;
         } catch (err) {
             console.error(err);

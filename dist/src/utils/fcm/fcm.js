@@ -20,7 +20,6 @@ const sentNotifi = (matchId) => __awaiter(void 0, void 0, void 0, function* () {
         awayTeamName: result[0].away_team_name
     };
     let tokens = yield fcm_dao_1.fcmDao.getFcmToken(matchId);
-    console.log(highlightInfo, tokens);
     tokens = Array.from(new Set(tokens));
     if (tokens.length !== 0) {
         yield (0, sendNotification_1.sendFCMToManyDevices)(tokens, highlightInfo);

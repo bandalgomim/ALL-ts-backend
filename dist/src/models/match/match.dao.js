@@ -19,7 +19,7 @@ exports.matchDao = {
         // match 페이지의 달력과 선호팀에 들어갈 정보를 반환
         const connection = yield (0, db_pool_1.getPool)().getConnection();
         try {
-            const [result] = yield connection.query(match_sql_1.matchSql.get, [userId, userId, matchId, matchId]);
+            const [result] = yield connection.query(match_sql_1.matchSql.get, [matchId, matchId, userId, userId, matchId]);
             return result;
         }
         catch (err) {

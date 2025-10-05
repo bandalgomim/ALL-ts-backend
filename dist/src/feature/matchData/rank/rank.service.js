@@ -32,7 +32,6 @@ exports.rankService = {
             }
         }
         const insertData = yield (0, matchData_1.rankTranslator)(newData);
-        console.log(insertData);
         yield rank_dao_1.rankDao.post(insertData);
         list[leagueList[0]] = data[leagueList[0]];
         yield db_redis_1.default.set("prevRankList", JSON.stringify(list));

@@ -19,7 +19,6 @@ export const rankService = {
             }
         }
         const insertData = await rankTranslator(newData);
-        console.log(insertData);
         await rankDao.post(insertData);
         list[leagueList[0]] = data[leagueList[0]];
         await redisClient.set("prevRankList", JSON.stringify(list));

@@ -172,7 +172,6 @@ function parseMatchDate(dateStr, timeStr) {
         }
         const year = yearFromPrefix !== null && yearFromPrefix !== void 0 ? yearFromPrefix : new Date().getFullYear();
         const datePart = `${year.toString().padStart(4, "0")}-${month.toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
-        console.log(datePart);
         return `${datePart} ${timePart}`;
     }
     catch (_a) {
