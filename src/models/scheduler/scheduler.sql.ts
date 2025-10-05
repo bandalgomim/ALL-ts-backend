@@ -13,7 +13,7 @@ export const schedulerSql = {
     ORDER BY
         m.league_id ASC, m.match_date ASC;`,
     post: (data: string) => {
-        return `INSERT INTO match_info (match_id, league_id, home_team_id, away_team_id, match_date, match_tiem, match_state, home_team_score, away_team_score, double_header, season_id) 
+        return `INSERT INTO match_info (match_id, league_id, home_team_id, away_team_id, match_date, match_time, match_state, home_team_score, away_team_score, double_header, season_id) 
         VALUES ${data}
     ON DUPLICATE KEY UPDATE
         league_id = VALUES(league_id),
