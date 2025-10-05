@@ -13,15 +13,13 @@ export const mainService = {
         const leagueList: league[] = [];
         result.forEach((data) => {
             if (data.match_id !== null && data.is_match_selected !== 0) {
-                const currDate = new Date(data.match_date).toISOString()
-                    .split("T")[0];
-                if (prevDate && prevDate !== currDate) {
+                if (prevDate && prevDate !== data.match_date) {
                     matchList[prevDate] = matchItems;
                     matchItems = [];
                 }
                 matchItems.push({
                     matchId: data.match_id,
-                    matchDate: currDate,
+                    matchDate: data.match_date,
                     matchTime: data.match_time,
                     matchState: data.match_state,
                     homeTeamId: data.home_team_id,
@@ -37,7 +35,7 @@ export const mainService = {
                     userId: data.user_id,
                     isMatchSelected: Boolean(data.is_match_selected)
                 });
-                prevDate = currDate;
+                prevDate = data.match_date;
             }
             if (data.team_id !== null && data.is_team_selected !== 0) {
                 teamList.push({
@@ -71,6 +69,7 @@ export const mainService = {
                 teamAndLeagueList: [ ...teamList, ...leagueList ].sort((a, b) => a.index - b.index)
             }
         };
+        console.log(res);
         return res;
     },
     patch: async (userId: string, index: patchMainReqDto[]) => {
@@ -79,6 +78,7 @@ export const mainService = {
             ...status.SUCCESS.body,
             result: null
         };
+
         return res;
     }
 };

@@ -22,6 +22,7 @@ export const matchService = {
             result: {
                 matchId: result[0].match_id,
                 matchDate: result[0].match_date,
+                matchTime: result[0].match_time,
                 homeTeamId: result[0].home_team_id,
                 awayTeamId: result[0].away_team_id,
                 homeTeamName: result[0].home_team_name,
@@ -42,6 +43,7 @@ export const matchService = {
                 platform: platform
             }
         };
+        console.log(res);
         return res;
     }
 };

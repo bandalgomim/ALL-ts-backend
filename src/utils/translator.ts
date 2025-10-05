@@ -145,7 +145,7 @@ export function parseMatchDate(dateStr: string, timeStr: string): string[] | nul
 
         // 단독 YYYY-MM-DD 형식
         if (/^\d{4}-\d{2}-\d{2}$/.test(body)) {
-            return [body, timePart];
+            return [ body, timePart ];
         }
 
         let month: number | undefined;

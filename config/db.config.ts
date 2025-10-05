@@ -9,6 +9,7 @@ export default function getDbConfig(): PoolOptions {
         password: process.env.MYSQLPASSWORD,
         waitForConnections: true,
         connectionLimit: 50,
-        queueLimit: 0
+        queueLimit: 0,
+        dateStrings: ['DATE'],
     };
 }

@@ -31,6 +31,7 @@ export const matchSql = {
             t2.team_initial AS away_team_initial,
     
             m.match_date,
+            m.match_time,
             m.match_state,
     
             i1.icon AS home_team_logo,
