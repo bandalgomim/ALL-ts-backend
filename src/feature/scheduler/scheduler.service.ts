@@ -16,15 +16,15 @@ export const schedulerService = {
                     res.push({ ...scheduler });
                 }
                 scheduler.league = data.league_name;
-                scheduler.start = data.match_date;
-                scheduler.end = data.match_date;
+                scheduler.start = data.match_date + " " + data.match_time;
+                scheduler.end = data.match_date + " " + data.match_time;
             // eslint-disable-next-line @stylistic/max-len
             } else if (data.league_name === result[index - 1].league || (new Date(data.match_date).getTime() - new Date(result[index - 1].match_date).getTime()) > 12 * 60 * 60 * 1000) {
                 res.push({ ...scheduler });
-                scheduler.start = data.match_date;
-                scheduler.end = data.match_date;
+                scheduler.start = data.match_date + " " + data.match_time;
+                scheduler.end = data.match_date + " " + data.match_time;
             } else {
-                scheduler.end = data.match_date;
+                scheduler.end = data.match_date + " " + data.match_time;
             }
             if (index === result.length - 1) {
                 res.push({ ...scheduler });
