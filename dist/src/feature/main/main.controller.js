@@ -14,9 +14,9 @@ const main_service_1 = require("./main.service");
 exports.mainController = {
     get: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const userId = res.locals.userId;
+        console.log(userId);
         const result = yield main_service_1.mainService.get(userId);
         res.json(result);
-        console.log(userId);
     }),
     patch: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const userId = res.locals.userId;

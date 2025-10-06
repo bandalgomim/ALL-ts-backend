@@ -49,7 +49,6 @@ exports.matchService = {
                 isMatchSelected: Boolean(result[0].is_match_selected),
                 platform: platform
             } });
-        console.log(res);
         return res;
     })
 };

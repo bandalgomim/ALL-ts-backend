@@ -43,7 +43,6 @@ export const matchService = {
                 platform: platform
             }
         };
-        console.log(res);
         return res;
     }
 };

@@ -5,7 +5,8 @@ exports.schedulerSql = {
     get: `SELECT
         m.league_id,
         l.league_name,
-        m.match_date
+        m.match_date,
+        m.match_time
     FROM
         match_info m
     JOIN

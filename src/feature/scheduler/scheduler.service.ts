@@ -1,45 +1,53 @@
 
+import { RowDataPacket } from "mysql2";
 import redisClient from "../../../config/db.redis";
 import { schedulerDao } from "../../models/scheduler/scheduler.dao";
-import { getSchedulerResDto, postBatchSchedulerReqDto, postSchedulerReqDto } from "../../models/scheduler/scheduler.dto";
+import { postBatchSchedulerReqDto, postSchedulerReqDto } from "../../models/scheduler/scheduler.dto";
 import { concatByLeague, makePrevMatchList, matchDataTranslator, setPrevData, supplement, supplementMatchList } from "../../utils/matchData";
 
 export const schedulerService = {
     get: async (date: string) => {
-        await setPrevData(date);
-        const result = await schedulerDao.get(date);
-        const res: getSchedulerResDto = [];
-        const scheduler = { league: "", start: "", end: "" };
-        result.forEach((data, index) => {
-            if (index === 0 || data.league_name !== result[index - 1].league_name) {
-                if (index !== 0) {
-                    res.push({ ...scheduler });
-                }
-                scheduler.league = data.league_name;
-                scheduler.start = data.match_date + " " + data.match_time;
-                scheduler.end = data.match_date + " " + data.match_time;
-            // eslint-disable-next-line @stylistic/max-len
-            } else if (data.league_name === result[index - 1].league || (new Date(data.match_date).getTime() - new Date(result[index - 1].match_date).getTime()) > 12 * 60 * 60 * 1000) {
-                res.push({ ...scheduler });
-                scheduler.start = data.match_date + " " + data.match_time;
-                scheduler.end = data.match_date + " " + data.match_time;
-            } else {
-                scheduler.end = data.match_date + " " + data.match_time;
-            }
-            if (index === result.length - 1) {
-                res.push({ ...scheduler });
-            }
-        });
-        for (const item of res) {
-            if (item?.end) {
-                const end = new Date(item.end);
-                if (!isNaN(end.getTime())) {
-                    // eslint-disable-next-line @stylistic/no-mixed-operators
-                    item.end = new Date(end.getTime() + 12 * 60 * 60 * 1000).toISOString();
-                }
-            }
-        }
-        return res;
+
+          type Block = { league: string, start: string, end: string }; // ISO 문자열
+          const H12 = 12 * 60 * 60 * 1000;
+          const toKstIso = (date: string, time: string) => `${date}T${time}.000Z`;
+          const toMsKst = (date: string, time: string) => new Date(toKstIso(date, time)).getTime();
+
+
+          await setPrevData(date);
+          const result: RowDataPacket[] = await schedulerDao.get(date);
+
+          const res: Block[] = [];
+          let current: Block | null = null;
+
+          for (let i = 0; i < result.length; i++) {
+              const row = result[i];
+              const tMs = toMsKst(row.match_date, row.match_time);
+              const iso = toKstIso(row.match_date, row.match_time);
+
+              // eslint-disable-next-line @stylistic/max-len
+              const needNewBlock = !current || row.league_name !== current.league || (tMs - new Date(current.end).getTime()) > H12;
+
+              if (needNewBlock) {
+                  if (current) res.push(current);
+                  current = { league: row.league_name, start: iso, end: iso };
+              } else {
+                  if (current) {
+                      current.end = iso; // 같은 블록이면 끝 시간만 갱신
+                  }
+              }
+          }
+
+          if (current) res.push(current);
+
+          for (const item of res) {
+              const end = new Date(new Date(item.end).getTime() + H12).toISOString();    // '...Z'
+              const start = new Date(item.start).toISOString();
+              item.end = `${end.split("T")[0]} ${end.split("T")[1].split(".")[0]}`; // 'YYYY-MM-DD HH:MM:SS'
+              item.start = `${start.split("T")[0]} ${start.split("T")[1].split(".")[0]}`; // 'YYYY-MM-DD HH:MM:SS'
+          }
+
+          return res;
     },
     post: async (data: postSchedulerReqDto, date: string | null) => {
         const prevMatchListRedis = await redisClient.get(`prevMatchList_${date}`) as string;
