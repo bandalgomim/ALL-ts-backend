@@ -25,9 +25,14 @@ exports.rankService = {
         for (const league of leagueList) {
             if (!newData[league])
                 newData[league] = [];
-            for (const item of data[league]) {
-                if (!newData[league].includes(item)) {
-                    newData[league].push(item);
+            if (!data[league] || data[league].length === 0) {
+                continue;
+            }
+            else {
+                for (const item of data[league]) {
+                    if (!newData[league].includes(item)) {
+                        newData[league].push(item);
+                    }
                 }
             }
         }
