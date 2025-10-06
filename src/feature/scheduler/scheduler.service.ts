@@ -100,7 +100,6 @@ export const schedulerService = {
                     }
                 }
             }
-
         }
         const insertData = await matchDataTranslator(newData);
         const supplementRes = await supplement(insertData);

@@ -165,16 +165,16 @@ function parseMatchDate(dateStr, timeStr) {
             }
         }
         if (month == null || day == null)
-            return null;
+            return [null, null];
         // 접두어의 월과 불일치 시 무효 처리
         if (prefixMonthStr && month.toString().padStart(2, "0") !== prefixMonthStr) {
-            return null;
+            return [null, null];
         }
         const year = yearFromPrefix !== null && yearFromPrefix !== void 0 ? yearFromPrefix : new Date().getFullYear();
         const datePart = `${year.toString().padStart(4, "0")}-${month.toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
         return [datePart, timePart];
     }
     catch (_a) {
-        return null;
+        return [null, null];
     }
 }

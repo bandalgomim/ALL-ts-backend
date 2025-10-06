@@ -184,6 +184,7 @@ export async function rankTranslator(data: postRankReqDto) {
     const teamTag = await getTagDao.getTeamTag();
     const leagueTag = await getTagDao.getLeagueTag();
 
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     for (const [ league, items ] of Object.entries(data)) {
         for (const item of items) {
