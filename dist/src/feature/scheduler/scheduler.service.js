@@ -68,24 +68,18 @@ exports.schedulerService = {
             if (!newData[league])
                 newData[league] = [];
             const prevItems = (_a = list[league]) !== null && _a !== void 0 ? _a : [];
-            for (const item of data[league]) {
-                if (item.homeTeamId === "TBD" || item.awayTeamId === "TBD") {
-                    continue;
-                }
-                if (!prevItems.includes(item)) {
-                    // doubleHeader 판정
-                    let isDoubleHeader = false;
-                    for (const exist of newData[league]) {
-                        if (exist.date === item.date
-                            && exist.homeTeamId === item.homeTeamId
-                            && exist.awayTeamId === item.awayTeamId
-                            && exist.time !== item.time) {
-                            isDoubleHeader = true;
-                            break;
-                        }
+            if (!data[league] || data[league].length === 0) {
+                continue;
+            }
+            else {
+                for (const item of data[league]) {
+                    if (item.homeTeamId === "TBD" || item.awayTeamId === "TBD") {
+                        continue;
                     }
-                    if (!isDoubleHeader) {
-                        for (const exist of prevItems) {
+                    if (!prevItems.includes(item)) {
+                        // doubleHeader 판정
+                        let isDoubleHeader = false;
+                        for (const exist of newData[league]) {
                             if (exist.date === item.date
                                 && exist.homeTeamId === item.homeTeamId
                                 && exist.awayTeamId === item.awayTeamId
@@ -94,9 +88,20 @@ exports.schedulerService = {
                                 break;
                             }
                         }
+                        if (!isDoubleHeader) {
+                            for (const exist of prevItems) {
+                                if (exist.date === item.date
+                                    && exist.homeTeamId === item.homeTeamId
+                                    && exist.awayTeamId === item.awayTeamId
+                                    && exist.time !== item.time) {
+                                    isDoubleHeader = true;
+                                    break;
+                                }
+                            }
+                        }
+                        item.doubleHeader = isDoubleHeader ? 2 : 1;
+                        newData[league].push(item);
                     }
-                    item.doubleHeader = isDoubleHeader ? 2 : 1;
-                    newData[league].push(item);
                 }
             }
         }
