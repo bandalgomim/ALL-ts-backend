@@ -12,6 +12,7 @@ export const sentNotifi = async (matchId: string) => {
         awayTeamName: result[0].away_team_name
     };
     let tokens = await fcmDao.getFcmToken(matchId);
+    console.log("FCM tokens retrieved:", tokens);
     tokens = Array.from(new Set(tokens));
     if (tokens.length !== 0) {
         await sendFCMToManyDevices(tokens, highlightInfo);
