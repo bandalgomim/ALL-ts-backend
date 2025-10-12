@@ -5,6 +5,7 @@ export async function sendFCMToManyDevices(
     tokens: string[],
     item: highlightInfoDto
 ) {
+    console.log("sendFCMToManyDevices called with tokens:", tokens, "and item:", item);
     const BATCH_SIZE = 500; // 한 번에 보내는 토큰의 수
     for (let i = 0; i < tokens.length; i += BATCH_SIZE) {
         const batch = tokens.slice(i, i + BATCH_SIZE); // 배치로 나누기
@@ -51,6 +52,8 @@ export async function sendFCMToManyDevices(
                         console.warn(`❌ 실패한 토큰 [${batch[idx]}]:`, resp.error);
                     }
                 });
+            } else {
+                console.log(`✅ FCM 전송 성공 (Batch ${(i / BATCH_SIZE) + 1}):`, response);
             }
         } catch (error) {
             console.error(`❌ FCM 전송 오류 (Batch ${(i / BATCH_SIZE) + 1}):`, error);
