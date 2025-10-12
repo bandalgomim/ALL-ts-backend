@@ -17,6 +17,7 @@ import { schedulerRouter } from "./route/scheduler/scheduler.route";
 import { matchDataRouter } from "./route/matchData/matchData.route";
 import { searchTagService } from "./feature/searchTag/searchTag.service";
 import { searchTagRouter } from "./route/searchTag/searchTag.route";
+import { versionCheckRouter } from "./route/versionCheck/versionCheck.route";
 
 config();
 
@@ -38,6 +39,7 @@ export default function App() {
     app.use("/scheduler", asyncHandler(schedulerRouter));
     app.use("/matchData", asyncHandler(matchDataRouter));
     app.use("/searchTag", asyncHandler(searchTagRouter));
+    app.use("/versionCheck", asyncHandler(versionCheckRouter));
 
     // chackDailyMatch를 1분마다 실행
 

@@ -22,6 +22,7 @@ const scheduler_route_1 = require("./route/scheduler/scheduler.route");
 const matchData_route_1 = require("./route/matchData/matchData.route");
 const searchTag_service_1 = require("./feature/searchTag/searchTag.service");
 const searchTag_route_1 = require("./route/searchTag/searchTag.route");
+const versionCheck_route_1 = require("./route/versionCheck/versionCheck.route");
 (0, dotenv_1.config)();
 function App() {
     const app = (0, express_1.default)();
@@ -41,6 +42,7 @@ function App() {
     app.use("/scheduler", (0, express_async_handler_1.default)(scheduler_route_1.schedulerRouter));
     app.use("/matchData", (0, express_async_handler_1.default)(matchData_route_1.matchDataRouter));
     app.use("/searchTag", (0, express_async_handler_1.default)(searchTag_route_1.searchTagRouter));
+    app.use("/versionCheck", (0, express_async_handler_1.default)(versionCheck_route_1.versionCheckRouter));
     // chackDailyMatch를 1분마다 실행
     searchTag_service_1.searchTagService.patch();
     node_cron_1.default.schedule("0 0 * * *", () => {

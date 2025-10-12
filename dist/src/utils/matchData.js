@@ -31,7 +31,7 @@ function makePrevMatchList() {
     return {
         LCK: [], KBO: [], MLB: [], "K LEAGUE1": [],
         EPL: [], BUNDESLIGA: [], LALIGA: [],
-        LEAGUE1: [], "SERIE A": [], MLS: [], UCL: []
+        LEAGUE1: [], "SERIE A": [], MLS: [], UCL: [], WORLDS: []
     };
 }
 function makePrevUriList() {
@@ -46,14 +46,15 @@ function makePrevUriList() {
         LEAGUE1: { youtube: [] },
         "SERIE A": { youtube: [] },
         MLS: { youtube: [] },
-        UCL: { youtube: [] }
+        UCL: { youtube: [] },
+        WORLDS: { soop: [], youtube: [] }
     };
 }
 function makePrevRankList() {
     return {
         LCK: [], KBO: [], MLB: [], "K LEAGUE1": [],
         EPL: [], BUNDESLIGA: [], LALIGA: [],
-        LEAGUE1: [], "SERIE A": [], MLS: [], UCL: []
+        LEAGUE1: [], "SERIE A": [], MLS: [], UCL: [], WORLDS: []
     };
 }
 function setPrevData(date) {
