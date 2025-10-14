@@ -23,7 +23,6 @@ exports.rankDao = {
             const params = [];
             const placeholders = data.map(() => "(?, ?, ?, ?, ?, ?, ?, ?,?, ?)").join(", ");
             for (const item of data) {
-                console.log(item);
                 params.push(item.seasonId, item.leagueId, item.teamId, item.win, item.draw, item.lose, item.point, item.rank, item.section, item.sectionIdx);
             }
             yield connection.beginTransaction();

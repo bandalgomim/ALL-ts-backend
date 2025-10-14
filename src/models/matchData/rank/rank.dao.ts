@@ -13,7 +13,6 @@ export const rankDao = {
             const params = [];
             const placeholders = data.map(() => "(?, ?, ?, ?, ?, ?, ?, ?,?, ?)").join(", ");
             for (const item of data) {
-                console.log(item);
                 params.push(
                     item.seasonId,
                     item.leagueId,
