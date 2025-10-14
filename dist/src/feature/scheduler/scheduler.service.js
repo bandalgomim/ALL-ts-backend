@@ -73,7 +73,7 @@ exports.schedulerService = {
             }
             else {
                 for (const item of data[league]) {
-                    if (item.homeTeamId === "TBD" || item.awayTeamId === "TBD") {
+                    if (item.homeTeamId === "TBD" || item.awayTeamId === "TBD" || item.homeTeamId === "?" || item.awayTeamId === "?") {
                         continue;
                     }
                     if (!prevItems.includes(item)) {

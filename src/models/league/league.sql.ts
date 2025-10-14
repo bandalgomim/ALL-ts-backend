@@ -32,7 +32,8 @@ export const leagueSql = {
             NULL AS draw,
             NULL AS lose,
             NULL AS point,
-            NULL AS section
+            NULL AS section,
+            NULL AS section_idx
         FROM match_info m
         LEFT JOIN
             icon i1 ON i1.type = 'team' and m.home_team_id = i1.id and i1.user_id = ?
@@ -69,7 +70,8 @@ export const leagueSql = {
             str.draw,
             str.lose,
             str.point,
-            str.section
+            str.section,
+            str.section_idx
         FROM 
             team t
         LEFT JOIN

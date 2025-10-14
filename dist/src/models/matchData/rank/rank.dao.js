@@ -21,9 +21,9 @@ exports.rankDao = {
         const connection = yield (0, db_pool_1.getPool)().getConnection();
         try {
             const params = [];
-            const placeholders = data.map(() => "(?, ?, ?, ?, ?, ?, ?, ?,?)").join(", ");
+            const placeholders = data.map(() => "(?, ?, ?, ?, ?, ?, ?, ?,?, ?)").join(", ");
             for (const item of data) {
-                params.push(item.seasonId, item.leagueId, item.teamId, item.win, item.draw, item.lose, item.point, item.rank, item.section);
+                params.push(item.seasonId, item.leagueId, item.teamId, item.win, item.draw, item.lose, item.point, item.rank, item.section, item.sectionIdx);
             }
             yield connection.beginTransaction();
             const [res] = yield connection.query(rank_sql_1.rankSql.update(placeholders), params);

@@ -8,7 +8,8 @@ export type rankDto =
     draw: number | string,
     lose: number | string,
     point: number | string,
-    section: string | null
+    section: string | null,
+    sectionIdx: number | null
 };
 export type postRankReqDto = {
     [league: string]: rankDto[]

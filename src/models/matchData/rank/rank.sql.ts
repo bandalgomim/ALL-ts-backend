@@ -3,7 +3,7 @@
 export const rankSql = {
 
     update: (data: string) => {
-        return `INSERT INTO season_team_record (season_id, league_id, team_id, win, draw, lose, point, \`rank\`, \`section\`) 
+        return `INSERT INTO season_team_record (season_id, league_id, team_id, win, draw, lose, point, \`rank\`, \`section\`, \`section_idx\`) 
         VALUES ${data}
     ON DUPLICATE KEY UPDATE
         season_id = VALUES(season_id),
@@ -14,7 +14,8 @@ export const rankSql = {
         lose = VALUES(lose),
         point = VALUES(point),
         \`rank\` = VALUES(\`rank\`),
-        \`section\` = VALUES(\`section\`);`;
+        \`section\` = VALUES(\`section\`),
+        \`section_idx\` = VALUES(\`section_idx\`);`;
     }
 };
 

@@ -67,7 +67,7 @@ export const schedulerService = {
                 continue;
             } else {
                 for (const item of data[league]) {
-                    if (item.homeTeamId === "TBD" || item.awayTeamId === "TBD") { continue; }
+                    if (item.homeTeamId === "TBD" || item.awayTeamId === "TBD" || item.homeTeamId === "?" || item.awayTeamId === "?") { continue; }
                     if (!prevItems.includes(item)) {
                         // doubleHeader 판정
                         let isDoubleHeader = false;

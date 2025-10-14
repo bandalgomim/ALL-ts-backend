@@ -67,7 +67,8 @@ exports.leagueService = {
                     draw: data.draw,
                     lose: data.lose,
                     point: data.point,
-                    section: data.section
+                    section: data.section,
+                    sectionIdx: data.section_idx
                 });
             }
         });

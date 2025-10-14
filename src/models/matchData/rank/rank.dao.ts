@@ -11,7 +11,7 @@ export const rankDao = {
         const connection = await getPool().getConnection();
         try {
             const params = [];
-            const placeholders = data.map(() => "(?, ?, ?, ?, ?, ?, ?, ?,?)").join(", ");
+            const placeholders = data.map(() => "(?, ?, ?, ?, ?, ?, ?, ?,?, ?)").join(", ");
             for (const item of data) {
                 params.push(
                     item.seasonId,
@@ -22,7 +22,8 @@ export const rankDao = {
                     item.lose,
                     item.point,
                     item.rank,
-                    item.section
+                    item.section,
+                    item.sectionIdx
                 );
             }
             await connection.beginTransaction();
