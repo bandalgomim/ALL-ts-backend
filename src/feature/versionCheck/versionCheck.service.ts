@@ -13,7 +13,7 @@ export const versionCheckService = {
         console.log(version);
 
         let check: boolean;
-        if (version.appVersion !== "1.3.5") {
+        if (version.appVersion !== "1.3.6") {
             check = false;
         } else {
             check = true;

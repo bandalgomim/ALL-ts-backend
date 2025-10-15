@@ -15,7 +15,7 @@ exports.versionCheckService = {
     post: (version) => __awaiter(void 0, void 0, void 0, function* () {
         console.log(version);
         let check;
-        if (version.appVersion !== "1.3.5") {
+        if (version.appVersion !== "1.3.6") {
             check = false;
         }
         else {
