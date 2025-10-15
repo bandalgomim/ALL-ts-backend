@@ -129,7 +129,7 @@ exports.mainSql = {
                 icon i2 ON i2.type = 'team' and m.away_team_id = i2.id and i2.user_id = ?
             WHERE
                 c.user_id = ?
-            ORDER BY m.match_time ASC
+            ORDER BY m.match_date ASC
         )
     SELECT 
         tli.*
