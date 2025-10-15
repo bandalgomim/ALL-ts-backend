@@ -101,7 +101,7 @@ export const matchSql = {
     AND lp.platform_id = mp.platform_id
     LEFT JOIN platform p
         ON p.platform_id = lp.platform_id
-    ORDER BY mi.match_date ASC
+    ORDER BY mi.match_time ASC
     `
 };
 
