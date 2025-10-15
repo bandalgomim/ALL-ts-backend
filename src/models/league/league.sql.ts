@@ -113,7 +113,7 @@ export const leagueSql = {
             country c ON l.country_id = c.country_id
         WHERE
             l.league_id = ?
-    )
+    ) 
     SELECT *
     FROM league_info
     LEFT JOIN team_match ON 1 = 1`
