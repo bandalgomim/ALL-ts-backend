@@ -42,7 +42,7 @@ export const leagueSql = {
         LEFT JOIN team t1 ON t1.team_id = m.home_team_id
         LEFT JOIN team t2 ON t2.team_id = m.away_team_id
         WHERE m.league_id = ?
-        ORDER BY m.match_time ASC
+        ORDER BY m.match_date ASC
     ),
     team_list AS (
         SELECT 
@@ -82,6 +82,7 @@ export const leagueSql = {
             icon i ON i.type = 'team' and t.team_id = i.id and i.user_id = ?
         WHERE
             l.league_id = ?
+        ORDER BY str.section_idx DESC, str.\`rank\` ASC
     ),
     team_match AS (
         SELECT * FROM team_list
