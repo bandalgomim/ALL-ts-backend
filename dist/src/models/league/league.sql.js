@@ -84,7 +84,7 @@ exports.leagueSql = {
             icon i ON i.type = 'team' and t.team_id = i.id and i.user_id = ?
         WHERE
             l.league_id = ?
-        ORDER BY str.section_idx DESC, str.\`rank\` ASC
+        ORDER BY str.section_idx ASC
     ),
     team_match AS (
         SELECT * FROM team_list
