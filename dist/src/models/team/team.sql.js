@@ -114,6 +114,6 @@ SELECT
 FROM team_info ti
 LEFT JOIN match_list ml
   ON ml.home_team_id = ti.team_id OR ml.away_team_id = ti.team_id
-ORDER BY ml.match_date;
+ORDER BY ml.match_time;
     `
 };
