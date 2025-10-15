@@ -42,7 +42,7 @@ export const leagueSql = {
         LEFT JOIN team t1 ON t1.team_id = m.home_team_id
         LEFT JOIN team t2 ON t2.team_id = m.away_team_id
         WHERE m.league_id = ?
-        ORDER BY m.match_time ASC
+        ORDER BY m.match_date ASC
     ),
     team_list AS (
         SELECT 
