@@ -114,6 +114,8 @@ exports.schedulerService = {
             }
         }
         for (const leagueName of league) {
+            const live = (0, matchData_1.findLiveUpdates)(list[leagueName], data[leagueName]);
+            console.log(`Live updates for league ${leagueName}:`, live);
             list[leagueName] = data[leagueName];
         }
         if (date !== null) {

@@ -23,6 +23,7 @@ exports.matchDataTranslator = matchDataTranslator;
 exports.rankTranslator = rankTranslator;
 exports.supplement = supplement;
 exports.supplementMatchList = supplementMatchList;
+exports.findLiveUpdates = findLiveUpdates;
 const db_redis_1 = __importDefault(require("../../config/db.redis"));
 const getTag_dao_1 = require("../models/matchData/getTag/getTag.dao");
 const scheduler_dao_1 = require("../models/scheduler/scheduler.dao");
@@ -259,4 +260,23 @@ function supplementMatchList(data) {
         const maxNext = nextDate.toISOString().split("T")[0] + "-";
         yield scheduler_dao_1.schedulerDao.getUserMatchList([...teamIdSet].map((id) => Number(id)), minDate, maxNext);
     });
+}
+function findLiveUpdates(list, data) {
+    const oldMap = new Map(list.map((m) => [m.matchId, m]));
+    const liveUpdates = [];
+    for (const match of data) {
+        if (match.status !== "live")
+            continue; // live만 관심 있음
+        const prev = oldMap.get(match.matchId);
+        // 1️⃣ next → live 로 바뀐 경우
+        if (prev && prev.status === "next") {
+            liveUpdates.push(match);
+            // eslint-disable-next-line @stylistic/brace-style
+        }
+        // 2️⃣ 기존엔 없고 새로 생긴 live
+        else if (!prev) {
+            liveUpdates.push(match);
+        }
+    }
+    return liveUpdates;
 }

@@ -9,9 +9,6 @@ interface versionCheckReqDto {
 
 export const versionCheckService = {
     post: async (version: versionCheckReqDto) => {
-
-        console.log(version);
-
         let check: boolean;
         if (version.appVersion !== "1.3.6") {
             check = false;

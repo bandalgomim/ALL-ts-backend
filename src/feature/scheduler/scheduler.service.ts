@@ -3,7 +3,7 @@ import { RowDataPacket } from "mysql2";
 import redisClient from "../../../config/db.redis";
 import { schedulerDao } from "../../models/scheduler/scheduler.dao";
 import { postBatchSchedulerReqDto, postSchedulerReqDto } from "../../models/scheduler/scheduler.dto";
-import { concatByLeague, makePrevMatchList, matchDataTranslator, setPrevData, supplement, supplementMatchList } from "../../utils/matchData";
+import { concatByLeague, findLiveUpdates, makePrevMatchList, matchDataTranslator, setPrevData, supplement, supplementMatchList } from "../../utils/matchData";
 
 export const schedulerService = {
     get: async (date: string) => {
@@ -111,6 +111,8 @@ export const schedulerService = {
             }
         }
         for (const leagueName of league) {
+            const live = findLiveUpdates(list[leagueName], data[leagueName]);
+            console.log(`Live updates for league ${leagueName}:`, live);
             list[leagueName] = data[leagueName];
         }
         if (date !== null) {

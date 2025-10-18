@@ -13,7 +13,6 @@ exports.versionCheckService = void 0;
 const response_status_1 = require("../../../config/response.status");
 exports.versionCheckService = {
     post: (version) => __awaiter(void 0, void 0, void 0, function* () {
-        console.log(version);
         let check;
         if (version.appVersion !== "1.3.6") {
             check = false;

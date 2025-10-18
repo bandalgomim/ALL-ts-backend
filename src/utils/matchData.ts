@@ -245,3 +245,26 @@ export async function supplementMatchList(data: schedulerDto[]) {
     const maxNext = nextDate.toISOString().split("T")[0] + "-";
     await schedulerDao.getUserMatchList([ ...teamIdSet ].map((id) => Number(id)), minDate, maxNext);
 }
+
+export function findLiveUpdates(list: schedulerDto[], data: schedulerDto[])  {
+    const oldMap = new Map(list.map((m) => [ m.matchId, m ]));
+    const liveUpdates: schedulerDto[] = [];
+
+    for (const match of data) {
+        if (match.status !== "live") continue; // live만 관심 있음
+        const prev = oldMap.get(match.matchId);
+
+        // 1️⃣ next → live 로 바뀐 경우
+        if (prev && prev.status === "next") {
+            liveUpdates.push(match);
+        // eslint-disable-next-line @stylistic/brace-style
+        }
+
+        // 2️⃣ 기존엔 없고 새로 생긴 live
+        else if (!prev) {
+            liveUpdates.push(match);
+        }
+    }
+
+    return liveUpdates;
+}

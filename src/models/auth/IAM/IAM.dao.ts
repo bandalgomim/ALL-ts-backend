@@ -11,7 +11,6 @@ export const IAMDao = {
         try {
             const [ CheckId ] = await connection.query<RowDataPacket[]>(IAMSql.getLogin, [ body.userId ]);
             const isExistUser = CheckId[0].isExistUser;
-            console.log("in IAM DAO, isEmailExist: ", CheckId);
             if (isExistUser) {
                 return -1;
             }
