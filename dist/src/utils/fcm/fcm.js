@@ -31,6 +31,7 @@ const sentNotifiLive = (matchId) => __awaiter(void 0, void 0, void 0, function* 
     if (!matchId)
         return;
     const result = yield fcm_dao_1.fcmDao.get(matchId);
+    console.log("FCM DAO result:", result); // 디버그용 로그
     const highlightInfo = {
         matchId: result[0].match_id,
         homeTeamName: result[0].home_team_name,
