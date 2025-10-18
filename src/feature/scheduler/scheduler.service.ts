@@ -4,6 +4,7 @@ import redisClient from "../../../config/db.redis";
 import { schedulerDao } from "../../models/scheduler/scheduler.dao";
 import { postBatchSchedulerReqDto, postSchedulerReqDto } from "../../models/scheduler/scheduler.dto";
 import { concatByLeague, findLiveUpdates, makePrevMatchList, matchDataTranslator, setPrevData, supplement, supplementMatchList } from "../../utils/matchData";
+import { sentNotifiLive } from "../../utils/fcm/fcm";
 
 export const schedulerService = {
     get: async (date: string) => {
@@ -112,7 +113,11 @@ export const schedulerService = {
         }
         for (const leagueName of league) {
             const live = findLiveUpdates(list[leagueName], data[leagueName]);
-            console.log(`Live updates for league ${leagueName}:`, live);
+            if (live.length !== 0) {
+                for (const match of live) {
+                    await sentNotifiLive(match.matchId as string);
+                }
+            }
             list[leagueName] = data[leagueName];
         }
         if (date !== null) {

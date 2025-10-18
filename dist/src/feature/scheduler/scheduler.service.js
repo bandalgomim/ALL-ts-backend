@@ -16,6 +16,7 @@ exports.schedulerService = void 0;
 const db_redis_1 = __importDefault(require("../../../config/db.redis"));
 const scheduler_dao_1 = require("../../models/scheduler/scheduler.dao");
 const matchData_1 = require("../../utils/matchData");
+const fcm_1 = require("../../utils/fcm/fcm");
 exports.schedulerService = {
     get: (date) => __awaiter(void 0, void 0, void 0, function* () {
         const H12 = 12 * 60 * 60 * 1000;
@@ -115,7 +116,11 @@ exports.schedulerService = {
         }
         for (const leagueName of league) {
             const live = (0, matchData_1.findLiveUpdates)(list[leagueName], data[leagueName]);
-            console.log(`Live updates for league ${leagueName}:`, live);
+            if (live.length !== 0) {
+                for (const match of live) {
+                    yield (0, fcm_1.sentNotifiLive)(match.matchId);
+                }
+            }
             list[leagueName] = data[leagueName];
         }
         if (date !== null) {
