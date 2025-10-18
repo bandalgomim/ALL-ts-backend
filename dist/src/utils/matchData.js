@@ -165,6 +165,7 @@ function matchDataTranslator(data) {
         for (const [league, items] of Object.entries(data)) {
             for (const item of items) {
                 const found = leagueTag.find((tag) => tag.league_tag === item.leagueId);
+                console.log(found);
                 item.leagueId = (_a = found === null || found === void 0 ? void 0 : found.league_id) !== null && _a !== void 0 ? _a : item.leagueId;
                 item.seasonId = (_b = found === null || found === void 0 ? void 0 : found.season_id) !== null && _b !== void 0 ? _b : null; // 기존 로직 유지
                 const homeTag = item.homeTeamId;
