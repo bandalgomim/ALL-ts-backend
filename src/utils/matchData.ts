@@ -152,7 +152,6 @@ export async function matchDataTranslator(data: postSchedulerReqDto | postRankRe
     for (const [ league, items ] of Object.entries(data)) {
         for (const item of items) {
             const found = leagueTag.find((tag) => tag.league_tag === item.leagueId || tag.league_id === item.leagueId);
-            console.log(found);
             item.leagueId = found?.league_id ?? item.leagueId;
             item.seasonId = found?.season_id ?? null; // 기존 로직 유지
             const homeTag = item.homeTeamId;
