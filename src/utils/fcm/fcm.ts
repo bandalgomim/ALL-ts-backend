@@ -19,7 +19,7 @@ export const sentNotifi = async (matchId: string) => {
 export const sentNotifiLive = async (matchId: string) => {
     console.log("sentNotifiLive called with matchId:", matchId); // 디버그용 로그
     if (!matchId) return;
-    const result = await fcmDao.get(matchId);
+    const result = await fcmDao.getLive(matchId);
     console.log("FCM DAO result:", result); // 디버그용 로그
     const highlightInfo: highlightInfoDto = {
         matchId: result[0].match_id,

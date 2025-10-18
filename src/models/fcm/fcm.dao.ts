@@ -30,6 +30,19 @@ export const fcmDao = {
             connection.release();
         }
     },
+    getLive: async (matchId: string) => {
+        const connection = await getPool().getConnection();
+        try {
+            const [ rows ] = await connection.query<RowDataPacket[]>(fcmSql.getLive, [ matchId ]);
+            return rows;
+        } catch (err) {
+            console.error(err);
+            throw new ApiError(status.DATA_INSERTED_SQL_ERROR);
+        } finally {
+        // 연결 반환 보장
+            connection.release();
+        }
+    },
     getFcmToken: async (matchId: string) => {
         const connection = await getPool().getConnection();
         try {
