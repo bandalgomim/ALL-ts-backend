@@ -114,6 +114,7 @@ export const schedulerService = {
         for (const leagueName of league) {
             const live = findLiveUpdates(list[leagueName], data[leagueName]);
             if (live.length !== 0) {
+                console.log(`Live updates found for league ${leagueName}:`, live);
                 for (const match of live) {
                     await sentNotifiLive(match.matchId as string);
                 }
