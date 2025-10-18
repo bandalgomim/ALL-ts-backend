@@ -17,6 +17,8 @@ export const sentNotifi = async (matchId: string) => {
 };
 
 export const sentNotifiLive = async (matchId: string) => {
+    console.log("sentNotifiLive called with matchId:", matchId); // 디버그용 로그
+    if (!matchId) return;
     const result = await fcmDao.get(matchId);
     const highlightInfo: highlightInfoDto = {
         matchId: result[0].match_id,

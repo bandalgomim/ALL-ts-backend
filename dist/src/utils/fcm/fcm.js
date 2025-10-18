@@ -27,6 +27,9 @@ const sentNotifi = (matchId) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.sentNotifi = sentNotifi;
 const sentNotifiLive = (matchId) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("sentNotifiLive called with matchId:", matchId); // 디버그용 로그
+    if (!matchId)
+        return;
     const result = yield fcm_dao_1.fcmDao.get(matchId);
     const highlightInfo = {
         matchId: result[0].match_id,
