@@ -66,7 +66,7 @@ export async function sendFCMToManyDevicesLive(
         const batch = tokens.slice(i, i + BATCH_SIZE); // 배치로 나누기
         const message = {
             notification: {
-                title: "경기가 시작했습니다!",
+                title: "경기 시작!",
                 body: `${item.homeTeamName} vs ${item.awayTeamName}`
             },
             data: {
