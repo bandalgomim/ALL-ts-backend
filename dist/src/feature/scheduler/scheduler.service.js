@@ -55,6 +55,7 @@ exports.schedulerService = {
     }),
     post: (data, date) => __awaiter(void 0, void 0, void 0, function* () {
         var _a;
+        console.log("in schedulerService | post: ", data);
         const prevMatchListRedis = yield db_redis_1.default.get(`prevMatchList_${date}`);
         let list;
         if (!prevMatchListRedis && (date === null)) {
