@@ -62,6 +62,13 @@ export const schedulerService = {
 
             const league = Object.keys(data);
             const newData: postSchedulerReqDto = {};
+
+            for (const leagueName of league) {
+                const incoming = (data as postSchedulerReqDto)[leagueName];
+                if (!Array.isArray(incoming) || incoming.length === 0) {
+                    continue;
+                }
+            }
             for (const league in data) {
                 if (!newData[league]) newData[league] = [];
                 const prevItems = list[league] ?? [];
