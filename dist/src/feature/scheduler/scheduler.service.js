@@ -55,43 +55,33 @@ exports.schedulerService = {
     }),
     post: (data, date) => __awaiter(void 0, void 0, void 0, function* () {
         var _a;
-        console.log("in schedulerService | post: ", data);
-        const prevMatchListRedis = yield db_redis_1.default.get(`prevMatchList_${date}`);
-        let list;
-        if (!prevMatchListRedis && (date === null)) {
-            list = (0, matchData_1.makePrevMatchList)();
-        }
-        else {
-            list = JSON.parse(prevMatchListRedis);
-        }
-        const league = Object.keys(data);
-        const newData = {};
-        for (const league in data) {
-            if (!newData[league])
-                newData[league] = [];
-            const prevItems = (_a = list[league]) !== null && _a !== void 0 ? _a : [];
-            if (!data[league] || data[league].length === 0) {
-                continue;
+        try {
+            const prevMatchListRedis = yield db_redis_1.default.get(`prevMatchList_${date}`);
+            let list;
+            if (!prevMatchListRedis && (date === null)) {
+                list = (0, matchData_1.makePrevMatchList)();
             }
             else {
-                for (const item of data[league]) {
-                    if (item.homeTeamId === "TBD" || item.awayTeamId === "TBD" || item.homeTeamId === "?" || item.awayTeamId === "?") {
-                        continue;
-                    }
-                    if (!prevItems.includes(item)) {
-                        // doubleHeader 판정
-                        let isDoubleHeader = false;
-                        for (const exist of newData[league]) {
-                            if (exist.date === item.date
-                                && exist.homeTeamId === item.homeTeamId
-                                && exist.awayTeamId === item.awayTeamId
-                                && exist.time !== item.time) {
-                                isDoubleHeader = true;
-                                break;
-                            }
+                list = JSON.parse(prevMatchListRedis);
+            }
+            const league = Object.keys(data);
+            const newData = {};
+            for (const league in data) {
+                if (!newData[league])
+                    newData[league] = [];
+                const prevItems = (_a = list[league]) !== null && _a !== void 0 ? _a : [];
+                if (!data[league] || data[league].length === 0) {
+                    continue;
+                }
+                else {
+                    for (const item of data[league]) {
+                        if (item.homeTeamId === "TBD" || item.awayTeamId === "TBD" || item.homeTeamId === "?" || item.awayTeamId === "?") {
+                            continue;
                         }
-                        if (!isDoubleHeader) {
-                            for (const exist of prevItems) {
+                        if (!prevItems.includes(item)) {
+                            // doubleHeader 판정
+                            let isDoubleHeader = false;
+                            for (const exist of newData[league]) {
                                 if (exist.date === item.date
                                     && exist.homeTeamId === item.homeTeamId
                                     && exist.awayTeamId === item.awayTeamId
@@ -100,32 +90,47 @@ exports.schedulerService = {
                                     break;
                                 }
                             }
+                            if (!isDoubleHeader) {
+                                for (const exist of prevItems) {
+                                    if (exist.date === item.date
+                                        && exist.homeTeamId === item.homeTeamId
+                                        && exist.awayTeamId === item.awayTeamId
+                                        && exist.time !== item.time) {
+                                        isDoubleHeader = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            item.doubleHeader = isDoubleHeader ? 2 : 1;
+                            newData[league].push(item);
                         }
-                        item.doubleHeader = isDoubleHeader ? 2 : 1;
-                        newData[league].push(item);
                     }
                 }
             }
-        }
-        const insertData = yield (0, matchData_1.matchDataTranslator)(newData);
-        const supplementRes = yield (0, matchData_1.supplement)(insertData);
-        if (supplementRes.status) {
-            const res = yield scheduler_dao_1.schedulerDao.post(insertData);
-            if (res && supplementRes.filterdMatch.length > 0) {
-                yield (0, matchData_1.supplementMatchList)(supplementRes.filterdMatch);
-            }
-        }
-        for (const leagueName of league) {
-            const live = (0, matchData_1.findLiveUpdates)(list[leagueName], data[leagueName]);
-            if (live.length !== 0) {
-                for (const match of live) {
-                    yield (0, fcm_1.sentNotifiLive)(match.matchId);
+            const insertData = yield (0, matchData_1.matchDataTranslator)(newData);
+            const supplementRes = yield (0, matchData_1.supplement)(insertData);
+            if (supplementRes.status) {
+                const res = yield scheduler_dao_1.schedulerDao.post(insertData);
+                if (res && supplementRes.filterdMatch.length > 0) {
+                    yield (0, matchData_1.supplementMatchList)(supplementRes.filterdMatch);
                 }
             }
-            list[leagueName] = data[leagueName];
+            for (const leagueName of league) {
+                const live = (0, matchData_1.findLiveUpdates)(list[leagueName], data[leagueName]);
+                if (live.length !== 0) {
+                    for (const match of live) {
+                        yield (0, fcm_1.sentNotifiLive)(match.matchId);
+                    }
+                }
+                list[leagueName] = data[leagueName];
+            }
+            if (date !== null) {
+                yield db_redis_1.default.set(`prevMatchList_${date}`, JSON.stringify(list));
+            }
         }
-        if (date !== null) {
-            yield db_redis_1.default.set(`prevMatchList_${date}`, JSON.stringify(list));
+        catch (error) {
+            console.error("Error in schedulerService.post:", error);
+            console.error("Data causing error:", JSON.stringify(data));
         }
     }),
     batch: (data) => __awaiter(void 0, void 0, void 0, function* () {
