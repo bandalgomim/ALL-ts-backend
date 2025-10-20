@@ -13,10 +13,10 @@ export const versionCheckService = {
         console.log(version);
 
         let check: boolean;
-        if (version.appVersion !== "1.3.6") {
-            check = false;
-        } else {
+        if (version.appVersion === "1.3.6" || version.appVersion === "1.3.7") {
             check = true;
+        } else {
+            check = false;
         }
         const res: BaseApiResponse<boolean> = {
             ...status.SUCCESS.body,

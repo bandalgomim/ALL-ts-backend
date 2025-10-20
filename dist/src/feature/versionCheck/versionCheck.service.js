@@ -15,11 +15,11 @@ exports.versionCheckService = {
     post: (version) => __awaiter(void 0, void 0, void 0, function* () {
         console.log(version);
         let check;
-        if (version.appVersion !== "1.3.6") {
-            check = false;
+        if (version.appVersion === "1.3.6" || version.appVersion === "1.3.7") {
+            check = true;
         }
         else {
-            check = true;
+            check = false;
         }
         const res = Object.assign(Object.assign({}, response_status_1.status.SUCCESS.body), { result: check });
         return res;
