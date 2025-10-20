@@ -20,7 +20,6 @@ exports.IAMDao = {
         try {
             const [CheckId] = yield connection.query(IAM_sql_1.IAMSql.getLogin, [body.userId]);
             const isExistUser = CheckId[0].isExistUser;
-            console.log("in IAM DAO, isEmailExist: ", CheckId);
             if (isExistUser) {
                 return -1;
             }

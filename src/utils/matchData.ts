@@ -151,7 +151,7 @@ export async function matchDataTranslator(data: postSchedulerReqDto | postRankRe
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     for (const [ league, items ] of Object.entries(data)) {
         for (const item of items) {
-            const found = leagueTag.find((tag) => tag.league_tag === item.leagueId);
+            const found = leagueTag.find((tag) => tag.league_tag === item.leagueId || tag.league_id === item.leagueId);
             item.leagueId = found?.league_id ?? item.leagueId;
             item.seasonId = found?.season_id ?? null; // 기존 로직 유지
             const homeTag = item.homeTeamId;
@@ -244,4 +244,27 @@ export async function supplementMatchList(data: schedulerDto[]) {
     // YYYY-MM-DD 형식으로 출력
     const maxNext = nextDate.toISOString().split("T")[0] + "-";
     await schedulerDao.getUserMatchList([ ...teamIdSet ].map((id) => Number(id)), minDate, maxNext);
+}
+
+export function findLiveUpdates(list: schedulerDto[], data: schedulerDto[])  {
+    const oldMap = new Map(list.map((m) => [ m.matchId, m ]));
+    const liveUpdates: schedulerDto[] = [];
+
+    for (const match of data) {
+        if (match.status !== "live") continue; // live만 관심 있음
+        const prev = oldMap.get(match.matchId);
+
+        // 1️⃣ next → live 로 바뀐 경우
+        if (prev && prev.status === "next") {
+            liveUpdates.push(match);
+        // eslint-disable-next-line @stylistic/brace-style
+        }
+
+        // 2️⃣ 기존엔 없고 새로 생긴 live
+        else if (!prev) {
+            liveUpdates.push(match);
+        }
+    }
+
+    return liveUpdates;
 }

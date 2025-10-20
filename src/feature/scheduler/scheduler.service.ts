@@ -3,7 +3,8 @@ import { RowDataPacket } from "mysql2";
 import redisClient from "../../../config/db.redis";
 import { schedulerDao } from "../../models/scheduler/scheduler.dao";
 import { postBatchSchedulerReqDto, postSchedulerReqDto } from "../../models/scheduler/scheduler.dto";
-import { concatByLeague, makePrevMatchList, matchDataTranslator, setPrevData, supplement, supplementMatchList } from "../../utils/matchData";
+import { concatByLeague, findLiveUpdates, makePrevMatchList, matchDataTranslator, setPrevData, supplement, supplementMatchList } from "../../utils/matchData";
+import { sentNotifiLive } from "../../utils/fcm/fcm";
 
 export const schedulerService = {
     get: async (date: string) => {
@@ -50,71 +51,89 @@ export const schedulerService = {
           return res;
     },
     post: async (data: postSchedulerReqDto, date: string | null) => {
-        const prevMatchListRedis = await redisClient.get(`prevMatchList_${date}`) as string;
-        let list: postSchedulerReqDto;
-        if (!prevMatchListRedis && (date === null)) {
-            list = makePrevMatchList();
-        } else {
-            list = JSON.parse(prevMatchListRedis);
-        }
-
-        const league = Object.keys(data);
-        const newData: postSchedulerReqDto = {};
-        for (const league in data) {
-            if (!newData[league]) newData[league] = [];
-            const prevItems = list[league] ?? [];
-            if (!data[league] || data[league].length === 0) {
-                continue;
+        try {
+            const prevMatchListRedis = await redisClient.get(`prevMatchList_${date}`) as string;
+            let list: postSchedulerReqDto;
+            if (!prevMatchListRedis && (date === null)) {
+                list = makePrevMatchList();
             } else {
-                for (const item of data[league]) {
-                    if (item.homeTeamId === "TBD" || item.awayTeamId === "TBD" || item.homeTeamId === "?" || item.awayTeamId === "?") { continue; }
-                    if (!prevItems.includes(item)) {
+                list = JSON.parse(prevMatchListRedis);
+            }
+
+            const league = Object.keys(data);
+            const newData: postSchedulerReqDto = {};
+
+            for (const leagueName of league) {
+                const incoming = (data as postSchedulerReqDto)[leagueName];
+                if (!Array.isArray(incoming) || incoming.length === 0) {
+                    continue;
+                }
+            }
+            for (const league in data) {
+                if (!newData[league]) newData[league] = [];
+                const prevItems = list[league] ?? [];
+                if (!data[league] || data[league].length === 0) {
+                    continue;
+                } else {
+                    for (const item of data[league]) {
+                        if (item.homeTeamId === "TBD" || item.awayTeamId === "TBD" || item.homeTeamId === "?" || item.awayTeamId === "?") { continue; }
+                        if (!prevItems.includes(item)) {
                         // doubleHeader 판정
-                        let isDoubleHeader = false;
-                        for (const exist of newData[league]) {
-                            if (
-                                exist.date === item.date
+                            let isDoubleHeader = false;
+                            for (const exist of newData[league]) {
+                                if (
+                                    exist.date === item.date
                                 && exist.homeTeamId === item.homeTeamId
                                 && exist.awayTeamId === item.awayTeamId
                                 && exist.time !== item.time
-                            ) {
-                                isDoubleHeader = true;
-                                break;
-                            }
-                        }
-                        if (!isDoubleHeader) {
-                            for (const exist of prevItems) {
-                                if (
-                                    exist.date === item.date
-                                    && exist.homeTeamId === item.homeTeamId
-                                    && exist.awayTeamId === item.awayTeamId
-                                    && exist.time !== item.time
                                 ) {
                                     isDoubleHeader = true;
                                     break;
                                 }
                             }
+                            if (!isDoubleHeader) {
+                                for (const exist of prevItems) {
+                                    if (
+                                        exist.date === item.date
+                                    && exist.homeTeamId === item.homeTeamId
+                                    && exist.awayTeamId === item.awayTeamId
+                                    && exist.time !== item.time
+                                    ) {
+                                        isDoubleHeader = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            item.doubleHeader = isDoubleHeader ? 2 : 1;
+                            newData[league].push(item);
                         }
-                        item.doubleHeader = isDoubleHeader ? 2 : 1;
-                        newData[league].push(item);
                     }
                 }
             }
-        }
-        const insertData = await matchDataTranslator(newData);
-        const supplementRes = await supplement(insertData);
+            const insertData = await matchDataTranslator(newData);
+            const supplementRes = await supplement(insertData);
 
-        if (supplementRes.status) {
-            const res = await schedulerDao.post(insertData);
-            if (res && supplementRes.filterdMatch.length > 0) {
-                await supplementMatchList(supplementRes.filterdMatch);
+            if (supplementRes.status) {
+                const res = await schedulerDao.post(insertData);
+                if (res && supplementRes.filterdMatch.length > 0) {
+                    await supplementMatchList(supplementRes.filterdMatch);
+                }
             }
-        }
-        for (const leagueName of league) {
-            list[leagueName] = data[leagueName];
-        }
-        if (date !== null) {
-            await redisClient.set(`prevMatchList_${date}`, JSON.stringify(list));
+            for (const leagueName of league) {
+                const live = findLiveUpdates(list[leagueName], data[leagueName]);
+                if (live.length !== 0) {
+                    for (const match of live) {
+                        await sentNotifiLive(match.matchId as string);
+                    }
+                }
+                list[leagueName] = data[leagueName];
+            }
+            if (date !== null) {
+                await redisClient.set(`prevMatchList_${date}`, JSON.stringify(list));
+            }
+        } catch (error) {
+            console.error("Error in schedulerService.post:", error);
+            console.error("Data causing error:", JSON.stringify(data));
         }
     },
     batch: async (data: postBatchSchedulerReqDto) => {

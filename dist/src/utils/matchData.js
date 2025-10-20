@@ -23,6 +23,7 @@ exports.matchDataTranslator = matchDataTranslator;
 exports.rankTranslator = rankTranslator;
 exports.supplement = supplement;
 exports.supplementMatchList = supplementMatchList;
+exports.findLiveUpdates = findLiveUpdates;
 const db_redis_1 = __importDefault(require("../../config/db.redis"));
 const getTag_dao_1 = require("../models/matchData/getTag/getTag.dao");
 const scheduler_dao_1 = require("../models/scheduler/scheduler.dao");
@@ -163,7 +164,7 @@ function matchDataTranslator(data) {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         for (const [league, items] of Object.entries(data)) {
             for (const item of items) {
-                const found = leagueTag.find((tag) => tag.league_tag === item.leagueId);
+                const found = leagueTag.find((tag) => tag.league_tag === item.leagueId || tag.league_id === item.leagueId);
                 item.leagueId = (_a = found === null || found === void 0 ? void 0 : found.league_id) !== null && _a !== void 0 ? _a : item.leagueId;
                 item.seasonId = (_b = found === null || found === void 0 ? void 0 : found.season_id) !== null && _b !== void 0 ? _b : null; // 기존 로직 유지
                 const homeTag = item.homeTeamId;
@@ -259,4 +260,23 @@ function supplementMatchList(data) {
         const maxNext = nextDate.toISOString().split("T")[0] + "-";
         yield scheduler_dao_1.schedulerDao.getUserMatchList([...teamIdSet].map((id) => Number(id)), minDate, maxNext);
     });
+}
+function findLiveUpdates(list, data) {
+    const oldMap = new Map(list.map((m) => [m.matchId, m]));
+    const liveUpdates = [];
+    for (const match of data) {
+        if (match.status !== "live")
+            continue; // live만 관심 있음
+        const prev = oldMap.get(match.matchId);
+        // 1️⃣ next → live 로 바뀐 경우
+        if (prev && prev.status === "next") {
+            liveUpdates.push(match);
+            // eslint-disable-next-line @stylistic/brace-style
+        }
+        // 2️⃣ 기존엔 없고 새로 생긴 live
+        else if (!prev) {
+            liveUpdates.push(match);
+        }
+    }
+    return liveUpdates;
 }

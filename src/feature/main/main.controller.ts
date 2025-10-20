@@ -4,7 +4,6 @@ import { mainService } from "./main.service";
 export const mainController = {
     get: async (req: Request, res: Response) => {
         const userId = res.locals.userId;
-        console.log(userId);
         const result = await mainService.get(userId);
         res.json(result);
     },

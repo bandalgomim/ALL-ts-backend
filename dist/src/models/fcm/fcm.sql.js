@@ -22,6 +22,19 @@ exports.fcmSql = {
     AND
         mu.type = "highlight"
     `,
+    getLive: `SELECT
+        mi.match_id,
+        t1.team_name as home_team_name,
+        t2.team_name as away_team_name
+    FROM
+        match_info mi
+    LEFT JOIN
+        team t1 ON mi.home_team_id = t1.team_id
+    LEFT JOIN
+        team t2 ON mi.away_team_id = t2.team_id
+    WHERE
+        mi.match_id = ?
+    `,
     getFcmToken: `SELECT
         u.fcm_token
     FROM
