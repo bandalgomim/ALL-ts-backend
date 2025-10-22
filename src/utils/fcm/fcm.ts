@@ -12,6 +12,7 @@ export const sentNotifi = async (matchId: string) => {
     let tokens = await fcmDao.getFcmToken(matchId);
     tokens = Array.from(new Set(tokens));
     if (tokens.length !== 0) {
+        console.log("Sending FCM notifications to tokens:", tokens);
         await sendFCMToManyDevices(tokens, highlightInfo);
     }
 };

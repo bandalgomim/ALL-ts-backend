@@ -22,6 +22,7 @@ const sentNotifi = (matchId) => __awaiter(void 0, void 0, void 0, function* () {
     let tokens = yield fcm_dao_1.fcmDao.getFcmToken(matchId);
     tokens = Array.from(new Set(tokens));
     if (tokens.length !== 0) {
+        console.log("Sending FCM notifications to tokens:", tokens);
         yield (0, sendNotification_1.sendFCMToManyDevices)(tokens, highlightInfo);
     }
 });
