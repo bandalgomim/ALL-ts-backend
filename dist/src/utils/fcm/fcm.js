@@ -13,6 +13,7 @@ exports.sentNotifiLive = exports.sentNotifi = void 0;
 const fcm_dao_1 = require("../../models/fcm/fcm.dao");
 const sendNotification_1 = require("./sendNotification");
 const sentNotifi = (matchId) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("Preparing to send FCM notification for matchId:", matchId);
     const result = yield fcm_dao_1.fcmDao.get(matchId);
     const highlightInfo = {
         matchId: result[0].match_id,

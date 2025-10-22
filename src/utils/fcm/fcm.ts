@@ -3,6 +3,7 @@ import { highlightInfoDto } from "../../models/fcm/fcm.dto";
 import { sendFCMToManyDevices, sendFCMToManyDevicesLive } from "./sendNotification";
 
 export const sentNotifi = async (matchId: string) => {
+    console.log("Preparing to send FCM notification for matchId:", matchId);
     const result = await fcmDao.get(matchId);
     const highlightInfo: highlightInfoDto = {
         matchId: result[0].match_id,
