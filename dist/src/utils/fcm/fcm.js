@@ -40,6 +40,7 @@ const sentNotifiLive = (matchId) => __awaiter(void 0, void 0, void 0, function* 
     let tokens = yield fcm_dao_1.fcmDao.getFcmToken(matchId);
     tokens = Array.from(new Set(tokens));
     if (tokens.length !== 0) {
+        yield fcm_dao_1.fcmDao.postLiveAlarm(matchId);
         yield (0, sendNotification_1.sendFCMToManyDevicesLive)(tokens, highlightInfo);
     }
 });

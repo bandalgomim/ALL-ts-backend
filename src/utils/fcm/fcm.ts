@@ -29,6 +29,7 @@ export const sentNotifiLive = async (matchId: string) => {
     let tokens = await fcmDao.getFcmToken(matchId);
     tokens = Array.from(new Set(tokens));
     if (tokens.length !== 0) {
+        await fcmDao.postLiveAlarm(matchId);
         await sendFCMToManyDevicesLive(tokens, highlightInfo);
     }
 };
