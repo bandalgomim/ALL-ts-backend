@@ -21,6 +21,7 @@ export const sentNotifi = async (matchId: string) => {
 export const sentNotifiLive = async (matchId: string) => {
     if (!matchId) return;
     const result = await fcmDao.getLive(matchId);
+    if (!result[0]) return;
     const highlightInfo: highlightInfoDto = {
         matchId: result[0].match_id,
         homeTeamName: result[0].home_team_name,
