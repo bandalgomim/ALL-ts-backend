@@ -32,6 +32,8 @@ const sentNotifiLive = (matchId) => __awaiter(void 0, void 0, void 0, function* 
     if (!matchId)
         return;
     const result = yield fcm_dao_1.fcmDao.getLive(matchId);
+    if (!result[0])
+        return;
     const highlightInfo = {
         matchId: result[0].match_id,
         homeTeamName: result[0].home_team_name,
