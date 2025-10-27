@@ -18,10 +18,6 @@ function sendFCMToManyDevices(tokens, item) {
         for (let i = 0; i < tokens.length; i += BATCH_SIZE) {
             const batch = tokens.slice(i, i + BATCH_SIZE); // 배치로 나누기
             const message = {
-                notification: {
-                    title: "하이라이트",
-                    body: `${item.homeTeamName} vs ${item.awayTeamName}`
-                },
                 data: {
                     screen: "match",
                     matchId: String(item.matchId)
@@ -74,10 +70,6 @@ function sendFCMToManyDevicesLive(tokens, item) {
         for (let i = 0; i < tokens.length; i += BATCH_SIZE) {
             const batch = tokens.slice(i, i + BATCH_SIZE); // 배치로 나누기
             const message = {
-                notification: {
-                    title: "경기 시작!",
-                    body: `${item.homeTeamName} vs ${item.awayTeamName}`
-                },
                 data: {
                     screen: "match",
                     matchId: String(item.matchId)
