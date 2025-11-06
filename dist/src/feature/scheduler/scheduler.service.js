@@ -81,7 +81,7 @@ exports.schedulerService = {
                 }
                 else {
                     for (const item of data[league]) {
-                        if (item.homeTeamId === "TBD" || item.awayTeamId === "TBD" || item.homeTeamId === "?" || item.awayTeamId === "?" || item.homeTeamId === "미정" || item.awayTeamId === "미정정") {
+                        if (item.homeTeamId === "TBD" || item.awayTeamId === "TBD" || item.homeTeamId === "?" || item.awayTeamId === "?" || item.homeTeamId === "미정" || item.awayTeamId === "미정") {
                             continue;
                         }
                         if (!prevItems.includes(item)) {
