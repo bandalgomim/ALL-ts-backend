@@ -13,6 +13,7 @@ exports.sentNotifiLive = exports.sentNotifi = void 0;
 const fcm_dao_1 = require("../../models/fcm/fcm.dao");
 const sendNotification_1 = require("./sendNotification");
 const sentNotifi = (matchId) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("Preparing to send FCM notification for matchId:", matchId);
     const result = yield fcm_dao_1.fcmDao.get(matchId);
     const highlightInfo = {
         matchId: result[0].match_id,
@@ -22,6 +23,7 @@ const sentNotifi = (matchId) => __awaiter(void 0, void 0, void 0, function* () {
     let tokens = yield fcm_dao_1.fcmDao.getFcmToken(matchId);
     tokens = Array.from(new Set(tokens));
     if (tokens.length !== 0) {
+        console.log("Sending FCM notifications to tokens:", tokens);
         yield (0, sendNotification_1.sendFCMToManyDevices)(tokens, highlightInfo);
     }
 });
@@ -30,6 +32,8 @@ const sentNotifiLive = (matchId) => __awaiter(void 0, void 0, void 0, function* 
     if (!matchId)
         return;
     const result = yield fcm_dao_1.fcmDao.getLive(matchId);
+    if (!result[0])
+        return;
     const highlightInfo = {
         matchId: result[0].match_id,
         homeTeamName: result[0].home_team_name,
@@ -38,6 +42,7 @@ const sentNotifiLive = (matchId) => __awaiter(void 0, void 0, void 0, function* 
     let tokens = yield fcm_dao_1.fcmDao.getFcmToken(matchId);
     tokens = Array.from(new Set(tokens));
     if (tokens.length !== 0) {
+        yield fcm_dao_1.fcmDao.postLiveAlarm(matchId);
         yield (0, sendNotification_1.sendFCMToManyDevicesLive)(tokens, highlightInfo);
     }
 });

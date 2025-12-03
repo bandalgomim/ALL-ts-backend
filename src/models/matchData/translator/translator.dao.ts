@@ -26,7 +26,7 @@ export const translatorDao = {
 
             // 3) params 구성 (match_id, platform_id, type, url)
             for (const item of valid) {
-                if (item.type === "highlight" && !item.url) {
+                if (item.type === "highlight" && item.url) {
                     fcmMatchId.push(item.matchId as string);
                 }
                 params.push(

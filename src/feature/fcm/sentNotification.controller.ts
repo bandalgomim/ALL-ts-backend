@@ -12,6 +12,7 @@ export const sentNotification = async (matchId: string) => {
     let tokens = await fcmDao.getFcmToken(matchId);
     tokens = Array.from(new Set(tokens));
     if (tokens.length !== 0) {
+        console.log("Sending FCM notifications to tokens:", tokens);
         await sendFCMToManyDevices(tokens, highlightInfo);
     }
 };
@@ -19,6 +20,7 @@ export const sentNotification = async (matchId: string) => {
 export const sentNotificationLive = async (matchId: string) => {
     if (!matchId) return;
     const result = await fcmDao.getLive(matchId);
+    if (!result[0]) return;
     const highlightInfo: highlightInfoDto = {
         matchId: result[0].match_id,
         homeTeamName: result[0].home_team_name,
@@ -27,6 +29,7 @@ export const sentNotificationLive = async (matchId: string) => {
     let tokens = await fcmDao.getFcmToken(matchId);
     tokens = Array.from(new Set(tokens));
     if (tokens.length !== 0) {
+        await fcmDao.postLiveAlarm(matchId);
         await sendFCMToManyDevicesLive(tokens, highlightInfo);
     }
 };

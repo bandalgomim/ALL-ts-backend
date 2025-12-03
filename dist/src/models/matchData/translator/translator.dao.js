@@ -33,7 +33,7 @@ exports.translatorDao = {
             const placeholders = valid.map(() => "(?, ?, ?, ?)").join(", ");
             // 3) params 구성 (match_id, platform_id, type, url)
             for (const item of valid) {
-                if (item.type === "highlight" && !item.url) {
+                if (item.type === "highlight" && item.url) {
                     fcmMatchId.push(item.matchId);
                 }
                 params.push(item.matchId, item.platformId, item.type, item.url);

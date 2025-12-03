@@ -14,7 +14,7 @@ const response_status_1 = require("../../../config/response.status");
 exports.versionCheckService = {
     post: (version) => __awaiter(void 0, void 0, void 0, function* () {
         let check;
-        if (version.appVersion === "1.3.7" || version.appVersion === "1.3.8") {
+        if (version.appVersion === "1.3.8") {
             check = true;
         }
         else {
