@@ -4,7 +4,7 @@ import { ResultSetHeader } from "mysql2/promise";
 import { status } from "../../../../config/response.status";
 import { ApiError } from "../../../../config/error";
 import { translatorDto } from "./translator.dto";
-import { sentNotifi } from "../../../utils/fcm/fcm";
+import { sentNotification } from "../../../feature/fcm/sentNotification.controller";
 
 export const translatorDao = {
     post: async (data: translatorDto[]) => {
@@ -52,7 +52,7 @@ export const translatorDao = {
         } finally {
             connection.release();
             for (const matchId of fcmMatchId) {
-                await sentNotifi(matchId);
+                await sentNotification(matchId);
             }
         }
     }

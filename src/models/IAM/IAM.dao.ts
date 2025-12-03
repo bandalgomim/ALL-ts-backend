@@ -1,8 +1,8 @@
 import { IAMSql } from "./IAM.sql";
-import { getPool }  from "./../../../../config/db.pool";
+import { getPool }  from "../../../config/db.pool";
 import { ResultSetHeader, RowDataPacket } from "mysql2/promise";
-import { status } from "../../../../config/response.status";
-import { ApiError } from "../../../../config/error";
+import { status } from "../../../config/response.status";
+import { ApiError } from "../../../config/error";
 import { postSignUpDto } from "./IAM.dto";
 
 export const IAMDao = {

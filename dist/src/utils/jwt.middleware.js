@@ -14,7 +14,7 @@ const jwt_utils_1 = require("./jwt.utils");
 const response_status_1 = require("../../config/response.status");
 const dotenv_1 = require("dotenv");
 const error_1 = require("../../config/error");
-const IAM_controller_1 = require("../feature/auth/IAM/IAM.controller");
+const IAM_controller_1 = require("../feature/IAM/IAM.controller");
 const google_auth_library_1 = require("google-auth-library");
 const jose_1 = require("jose");
 (0, dotenv_1.config)();

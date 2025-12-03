@@ -1,0 +1,67 @@
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.IAMController = void 0;
+const IAM_service_1 = require("./IAM.service");
+const setHeader = (res, Authorization, RefreshToken) => {
+    res.setHeader("Authorization", "Bearer " + Authorization); // 액세스 토큰을 헤더에 설정
+    res.setHeader("RefreshToken", RefreshToken); // 리프레시 토큰을 헤더에 설정
+};
+exports.IAMController = {
+    login: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const result = yield IAM_service_1.IAMService.login(res.locals.userId);
+        if (result[0] === true) {
+            setHeader(res, result[1], result[2]);
+        }
+        try {
+            res.status(200).json({ success: result[0], icon: res.locals.icon });
+        }
+        catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    }),
+    signUp: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const result = yield IAM_service_1.IAMService.signUp(res.locals);
+        if (result[0] === true) {
+            setHeader(res, result[1], result[2]);
+        }
+        try {
+            res.status(200).json({ success: result[0], icon: res.locals.icon });
+        }
+        catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    }),
+    refreshToken: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const headers = {
+            Authorization: req.headers.authorization,
+            RefreshToken: req.headers.refreshtoken
+        };
+        const result = yield IAM_service_1.IAMService.refreshToken(headers);
+        setHeader(res, result, headers.RefreshToken);
+        try {
+            res.status(200).json();
+        }
+        catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    }),
+    delete: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const userId = res.locals.userId;
+        try {
+            yield IAM_service_1.IAMService.delete(userId);
+            res.status(200).json({ success: true });
+        }
+        catch (error) {
+            res.status(200).json({ success: false });
+        }
+    })
+};

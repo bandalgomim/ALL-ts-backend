@@ -14,7 +14,7 @@ const main_route_1 = require("./route/main/main.route");
 const team_route_1 = require("./route/team/team.route");
 const isSelected_route_1 = require("./route/isSelected/isSelected.route");
 const icon_route_1 = require("./route/icon/icon.route");
-const auth_route_1 = require("./route/auth/auth.route");
+const IAM_route_1 = require("./route/auth/IAM.route");
 const fcmToken_route_1 = require("./route/fcmToken/fcmToken.route");
 const node_cron_1 = __importDefault(require("node-cron"));
 const league_route_1 = require("./route/league/league.route");
@@ -30,7 +30,7 @@ function App() {
     app.use(express_1.default.static("public")); // 정적 파일 접근
     app.use(express_1.default.json()); // request의 본문을 json으로 해석할 수 있도록 함 (JSON 형태의 요청 body를 파싱하기 위함)
     app.use(express_1.default.urlencoded({ extended: false }));
-    app.use("/auth", (0, express_async_handler_1.default)(auth_route_1.authRouter));
+    app.use("/auth", (0, express_async_handler_1.default)(IAM_route_1.authRouter));
     app.use("/fcmToken", (0, express_async_handler_1.default)(jwt_middleware_1.tokenMinddleware.auth), (0, express_async_handler_1.default)(fcmToken_route_1.fcmTokenRouter));
     app.use("/main", (0, express_async_handler_1.default)(jwt_middleware_1.tokenMinddleware.auth), (0, express_async_handler_1.default)(main_route_1.mainRouter));
     app.use("/team", (0, express_async_handler_1.default)(jwt_middleware_1.tokenMinddleware.auth), (0, express_async_handler_1.default)(team_route_1.teamRouter));

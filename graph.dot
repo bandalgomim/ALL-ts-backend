@@ -1,0 +1,202 @@
+strict digraph "dependency-cruiser output"{
+    rankdir="LR" splines="true" overlap="false" nodesep="0.16" ranksep="0.18" fontname="Helvetica-bold" fontsize="9" style="rounded,bold,filled" fillcolor="#ffffff" compound="true"
+    node [shape="box" style="rounded, filled" height="0.2" color="black" fillcolor="#ffffcc" fontcolor="black" fontname="Helvetica" fontsize="9"]
+    edge [arrowhead="normal" arrowsize="0.6" penwidth="2.0" color="#00000033" fontname="Helvetica" fontsize="9"]
+
+    subgraph "cluster_src" {label="src" "src/app.ts" [label=<app.ts> tooltip="app.ts" URL="src/app.ts" fillcolor="#ddfeff"] }
+    "src/app.ts" -> "src/feature/searchTag/searchTag.service.ts"
+    "src/app.ts" -> "src/route/auth/auth.route.ts"
+    "src/app.ts" -> "src/route/fcmToken/fcmToken.route.ts"
+    "src/app.ts" -> "src/route/icon/icon.route.ts"
+    "src/app.ts" -> "src/route/isSelected/isSelected.route.ts"
+    "src/app.ts" -> "src/route/league/league.route.ts"
+    "src/app.ts" -> "src/route/main/main.route.ts"
+    "src/app.ts" -> "src/route/match/match.route.ts"
+    "src/app.ts" -> "src/route/matchData/matchData.route.ts"
+    "src/app.ts" -> "src/route/scheduler/scheduler.route.ts"
+    "src/app.ts" -> "src/route/searchTag/searchTag.route.ts"
+    "src/app.ts" -> "src/route/team/team.route.ts"
+    "src/app.ts" -> "src/route/versionCheck/versionCheck.route.ts"
+    "src/app.ts" -> "src/utils/jwt.middleware.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/fcmToken" {label="fcmToken" "src/fcmToken/fcmToken.controller.ts" [label=<fcmToken.controller.ts> tooltip="fcmToken.controller.ts" URL="src/fcmToken/fcmToken.controller.ts" fillcolor="#ddfeff"] } }
+    "src/fcmToken/fcmToken.controller.ts" -> "src/fcmToken/fcmToken.service.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/fcmToken" {label="fcmToken" "src/fcmToken/fcmToken.service.ts" [label=<fcmToken.service.ts> tooltip="fcmToken.service.ts" URL="src/fcmToken/fcmToken.service.ts" fillcolor="#ddfeff"] } }
+    "src/fcmToken/fcmToken.service.ts" -> "src/models/fcm/fcm.dao.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/feature" {label="feature" subgraph "cluster_src/feature/auth" {label="auth" subgraph "cluster_src/feature/auth/IAM" {label="IAM" "src/feature/auth/IAM/IAM.controller.ts" [label=<IAM.controller.ts> tooltip="IAM.controller.ts" URL="src/feature/auth/IAM/IAM.controller.ts" fillcolor="#ddfeff"] } } } }
+    "src/feature/auth/IAM/IAM.controller.ts" -> "src/feature/auth/IAM/IAM.service.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/feature" {label="feature" subgraph "cluster_src/feature/auth" {label="auth" subgraph "cluster_src/feature/auth/IAM" {label="IAM" "src/feature/auth/IAM/IAM.service.ts" [label=<IAM.service.ts> tooltip="IAM.service.ts" URL="src/feature/auth/IAM/IAM.service.ts" fillcolor="#ddfeff"] } } } }
+    "src/feature/auth/IAM/IAM.service.ts" -> "src/models/auth/IAM/IAM.dao.ts"
+    "src/feature/auth/IAM/IAM.service.ts" -> "src/utils/jwt.utils.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/feature" {label="feature" subgraph "cluster_src/feature/auth" {label="auth" subgraph "cluster_src/feature/auth/redirect" {label="redirect" "src/feature/auth/redirect/redirect.controller.ts" [label=<redirect.controller.ts> tooltip="redirect.controller.ts" URL="src/feature/auth/redirect/redirect.controller.ts" fillcolor="#ddfeff"] } } } }
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/feature" {label="feature" subgraph "cluster_src/feature/auth" {label="auth" subgraph "cluster_src/feature/auth/sns" {label="sns" "src/feature/auth/sns/sns.controller.ts" [label=<sns.controller.ts> tooltip="sns.controller.ts" URL="src/feature/auth/sns/sns.controller.ts" fillcolor="#ddfeff"] } } } }
+    "src/feature/auth/sns/sns.controller.ts" -> "src/feature/auth/sns/sns.service.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/feature" {label="feature" subgraph "cluster_src/feature/auth" {label="auth" subgraph "cluster_src/feature/auth/sns" {label="sns" "src/feature/auth/sns/sns.service.ts" [label=<sns.service.ts> tooltip="sns.service.ts" URL="src/feature/auth/sns/sns.service.ts" fillcolor="#ddfeff"] } } } }
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/feature" {label="feature" subgraph "cluster_src/feature/icon" {label="icon" "src/feature/icon/icon.controller.ts" [label=<icon.controller.ts> tooltip="icon.controller.ts" URL="src/feature/icon/icon.controller.ts" fillcolor="#ddfeff"] } } }
+    "src/feature/icon/icon.controller.ts" -> "src/feature/icon/icon.service.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/feature" {label="feature" subgraph "cluster_src/feature/icon" {label="icon" "src/feature/icon/icon.service.ts" [label=<icon.service.ts> tooltip="icon.service.ts" URL="src/feature/icon/icon.service.ts" fillcolor="#ddfeff"] } } }
+    "src/feature/icon/icon.service.ts" -> "src/models/icon/icon.dao.ts"
+    "src/feature/icon/icon.service.ts" -> "src/feature/league/league.service.ts"
+    "src/feature/icon/icon.service.ts" -> "src/feature/team/team.service.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/feature" {label="feature" subgraph "cluster_src/feature/isSelected" {label="isSelected" "src/feature/isSelected/isSelected.controller.ts" [label=<isSelected.controller.ts> tooltip="isSelected.controller.ts" URL="src/feature/isSelected/isSelected.controller.ts" fillcolor="#ddfeff"] } } }
+    "src/feature/isSelected/isSelected.controller.ts" -> "src/feature/isSelected/isSelected.service.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/feature" {label="feature" subgraph "cluster_src/feature/isSelected" {label="isSelected" "src/feature/isSelected/isSelected.service.ts" [label=<isSelected.service.ts> tooltip="isSelected.service.ts" URL="src/feature/isSelected/isSelected.service.ts" fillcolor="#ddfeff"] } } }
+    "src/feature/isSelected/isSelected.service.ts" -> "src/models/isSelected/isSelected.dao.ts"
+    "src/feature/isSelected/isSelected.service.ts" -> "src/feature/main/main.service.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/feature" {label="feature" subgraph "cluster_src/feature/league" {label="league" "src/feature/league/league.controller.ts" [label=<league.controller.ts> tooltip="league.controller.ts" URL="src/feature/league/league.controller.ts" fillcolor="#ddfeff"] } } }
+    "src/feature/league/league.controller.ts" -> "src/feature/league/league.service.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/feature" {label="feature" subgraph "cluster_src/feature/league" {label="league" "src/feature/league/league.service.ts" [label=<league.service.ts> tooltip="league.service.ts" URL="src/feature/league/league.service.ts" fillcolor="#ddfeff"] } } }
+    "src/feature/league/league.service.ts" -> "src/models/league/league.dao.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/feature" {label="feature" subgraph "cluster_src/feature/main" {label="main" "src/feature/main/main.controller.ts" [label=<main.controller.ts> tooltip="main.controller.ts" URL="src/feature/main/main.controller.ts" fillcolor="#ddfeff"] } } }
+    "src/feature/main/main.controller.ts" -> "src/feature/main/main.service.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/feature" {label="feature" subgraph "cluster_src/feature/main" {label="main" "src/feature/main/main.service.ts" [label=<main.service.ts> tooltip="main.service.ts" URL="src/feature/main/main.service.ts" fillcolor="#ddfeff"] } } }
+    "src/feature/main/main.service.ts" -> "src/models/main/main.dao.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/feature" {label="feature" subgraph "cluster_src/feature/match" {label="match" "src/feature/match/match.controller.ts" [label=<match.controller.ts> tooltip="match.controller.ts" URL="src/feature/match/match.controller.ts" fillcolor="#ddfeff"] } } }
+    "src/feature/match/match.controller.ts" -> "src/feature/match/match.service.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/feature" {label="feature" subgraph "cluster_src/feature/match" {label="match" "src/feature/match/match.service.ts" [label=<match.service.ts> tooltip="match.service.ts" URL="src/feature/match/match.service.ts" fillcolor="#ddfeff"] } } }
+    "src/feature/match/match.service.ts" -> "src/models/match/match.dao.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/feature" {label="feature" subgraph "cluster_src/feature/matchData" {label="matchData" subgraph "cluster_src/feature/matchData/rank" {label="rank" "src/feature/matchData/rank/rank.controller.ts" [label=<rank.controller.ts> tooltip="rank.controller.ts" URL="src/feature/matchData/rank/rank.controller.ts" fillcolor="#ddfeff"] } } } }
+    "src/feature/matchData/rank/rank.controller.ts" -> "src/feature/matchData/rank/rank.service.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/feature" {label="feature" subgraph "cluster_src/feature/matchData" {label="matchData" subgraph "cluster_src/feature/matchData/rank" {label="rank" "src/feature/matchData/rank/rank.service.ts" [label=<rank.service.ts> tooltip="rank.service.ts" URL="src/feature/matchData/rank/rank.service.ts" fillcolor="#ddfeff"] } } } }
+    "src/feature/matchData/rank/rank.service.ts" -> "src/models/matchData/rank/rank.dao.ts"
+    "src/feature/matchData/rank/rank.service.ts" -> "src/utils/matchData.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/feature" {label="feature" subgraph "cluster_src/feature/matchData" {label="matchData" subgraph "cluster_src/feature/matchData/translator" {label="translator" "src/feature/matchData/translator/translator.controller.ts" [label=<translator.controller.ts> tooltip="translator.controller.ts" URL="src/feature/matchData/translator/translator.controller.ts" fillcolor="#ddfeff"] } } } }
+    "src/feature/matchData/translator/translator.controller.ts" -> "src/feature/matchData/translator/translator.service.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/feature" {label="feature" subgraph "cluster_src/feature/matchData" {label="matchData" subgraph "cluster_src/feature/matchData/translator" {label="translator" "src/feature/matchData/translator/translator.service.ts" [label=<translator.service.ts> tooltip="translator.service.ts" URL="src/feature/matchData/translator/translator.service.ts" fillcolor="#ddfeff"] } } } }
+    "src/feature/matchData/translator/translator.service.ts" -> "src/models/matchData/getMatchId/getMatchId.dao.ts"
+    "src/feature/matchData/translator/translator.service.ts" -> "src/models/matchData/getTag/getTag.dao.ts"
+    "src/feature/matchData/translator/translator.service.ts" -> "src/models/matchData/translator/translator.dao.ts"
+    "src/feature/matchData/translator/translator.service.ts" -> "src/utils/translator.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/feature" {label="feature" subgraph "cluster_src/feature/matchData" {label="matchData" subgraph "cluster_src/feature/matchData/uri" {label="uri" "src/feature/matchData/uri/uri.controller.ts" [label=<uri.controller.ts> tooltip="uri.controller.ts" URL="src/feature/matchData/uri/uri.controller.ts" fillcolor="#ddfeff"] } } } }
+    "src/feature/matchData/uri/uri.controller.ts" -> "src/feature/matchData/uri/uri.service.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/feature" {label="feature" subgraph "cluster_src/feature/matchData" {label="matchData" subgraph "cluster_src/feature/matchData/uri" {label="uri" "src/feature/matchData/uri/uri.service.ts" [label=<uri.service.ts> tooltip="uri.service.ts" URL="src/feature/matchData/uri/uri.service.ts" fillcolor="#ddfeff"] } } } }
+    "src/feature/matchData/uri/uri.service.ts" -> "src/utils/matchData.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/feature" {label="feature" subgraph "cluster_src/feature/scheduler" {label="scheduler" "src/feature/scheduler/scheduler.controller.ts" [label=<scheduler.controller.ts> tooltip="scheduler.controller.ts" URL="src/feature/scheduler/scheduler.controller.ts" fillcolor="#ddfeff"] } } }
+    "src/feature/scheduler/scheduler.controller.ts" -> "src/feature/scheduler/scheduler.service.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/feature" {label="feature" subgraph "cluster_src/feature/scheduler" {label="scheduler" "src/feature/scheduler/scheduler.service.ts" [label=<scheduler.service.ts> tooltip="scheduler.service.ts" URL="src/feature/scheduler/scheduler.service.ts" fillcolor="#ddfeff"] } } }
+    "src/feature/scheduler/scheduler.service.ts" -> "src/models/scheduler/scheduler.dao.ts"
+    "src/feature/scheduler/scheduler.service.ts" -> "src/utils/fcm/fcm.ts"
+    "src/feature/scheduler/scheduler.service.ts" -> "src/utils/matchData.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/feature" {label="feature" subgraph "cluster_src/feature/searchTag" {label="searchTag" "src/feature/searchTag/searchTag.controller.ts" [label=<searchTag.controller.ts> tooltip="searchTag.controller.ts" URL="src/feature/searchTag/searchTag.controller.ts" fillcolor="#ddfeff"] } } }
+    "src/feature/searchTag/searchTag.controller.ts" -> "src/feature/searchTag/searchTag.service.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/feature" {label="feature" subgraph "cluster_src/feature/searchTag" {label="searchTag" "src/feature/searchTag/searchTag.service.ts" [label=<searchTag.service.ts> tooltip="searchTag.service.ts" URL="src/feature/searchTag/searchTag.service.ts" fillcolor="#ddfeff"] } } }
+    "src/feature/searchTag/searchTag.service.ts" -> "src/models/searchTag/serchTag.dao.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/feature" {label="feature" subgraph "cluster_src/feature/team" {label="team" "src/feature/team/team.controller.ts" [label=<team.controller.ts> tooltip="team.controller.ts" URL="src/feature/team/team.controller.ts" fillcolor="#ddfeff"] } } }
+    "src/feature/team/team.controller.ts" -> "src/feature/team/team.service.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/feature" {label="feature" subgraph "cluster_src/feature/team" {label="team" "src/feature/team/team.service.ts" [label=<team.service.ts> tooltip="team.service.ts" URL="src/feature/team/team.service.ts" fillcolor="#ddfeff"] } } }
+    "src/feature/team/team.service.ts" -> "src/models/team/team.dao.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/feature" {label="feature" subgraph "cluster_src/feature/versionCheck" {label="versionCheck" "src/feature/versionCheck/versionCheck.controller.ts" [label=<versionCheck.controller.ts> tooltip="versionCheck.controller.ts" URL="src/feature/versionCheck/versionCheck.controller.ts" fillcolor="#ddfeff"] } } }
+    "src/feature/versionCheck/versionCheck.controller.ts" -> "src/feature/versionCheck/versionCheck.service.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/feature" {label="feature" subgraph "cluster_src/feature/versionCheck" {label="versionCheck" "src/feature/versionCheck/versionCheck.service.ts" [label=<versionCheck.service.ts> tooltip="versionCheck.service.ts" URL="src/feature/versionCheck/versionCheck.service.ts" fillcolor="#ddfeff"] } } }
+    subgraph "cluster_src" {label="src" "src/main.ts" [label=<main.ts> tooltip="main.ts" URL="src/main.ts" fillcolor="#ddfeff"] }
+    "src/main.ts" -> "src/app.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/models" {label="models" subgraph "cluster_src/models/auth" {label="auth" subgraph "cluster_src/models/auth/IAM" {label="IAM" "src/models/auth/IAM/IAM.dao.ts" [label=<IAM.dao.ts> tooltip="IAM.dao.ts" URL="src/models/auth/IAM/IAM.dao.ts" fillcolor="#ddfeff"] } } } }
+    "src/models/auth/IAM/IAM.dao.ts" -> "src/models/auth/IAM/IAM.sql.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/models" {label="models" subgraph "cluster_src/models/auth" {label="auth" subgraph "cluster_src/models/auth/IAM" {label="IAM" "src/models/auth/IAM/IAM.dto.ts" [label=<IAM.dto.ts> tooltip="IAM.dto.ts" URL="src/models/auth/IAM/IAM.dto.ts" fillcolor="#ccffcc"] } } } }
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/models" {label="models" subgraph "cluster_src/models/auth" {label="auth" subgraph "cluster_src/models/auth/IAM" {label="IAM" "src/models/auth/IAM/IAM.sql.ts" [label=<IAM.sql.ts> tooltip="IAM.sql.ts" URL="src/models/auth/IAM/IAM.sql.ts" fillcolor="#ddfeff"] } } } }
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/models" {label="models" subgraph "cluster_src/models/fcm" {label="fcm" "src/models/fcm/fcm.dao.ts" [label=<fcm.dao.ts> tooltip="fcm.dao.ts" URL="src/models/fcm/fcm.dao.ts" fillcolor="#ddfeff"] } } }
+    "src/models/fcm/fcm.dao.ts" -> "src/models/fcm/fcm.sql.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/models" {label="models" subgraph "cluster_src/models/fcm" {label="fcm" "src/models/fcm/fcm.dto.ts" [label=<fcm.dto.ts> tooltip="fcm.dto.ts" URL="src/models/fcm/fcm.dto.ts" fillcolor="#ccffcc"] } } }
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/models" {label="models" subgraph "cluster_src/models/fcm" {label="fcm" "src/models/fcm/fcm.sql.ts" [label=<fcm.sql.ts> tooltip="fcm.sql.ts" URL="src/models/fcm/fcm.sql.ts" fillcolor="#ddfeff"] } } }
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/models" {label="models" subgraph "cluster_src/models/icon" {label="icon" "src/models/icon/icon.dao.ts" [label=<icon.dao.ts> tooltip="icon.dao.ts" URL="src/models/icon/icon.dao.ts" fillcolor="#ddfeff"] } } }
+    "src/models/icon/icon.dao.ts" -> "src/models/icon/icon.sql.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/models" {label="models" subgraph "cluster_src/models/icon" {label="icon" "src/models/icon/icon.dto.ts" [label=<icon.dto.ts> tooltip="icon.dto.ts" URL="src/models/icon/icon.dto.ts" fillcolor="#ccffcc"] } } }
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/models" {label="models" subgraph "cluster_src/models/icon" {label="icon" "src/models/icon/icon.sql.ts" [label=<icon.sql.ts> tooltip="icon.sql.ts" URL="src/models/icon/icon.sql.ts" fillcolor="#ddfeff"] } } }
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/models" {label="models" subgraph "cluster_src/models/isSelected" {label="isSelected" "src/models/isSelected/isSelected.dao.ts" [label=<isSelected.dao.ts> tooltip="isSelected.dao.ts" URL="src/models/isSelected/isSelected.dao.ts" fillcolor="#ddfeff"] } } }
+    "src/models/isSelected/isSelected.dao.ts" -> "src/models/isSelected/isSelected.sql.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/models" {label="models" subgraph "cluster_src/models/isSelected" {label="isSelected" "src/models/isSelected/isSelected.dto.ts" [label=<isSelected.dto.ts> tooltip="isSelected.dto.ts" URL="src/models/isSelected/isSelected.dto.ts" fillcolor="#ccffcc"] } } }
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/models" {label="models" subgraph "cluster_src/models/isSelected" {label="isSelected" "src/models/isSelected/isSelected.sql.ts" [label=<isSelected.sql.ts> tooltip="isSelected.sql.ts" URL="src/models/isSelected/isSelected.sql.ts" fillcolor="#ddfeff"] } } }
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/models" {label="models" subgraph "cluster_src/models/league" {label="league" "src/models/league/league.dao.ts" [label=<league.dao.ts> tooltip="league.dao.ts" URL="src/models/league/league.dao.ts" fillcolor="#ddfeff"] } } }
+    "src/models/league/league.dao.ts" -> "src/models/league/league.sql.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/models" {label="models" subgraph "cluster_src/models/league" {label="league" "src/models/league/league.dto.ts" [label=<league.dto.ts> tooltip="league.dto.ts" URL="src/models/league/league.dto.ts" fillcolor="#ddfeff"] } } }
+    "src/models/league/league.dto.ts" -> "src/models/main/main.dto.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/models" {label="models" subgraph "cluster_src/models/league" {label="league" "src/models/league/league.sql.ts" [label=<league.sql.ts> tooltip="league.sql.ts" URL="src/models/league/league.sql.ts" fillcolor="#ddfeff"] } } }
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/models" {label="models" subgraph "cluster_src/models/main" {label="main" "src/models/main/main.dao.ts" [label=<main.dao.ts> tooltip="main.dao.ts" URL="src/models/main/main.dao.ts" fillcolor="#ddfeff"] } } }
+    "src/models/main/main.dao.ts" -> "src/models/main/main.sql.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/models" {label="models" subgraph "cluster_src/models/main" {label="main" "src/models/main/main.dto.ts" [label=<main.dto.ts> tooltip="main.dto.ts" URL="src/models/main/main.dto.ts" fillcolor="#ddfeff"] } } }
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/models" {label="models" subgraph "cluster_src/models/main" {label="main" "src/models/main/main.sql.ts" [label=<main.sql.ts> tooltip="main.sql.ts" URL="src/models/main/main.sql.ts" fillcolor="#ddfeff"] } } }
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/models" {label="models" subgraph "cluster_src/models/match" {label="match" "src/models/match/match.dao.ts" [label=<match.dao.ts> tooltip="match.dao.ts" URL="src/models/match/match.dao.ts" fillcolor="#ddfeff"] } } }
+    "src/models/match/match.dao.ts" -> "src/models/match/match.sql.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/models" {label="models" subgraph "cluster_src/models/match" {label="match" "src/models/match/match.dto.ts" [label=<match.dto.ts> tooltip="match.dto.ts" URL="src/models/match/match.dto.ts" fillcolor="#ccffcc"] } } }
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/models" {label="models" subgraph "cluster_src/models/match" {label="match" "src/models/match/match.sql.ts" [label=<match.sql.ts> tooltip="match.sql.ts" URL="src/models/match/match.sql.ts" fillcolor="#ddfeff"] } } }
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/models" {label="models" subgraph "cluster_src/models/matchData" {label="matchData" subgraph "cluster_src/models/matchData/getMatchId" {label="getMatchId" "src/models/matchData/getMatchId/getMatchId.dao.ts" [label=<getMatchId.dao.ts> tooltip="getMatchId.dao.ts" URL="src/models/matchData/getMatchId/getMatchId.dao.ts" fillcolor="#ddfeff"] } } } }
+    "src/models/matchData/getMatchId/getMatchId.dao.ts" -> "src/models/matchData/getMatchId/getMatchId.sql.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/models" {label="models" subgraph "cluster_src/models/matchData" {label="matchData" subgraph "cluster_src/models/matchData/getMatchId" {label="getMatchId" "src/models/matchData/getMatchId/getMatchId.sql.ts" [label=<getMatchId.sql.ts> tooltip="getMatchId.sql.ts" URL="src/models/matchData/getMatchId/getMatchId.sql.ts" fillcolor="#ddfeff"] } } } }
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/models" {label="models" subgraph "cluster_src/models/matchData" {label="matchData" subgraph "cluster_src/models/matchData/getTag" {label="getTag" "src/models/matchData/getTag/getTag.dao.ts" [label=<getTag.dao.ts> tooltip="getTag.dao.ts" URL="src/models/matchData/getTag/getTag.dao.ts" fillcolor="#ddfeff"] } } } }
+    "src/models/matchData/getTag/getTag.dao.ts" -> "src/models/matchData/getTag/getTag.sql.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/models" {label="models" subgraph "cluster_src/models/matchData" {label="matchData" subgraph "cluster_src/models/matchData/getTag" {label="getTag" "src/models/matchData/getTag/getTag.sql.ts" [label=<getTag.sql.ts> tooltip="getTag.sql.ts" URL="src/models/matchData/getTag/getTag.sql.ts" fillcolor="#ddfeff"] } } } }
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/models" {label="models" subgraph "cluster_src/models/matchData" {label="matchData" subgraph "cluster_src/models/matchData/rank" {label="rank" "src/models/matchData/rank/rank.dao.ts" [label=<rank.dao.ts> tooltip="rank.dao.ts" URL="src/models/matchData/rank/rank.dao.ts" fillcolor="#ddfeff"] } } } }
+    "src/models/matchData/rank/rank.dao.ts" -> "src/models/matchData/rank/rank.sql.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/models" {label="models" subgraph "cluster_src/models/matchData" {label="matchData" subgraph "cluster_src/models/matchData/rank" {label="rank" "src/models/matchData/rank/rank.dto.ts" [label=<rank.dto.ts> tooltip="rank.dto.ts" URL="src/models/matchData/rank/rank.dto.ts" fillcolor="#ccffcc"] } } } }
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/models" {label="models" subgraph "cluster_src/models/matchData" {label="matchData" subgraph "cluster_src/models/matchData/rank" {label="rank" "src/models/matchData/rank/rank.sql.ts" [label=<rank.sql.ts> tooltip="rank.sql.ts" URL="src/models/matchData/rank/rank.sql.ts" fillcolor="#ddfeff"] } } } }
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/models" {label="models" subgraph "cluster_src/models/matchData" {label="matchData" subgraph "cluster_src/models/matchData/translator" {label="translator" "src/models/matchData/translator/translator.dao.ts" [label=<translator.dao.ts> tooltip="translator.dao.ts" URL="src/models/matchData/translator/translator.dao.ts" fillcolor="#ddfeff"] } } } }
+    "src/models/matchData/translator/translator.dao.ts" -> "src/utils/fcm/fcm.ts"
+    "src/models/matchData/translator/translator.dao.ts" -> "src/models/matchData/translator/translator.sql.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/models" {label="models" subgraph "cluster_src/models/matchData" {label="matchData" subgraph "cluster_src/models/matchData/translator" {label="translator" "src/models/matchData/translator/translator.dto.ts" [label=<translator.dto.ts> tooltip="translator.dto.ts" URL="src/models/matchData/translator/translator.dto.ts" fillcolor="#ccffcc"] } } } }
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/models" {label="models" subgraph "cluster_src/models/matchData" {label="matchData" subgraph "cluster_src/models/matchData/translator" {label="translator" "src/models/matchData/translator/translator.sql.ts" [label=<translator.sql.ts> tooltip="translator.sql.ts" URL="src/models/matchData/translator/translator.sql.ts" fillcolor="#ddfeff"] } } } }
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/models" {label="models" subgraph "cluster_src/models/matchData" {label="matchData" subgraph "cluster_src/models/matchData/uri" {label="uri" "src/models/matchData/uri/uri.dto.ts" [label=<uri.dto.ts> tooltip="uri.dto.ts" URL="src/models/matchData/uri/uri.dto.ts" fillcolor="#ccffcc"] } } } }
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/models" {label="models" subgraph "cluster_src/models/matchData" {label="matchData" subgraph "cluster_src/models/matchData/uri" {label="uri" "src/models/matchData/uri/uri.sql.ts" [label=<uri.sql.ts> tooltip="uri.sql.ts" URL="src/models/matchData/uri/uri.sql.ts" fillcolor="#ccffcc"] } } } }
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/models" {label="models" subgraph "cluster_src/models/scheduler" {label="scheduler" "src/models/scheduler/scheduler.dao.ts" [label=<scheduler.dao.ts> tooltip="scheduler.dao.ts" URL="src/models/scheduler/scheduler.dao.ts" fillcolor="#ddfeff"] } } }
+    "src/models/scheduler/scheduler.dao.ts" -> "src/models/scheduler/scheduler.sql.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/models" {label="models" subgraph "cluster_src/models/scheduler" {label="scheduler" "src/models/scheduler/scheduler.dto.ts" [label=<scheduler.dto.ts> tooltip="scheduler.dto.ts" URL="src/models/scheduler/scheduler.dto.ts" fillcolor="#ccffcc"] } } }
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/models" {label="models" subgraph "cluster_src/models/scheduler" {label="scheduler" "src/models/scheduler/scheduler.sql.ts" [label=<scheduler.sql.ts> tooltip="scheduler.sql.ts" URL="src/models/scheduler/scheduler.sql.ts" fillcolor="#ddfeff"] } } }
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/models" {label="models" subgraph "cluster_src/models/searchTag" {label="searchTag" "src/models/searchTag/serchTag.dao.ts" [label=<serchTag.dao.ts> tooltip="serchTag.dao.ts" URL="src/models/searchTag/serchTag.dao.ts" fillcolor="#ddfeff"] } } }
+    "src/models/searchTag/serchTag.dao.ts" -> "src/models/searchTag/serchTag.sql.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/models" {label="models" subgraph "cluster_src/models/searchTag" {label="searchTag" "src/models/searchTag/serchTag.dto.ts" [label=<serchTag.dto.ts> tooltip="serchTag.dto.ts" URL="src/models/searchTag/serchTag.dto.ts" fillcolor="#ccffcc"] } } }
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/models" {label="models" subgraph "cluster_src/models/searchTag" {label="searchTag" "src/models/searchTag/serchTag.sql.ts" [label=<serchTag.sql.ts> tooltip="serchTag.sql.ts" URL="src/models/searchTag/serchTag.sql.ts" fillcolor="#ddfeff"] } } }
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/models" {label="models" subgraph "cluster_src/models/team" {label="team" "src/models/team/team.dao.ts" [label=<team.dao.ts> tooltip="team.dao.ts" URL="src/models/team/team.dao.ts" fillcolor="#ddfeff"] } } }
+    "src/models/team/team.dao.ts" -> "src/models/team/team.sql.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/models" {label="models" subgraph "cluster_src/models/team" {label="team" "src/models/team/team.dto.ts" [label=<team.dto.ts> tooltip="team.dto.ts" URL="src/models/team/team.dto.ts" fillcolor="#ccffcc"] } } }
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/models" {label="models" subgraph "cluster_src/models/team" {label="team" "src/models/team/team.sql.ts" [label=<team.sql.ts> tooltip="team.sql.ts" URL="src/models/team/team.sql.ts" fillcolor="#ddfeff"] } } }
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/route" {label="route" subgraph "cluster_src/route/auth" {label="auth" subgraph "cluster_src/route/auth/IAM" {label="IAM" "src/route/auth/IAM/IAM.route.ts" [label=<IAM.route.ts> tooltip="IAM.route.ts" URL="src/route/auth/IAM/IAM.route.ts" fillcolor="#ddfeff"] } } } }
+    "src/route/auth/IAM/IAM.route.ts" -> "src/feature/auth/IAM/IAM.controller.ts"
+    "src/route/auth/IAM/IAM.route.ts" -> "src/utils/jwt.middleware.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/route" {label="route" subgraph "cluster_src/route/auth" {label="auth" "src/route/auth/auth.route.ts" [label=<auth.route.ts> tooltip="auth.route.ts" URL="src/route/auth/auth.route.ts" fillcolor="#ddfeff"] } } }
+    "src/route/auth/auth.route.ts" -> "src/route/auth/IAM/IAM.route.ts"
+    "src/route/auth/auth.route.ts" -> "src/route/auth/sns/sns.route.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/route" {label="route" subgraph "cluster_src/route/auth" {label="auth" subgraph "cluster_src/route/auth/sns" {label="sns" "src/route/auth/sns/sns.route.ts" [label=<sns.route.ts> tooltip="sns.route.ts" URL="src/route/auth/sns/sns.route.ts" fillcolor="#ddfeff"] } } } }
+    "src/route/auth/sns/sns.route.ts" -> "src/feature/auth/redirect/redirect.controller.ts"
+    "src/route/auth/sns/sns.route.ts" -> "src/feature/auth/sns/sns.controller.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/route" {label="route" subgraph "cluster_src/route/fcmToken" {label="fcmToken" "src/route/fcmToken/fcmToken.route.ts" [label=<fcmToken.route.ts> tooltip="fcmToken.route.ts" URL="src/route/fcmToken/fcmToken.route.ts" fillcolor="#ddfeff"] } } }
+    "src/route/fcmToken/fcmToken.route.ts" -> "src/fcmToken/fcmToken.controller.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/route" {label="route" subgraph "cluster_src/route/icon" {label="icon" "src/route/icon/icon.route.ts" [label=<icon.route.ts> tooltip="icon.route.ts" URL="src/route/icon/icon.route.ts" fillcolor="#ddfeff"] } } }
+    "src/route/icon/icon.route.ts" -> "src/feature/icon/icon.controller.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/route" {label="route" subgraph "cluster_src/route/isSelected" {label="isSelected" "src/route/isSelected/isSelected.route.ts" [label=<isSelected.route.ts> tooltip="isSelected.route.ts" URL="src/route/isSelected/isSelected.route.ts" fillcolor="#ddfeff"] } } }
+    "src/route/isSelected/isSelected.route.ts" -> "src/feature/isSelected/isSelected.controller.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/route" {label="route" subgraph "cluster_src/route/league" {label="league" "src/route/league/league.route.ts" [label=<league.route.ts> tooltip="league.route.ts" URL="src/route/league/league.route.ts" fillcolor="#ddfeff"] } } }
+    "src/route/league/league.route.ts" -> "src/feature/league/league.controller.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/route" {label="route" subgraph "cluster_src/route/main" {label="main" "src/route/main/main.route.ts" [label=<main.route.ts> tooltip="main.route.ts" URL="src/route/main/main.route.ts" fillcolor="#ddfeff"] } } }
+    "src/route/main/main.route.ts" -> "src/feature/main/main.controller.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/route" {label="route" subgraph "cluster_src/route/match" {label="match" "src/route/match/match.route.ts" [label=<match.route.ts> tooltip="match.route.ts" URL="src/route/match/match.route.ts" fillcolor="#ddfeff"] } } }
+    "src/route/match/match.route.ts" -> "src/feature/match/match.controller.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/route" {label="route" subgraph "cluster_src/route/matchData" {label="matchData" "src/route/matchData/matchData.route.ts" [label=<matchData.route.ts> tooltip="matchData.route.ts" URL="src/route/matchData/matchData.route.ts" fillcolor="#ddfeff"] } } }
+    "src/route/matchData/matchData.route.ts" -> "src/route/matchData/rank/rank.route.ts"
+    "src/route/matchData/matchData.route.ts" -> "src/route/matchData/translator/translator.route.ts"
+    "src/route/matchData/matchData.route.ts" -> "src/route/matchData/uri/uri.route.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/route" {label="route" subgraph "cluster_src/route/matchData" {label="matchData" subgraph "cluster_src/route/matchData/rank" {label="rank" "src/route/matchData/rank/rank.route.ts" [label=<rank.route.ts> tooltip="rank.route.ts" URL="src/route/matchData/rank/rank.route.ts" fillcolor="#ddfeff"] } } } }
+    "src/route/matchData/rank/rank.route.ts" -> "src/feature/matchData/rank/rank.controller.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/route" {label="route" subgraph "cluster_src/route/matchData" {label="matchData" subgraph "cluster_src/route/matchData/translator" {label="translator" "src/route/matchData/translator/translator.route.ts" [label=<translator.route.ts> tooltip="translator.route.ts" URL="src/route/matchData/translator/translator.route.ts" fillcolor="#ddfeff"] } } } }
+    "src/route/matchData/translator/translator.route.ts" -> "src/feature/matchData/translator/translator.controller.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/route" {label="route" subgraph "cluster_src/route/matchData" {label="matchData" subgraph "cluster_src/route/matchData/uri" {label="uri" "src/route/matchData/uri/uri.route.ts" [label=<uri.route.ts> tooltip="uri.route.ts" URL="src/route/matchData/uri/uri.route.ts" fillcolor="#ddfeff"] } } } }
+    "src/route/matchData/uri/uri.route.ts" -> "src/feature/matchData/uri/uri.controller.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/route" {label="route" subgraph "cluster_src/route/scheduler" {label="scheduler" "src/route/scheduler/scheduler.route.ts" [label=<scheduler.route.ts> tooltip="scheduler.route.ts" URL="src/route/scheduler/scheduler.route.ts" fillcolor="#ddfeff"] } } }
+    "src/route/scheduler/scheduler.route.ts" -> "src/feature/scheduler/scheduler.controller.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/route" {label="route" subgraph "cluster_src/route/searchTag" {label="searchTag" "src/route/searchTag/searchTag.route.ts" [label=<searchTag.route.ts> tooltip="searchTag.route.ts" URL="src/route/searchTag/searchTag.route.ts" fillcolor="#ddfeff"] } } }
+    "src/route/searchTag/searchTag.route.ts" -> "src/feature/searchTag/searchTag.controller.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/route" {label="route" subgraph "cluster_src/route/team" {label="team" "src/route/team/team.route.ts" [label=<team.route.ts> tooltip="team.route.ts" URL="src/route/team/team.route.ts" fillcolor="#ddfeff"] } } }
+    "src/route/team/team.route.ts" -> "src/feature/team/team.controller.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/route" {label="route" subgraph "cluster_src/route/versionCheck" {label="versionCheck" "src/route/versionCheck/versionCheck.route.ts" [label=<versionCheck.route.ts> tooltip="versionCheck.route.ts" URL="src/route/versionCheck/versionCheck.route.ts" fillcolor="#ddfeff"] } } }
+    "src/route/versionCheck/versionCheck.route.ts" -> "src/feature/versionCheck/versionCheck.controller.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/utils" {label="utils" subgraph "cluster_src/utils/fcm" {label="fcm" "src/utils/fcm/fcm.ts" [label=<fcm.ts> tooltip="fcm.ts" URL="src/utils/fcm/fcm.ts" fillcolor="#ddfeff"] } } }
+    "src/utils/fcm/fcm.ts" -> "src/models/fcm/fcm.dao.ts"
+    "src/utils/fcm/fcm.ts" -> "src/utils/fcm/sendNotification.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/utils" {label="utils" subgraph "cluster_src/utils/fcm" {label="fcm" "src/utils/fcm/sendNotification.ts" [label=<sendNotification.ts> tooltip="sendNotification.ts" URL="src/utils/fcm/sendNotification.ts" fillcolor="#ddfeff"] } } }
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/utils" {label="utils" "src/utils/jwt.middleware.ts" [label=<jwt.middleware.ts> tooltip="jwt.middleware.ts" URL="src/utils/jwt.middleware.ts" fillcolor="#ddfeff"] } }
+    "src/utils/jwt.middleware.ts" -> "src/feature/auth/IAM/IAM.controller.ts"
+    "src/utils/jwt.middleware.ts" -> "src/utils/jwt.utils.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/utils" {label="utils" "src/utils/jwt.utils.ts" [label=<jwt.utils.ts> tooltip="jwt.utils.ts" URL="src/utils/jwt.utils.ts" fillcolor="#ddfeff"] } }
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/utils" {label="utils" "src/utils/matchData.ts" [label=<matchData.ts> tooltip="matchData.ts" URL="src/utils/matchData.ts" fillcolor="#ddfeff"] } }
+    "src/utils/matchData.ts" -> "src/models/matchData/getTag/getTag.dao.ts"
+    "src/utils/matchData.ts" -> "src/models/scheduler/scheduler.dao.ts"
+    "src/utils/matchData.ts" -> "src/utils/translator.ts"
+    subgraph "cluster_src" {label="src" subgraph "cluster_src/utils" {label="utils" "src/utils/translator.ts" [label=<translator.ts> tooltip="translator.ts" URL="src/utils/translator.ts" fillcolor="#ddfeff"] } }
+}

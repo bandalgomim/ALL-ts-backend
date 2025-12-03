@@ -1,8 +1,8 @@
 import { fcmDao } from "../../models/fcm/fcm.dao";
 import { highlightInfoDto } from "../../models/fcm/fcm.dto";
-import { sendFCMToManyDevices, sendFCMToManyDevicesLive } from "./sendNotification";
+import { sendFCMToManyDevices, sendFCMToManyDevicesLive } from "./sentNotification.service";
 
-export const sentNotifi = async (matchId: string) => {
+export const sentNotification = async (matchId: string) => {
     const result = await fcmDao.get(matchId);
     const highlightInfo: highlightInfoDto = {
         matchId: result[0].match_id,
@@ -16,7 +16,7 @@ export const sentNotifi = async (matchId: string) => {
     }
 };
 
-export const sentNotifiLive = async (matchId: string) => {
+export const sentNotificationLive = async (matchId: string) => {
     if (!matchId) return;
     const result = await fcmDao.getLive(matchId);
     const highlightInfo: highlightInfoDto = {

@@ -14,7 +14,7 @@ const translator_sql_1 = require("./translator.sql");
 const db_pool_1 = require("../../../../config/db.pool");
 const response_status_1 = require("../../../../config/response.status");
 const error_1 = require("../../../../config/error");
-const fcm_1 = require("../../../utils/fcm/fcm");
+const sentNotification_controller_1 = require("../../../feature/fcm/sentNotification.controller");
 exports.translatorDao = {
     post: (data) => __awaiter(void 0, void 0, void 0, function* () {
         if (!Array.isArray(data) || data.length === 0)
@@ -52,7 +52,7 @@ exports.translatorDao = {
         finally {
             connection.release();
             for (const matchId of fcmMatchId) {
-                yield (0, fcm_1.sentNotifi)(matchId);
+                yield (0, sentNotification_controller_1.sentNotification)(matchId);
             }
         }
     })

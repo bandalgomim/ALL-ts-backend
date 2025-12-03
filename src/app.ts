@@ -9,7 +9,7 @@ import { mainRouter } from "./route/main/main.route";
 import { teamRouter } from "./route/team/team.route";
 import { isSelectedRouter } from "./route/isSelected/isSelected.route";
 import { iconRouter } from "./route/icon/icon.route";
-import { authRouter } from "./route/auth/auth.route";
+import { authRouter } from "./route/auth/IAM.route";
 import { fcmTokenRouter } from "./route/fcmToken/fcmToken.route";
 import cron from "node-cron";
 import { leagueRouter } from "./route/league/league.route";
