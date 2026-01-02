@@ -11,13 +11,13 @@ import { isSelectedRouter } from "./route/isSelected/isSelected.route";
 import { iconRouter } from "./route/icon/icon.route";
 import { authRouter } from "./route/auth/IAM.route";
 import { fcmTokenRouter } from "./route/fcmToken/fcmToken.route";
-import cron from "node-cron";
 import { leagueRouter } from "./route/league/league.route";
 import { schedulerRouter } from "./route/scheduler/scheduler.route";
 import { matchDataRouter } from "./route/matchData/matchData.route";
-import { searchTagService } from "./feature/searchTag/searchTag.service";
 import { searchTagRouter } from "./route/searchTag/searchTag.route";
 import { versionCheckRouter } from "./route/versionCheck/versionCheck.route";
+import { initTask } from "./task/init/init.task";
+import { infoUpdateRouter } from "./route/infoUpdate/infoUpdate.route";
 
 config();
 
@@ -40,13 +40,11 @@ export default function App() {
     app.use("/matchData", asyncHandler(matchDataRouter));
     app.use("/searchTag", asyncHandler(searchTagRouter));
     app.use("/versionCheck", asyncHandler(versionCheckRouter));
+    app.use("/infoUpdate", asyncHandler(infoUpdateRouter));
 
     // chackDailyMatch를 1분마다 실행
 
-    searchTagService.patch();
-    cron.schedule("0 0 * * *", () => {
-        searchTagService.patch();
-    });
+    initTask();
 
     return app;
 }
