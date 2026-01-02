@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { matchService } from "./match.service";
+import { matchService } from "@feature/match/match.service";
 
 export const matchController = {
     get: async (req: Request, res: Response) => {

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { translatorService } from "./translator.service";
+import { translatorService } from "@feature/matchData/translator/translator.service";
 export const translatorController = {
     post: async (req: Request, res: Response) => {
         const result = await translatorService.post(req.body);

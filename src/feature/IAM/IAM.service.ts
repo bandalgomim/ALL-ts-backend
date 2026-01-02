@@ -1,8 +1,8 @@
 import { ApiError } from "../../../config/error";
 import { status } from "../../../config/response.status";
-import { IAMDao } from "../../models/IAM/IAM.dao";
-import { tokenUtils } from "../../utils/jwt.utils";
-import { postSignUpDto, headers } from "../../models/IAM/IAM.dto";
+import { IAMDao } from "@models/IAM/IAM.dao";
+import { tokenUtils } from "@src/utils/jwt.utils";
+import { postSignUpDto, headers } from "@models/IAM/IAM.dto";
 import jwt  from "jsonwebtoken";
 
 

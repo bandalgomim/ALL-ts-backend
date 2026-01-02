@@ -2,7 +2,7 @@ import { RowDataPacket } from "mysql2/promise";
 import { getPool } from "../../../../config/db.pool";
 import { ApiError } from "../../../../config/error";
 import { status } from "../../../../config/response.status";
-import { getMatchIdSql } from "./getMatchId.sql";
+import { getMatchIdSql } from "@models/matchData/getMatchId/getMatchId.sql";
 
 export const getMatchIdDao = {
     get: async (date: string, homeTeamId: string, awayTeamId: string, dh: number) => {

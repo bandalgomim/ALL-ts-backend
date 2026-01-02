@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { versionCheckService } from "./versionCheck.service";
+import { versionCheckService } from "@feature/versionCheck/versionCheck.service";
 
 export const versionCheckController = {
     post: async (req: Request, res: Response) => {

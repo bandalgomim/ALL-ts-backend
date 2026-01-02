@@ -1,6 +1,6 @@
 
 import { Request, Response } from "express";
-import { searchTagService } from "./searchTag.service";
+import { searchTagService } from "@feature/searchTag/searchTag.service";
 
 export const searchTagController = {
     get: async (req: Request, res: Response) => {

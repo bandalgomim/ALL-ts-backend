@@ -1,10 +1,10 @@
 
 import { RowDataPacket } from "mysql2";
 import redisClient from "../../../config/db.redis";
-import { schedulerDao } from "../../models/scheduler/scheduler.dao";
-import { postBatchSchedulerReqDto, postSchedulerReqDto } from "../../models/scheduler/scheduler.dto";
-import { concatByLeague, findLiveUpdates, makePrevMatchList, matchDataTranslator, setPrevData, supplement, supplementMatchList } from "../../utils/matchData";
-import { sentNotificationLive } from "../fcm/sentNotification.controller";
+import { schedulerDao } from "@models/scheduler/scheduler.dao";
+import { postBatchSchedulerReqDto, postSchedulerReqDto } from "@models/scheduler/scheduler.dto";
+import { concatByLeague, findLiveUpdates, makePrevMatchList, matchDataTranslator, setPrevData, supplement, supplementMatchList } from "@src/utils/matchData";
+import { sentNotificationLive } from "@feature/fcm/sentNotification.controller";
 
 export const schedulerService = {
     get: async (date: string) => {

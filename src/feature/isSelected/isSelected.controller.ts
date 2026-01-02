@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { isSelectedService } from "./isSelected.service";
+import { isSelectedService } from "@feature/isSelected/isSelected.service";
 
 export const isSelectedController = {
     patch: async (req: Request, res: Response) => {

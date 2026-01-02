@@ -1,6 +1,6 @@
 
-import { patchFcmTokenReqDto } from "../../models/fcm/fcm.dto";
-import { fcmDao } from "../../models/fcm/fcm.dao";
+import { patchFcmTokenReqDto } from "@models/fcm/fcm.dto";
+import { fcmDao } from "@models/fcm/fcm.dao";
 
 
 export const fcmTokenService = {

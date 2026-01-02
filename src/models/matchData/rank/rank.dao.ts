@@ -1,9 +1,9 @@
-import { rankSql } from "./rank.sql";
+import { rankSql } from "@models/matchData/rank/rank.sql";
 import { getPool } from "../../../../config/db.pool";
 import { ResultSetHeader } from "mysql2/promise";
 import { status } from "../../../../config/response.status";
 import { ApiError } from "../../../../config/error";
-import { rankDto } from "./rank.dto";
+import { rankDto } from "@models/matchData/rank/rank.dto";
 
 export const rankDao = {
     post: async (data: rankDto[]) => {

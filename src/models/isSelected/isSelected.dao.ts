@@ -2,7 +2,7 @@ import { RowDataPacket } from "mysql2/promise";
 import { getPool } from "../../../config/db.pool";
 import { ApiError } from "../../../config/error";
 import { status } from "../../../config/response.status";
-import { isSelectedSql } from "./isSelected.sql";
+import { isSelectedSql } from "@models/isSelected/isSelected.sql";
 
 
 export const isSelectedDao = {

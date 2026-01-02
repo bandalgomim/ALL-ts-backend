@@ -1,6 +1,6 @@
-import { searchTagDao } from "../../models/searchTag/serchTag.dao";
+import { searchTagDao } from "@models/searchTag/serchTag.dao";
 import redisClient from "../../../config/db.redis";
-import { searchTagResDto } from "../../models/searchTag/serchTag.dto";
+import { searchTagResDto } from "@models/searchTag/serchTag.dto";
 import { BaseApiResponse } from "../../../config/response";
 import { status } from "../../../config/response.status";
 

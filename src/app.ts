@@ -1,23 +1,23 @@
 import express from "express";
 import cors from "cors";
 
-import { tokenMinddleware } from "./utils/jwt.middleware";
+import { tokenMinddleware } from "@src/utils/jwt.middleware";
 import asyncHandler from "express-async-handler";
 import { config } from "dotenv";
-import { matchRouter } from "./route/match/match.route";
-import { mainRouter } from "./route/main/main.route";
-import { teamRouter } from "./route/team/team.route";
-import { isSelectedRouter } from "./route/isSelected/isSelected.route";
-import { iconRouter } from "./route/icon/icon.route";
-import { authRouter } from "./route/auth/IAM.route";
-import { fcmTokenRouter } from "./route/fcmToken/fcmToken.route";
-import { leagueRouter } from "./route/league/league.route";
-import { schedulerRouter } from "./route/scheduler/scheduler.route";
-import { matchDataRouter } from "./route/matchData/matchData.route";
-import { searchTagRouter } from "./route/searchTag/searchTag.route";
-import { versionCheckRouter } from "./route/versionCheck/versionCheck.route";
-import { initTask } from "./task/init/init.task";
-import { infoUpdateRouter } from "./route/infoUpdate/infoUpdate.route";
+import { matchRouter } from "@route/match/match.route";
+import { mainRouter } from "@route/main/main.route";
+import { teamRouter } from "@route/team/team.route";
+import { isSelectedRouter } from "@route/isSelected/isSelected.route";
+import { iconRouter } from "@route/icon/icon.route";
+import { authRouter } from "@route/auth/IAM.route";
+import { fcmTokenRouter } from "@route/fcmToken/fcmToken.route";
+import { leagueRouter } from "@route/league/league.route";
+import { schedulerRouter } from "@route/scheduler/scheduler.route";
+import { matchDataRouter } from "@route/matchData/matchData.route";
+import { searchTagRouter } from "@route/searchTag/searchTag.route";
+import { versionCheckRouter } from "@route/versionCheck/versionCheck.route";
+import { initTask } from "@src/task/init/init.task";
+import { infoUpdateRouter } from "@route/infoUpdate/infoUpdate.route";
 
 config();
 

@@ -1,10 +1,10 @@
 import redisClient from "../../config/db.redis";
-import { getTagDao } from "../models/matchData/getTag/getTag.dao";
-import { postRankReqDto, rankDto } from "../models/matchData/rank/rank.dto";
-import { uriDto } from "../models/matchData/uri/uri.dto";
-import { schedulerDao } from "../models/scheduler/scheduler.dao";
-import { postSchedulerReqDto, schedulerDto } from "../models/scheduler/scheduler.dto";
-import { parseMatchDate, parseMatchState } from "./translator";
+import { getTagDao } from "@models/matchData/getTag/getTag.dao";
+import { postRankReqDto, rankDto } from "@models/matchData/rank/rank.dto";
+import { uriDto } from "@models/matchData/uri/uri.dto";
+import { schedulerDao } from "@models/scheduler/scheduler.dao";
+import { postSchedulerReqDto, schedulerDto } from "@models/scheduler/scheduler.dto";
+import { parseMatchDate, parseMatchState } from "@src/utils/translator";
 
 export function makePrevMatchList() {
     return {

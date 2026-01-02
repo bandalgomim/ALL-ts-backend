@@ -1,7 +1,7 @@
-import { matchDao } from "../../models/match/match.dao";
+import { matchDao } from "@models/match/match.dao";
 import { status } from "../../../config/response.status";
 import { BaseApiResponse } from "../../../config/response";
-import { getMatchDto, platform } from "../../models/match/match.dto";
+import { getMatchDto, platform } from "@models/match/match.dto";
 
 export const matchService = {
     get: async (userId: string, matchId: string) => {

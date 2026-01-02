@@ -1,4 +1,4 @@
-import { fcmSql } from "./fcm.sql";
+import { fcmSql } from "@models/fcm/fcm.sql";
 import { getPool } from "../../../config/db.pool";
 import { RowDataPacket } from "mysql2/promise";
 import { status } from "../../../config/response.status";

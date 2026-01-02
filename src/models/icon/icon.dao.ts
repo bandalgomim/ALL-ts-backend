@@ -1,4 +1,4 @@
-import { iconSql } from "./icon.sql";
+import { iconSql } from "@models/icon/icon.sql";
 import { getPool } from "../../../config/db.pool";
 import { RowDataPacket } from "mysql2/promise";
 import { status } from "../../../config/response.status";

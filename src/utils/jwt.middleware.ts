@@ -1,9 +1,9 @@
-import { tokenUtils } from "./jwt.utils";
+import { tokenUtils } from "@src/utils/jwt.utils";
 import { Request, Response, NextFunction } from "express";
 import { status } from "../../config/response.status";
 import { config } from "dotenv";
 import { ApiError } from "../../config/error";
-import { IAMController } from "../feature/IAM/IAM.controller";
+import { IAMController } from "@feature/IAM/IAM.controller";
 import { OAuth2Client } from "google-auth-library";
 import { createRemoteJWKSet, jwtVerify } from "jose";
 

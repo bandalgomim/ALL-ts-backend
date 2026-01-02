@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Request, Response } from "express";
-import { IAMService } from "./IAM.service";
-import { postSignUpDto, headers } from "../../models/IAM/IAM.dto";
+import { IAMService } from "@feature/IAM/IAM.service";
+import { postSignUpDto, headers } from "@models/IAM/IAM.dto";
 
 const setHeader = (res: Response, Authorization: string, RefreshToken: string) => {
     res.setHeader("Authorization", "Bearer " + Authorization); // 액세스 토큰을 헤더에 설정

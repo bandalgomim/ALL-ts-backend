@@ -1,7 +1,7 @@
-import { infoUpdateDao } from "../../models/infoUpdate/infoUpdate.dao";
+import { infoUpdateDao } from "@models/infoUpdate/infoUpdate.dao";
 import { status } from "../../../config/response.status";
 import { BaseApiResponse } from "../../../config/response";
-import { infoUpdate, teamInfo } from "../../models/infoUpdate/infoUpdate.dto";
+import { infoUpdate, teamInfo } from "@models/infoUpdate/infoUpdate.dto";
 
 export const infoUpdateService = {
     patchLeague: async (leagueId: number, leagueLogo: string) => {

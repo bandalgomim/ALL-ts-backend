@@ -2,8 +2,8 @@ import { ResultSetHeader } from "mysql2/promise";
 import { getPool } from "../../../config/db.pool";
 import { ApiError } from "../../../config/error";
 import { status } from "../../../config/response.status";
-import { patchInfoUpdateSql } from "./infoUpdate.sql";
-import { infoUpdate, teamInfo } from "./infoUpdate.dto";
+import { patchInfoUpdateSql } from "@models/infoUpdate/infoUpdate.sql";
+import { infoUpdate, teamInfo } from "@models/infoUpdate/infoUpdate.dto";
 
 export const infoUpdateDao = {
     patchLeague: async (leagueId: number, leagueLogo: string) => {

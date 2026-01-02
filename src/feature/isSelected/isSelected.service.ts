@@ -1,5 +1,5 @@
-import { isSelectedDao } from "../../models/isSelected/isSelected.dao";
-import { mainService } from "../main/main.service";
+import { isSelectedDao } from "@models/isSelected/isSelected.dao";
+import { mainService } from "@feature/main/main.service";
 
 export const isSelectedService = {
     patchTeam: async (userId: string, teamId: number) => {

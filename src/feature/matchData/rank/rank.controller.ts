@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { rankService } from "./rank.service";
+import { rankService } from "@feature/matchData/rank/rank.service";
 
 export const rankController = {
     post: async (req: Request, res: Response) => {

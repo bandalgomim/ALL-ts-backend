@@ -1,9 +1,9 @@
-import { schedulerSql } from "./scheduler.sql";
+import { schedulerSql } from "@models/scheduler/scheduler.sql";
 import { getPool } from "../../../config/db.pool";
 import { ResultSetHeader, RowDataPacket } from "mysql2/promise";
 import { status } from "../../../config/response.status";
 import { ApiError } from "../../../config/error";
-import { schedulerDto } from "./scheduler.dto";
+import { schedulerDto } from "@models/scheduler/scheduler.dto";
 
 export const schedulerDao = {
     get: async (date: string): Promise<RowDataPacket[]> => {

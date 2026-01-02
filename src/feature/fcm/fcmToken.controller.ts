@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { fcmTokenService } from "./fcmToken.service";
+import { fcmTokenService } from "@feature/fcm/fcmToken.service";
 
 
 export const fcmTokenController = {

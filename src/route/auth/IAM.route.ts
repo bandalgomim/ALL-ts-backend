@@ -1,7 +1,7 @@
 import { Router } from "express";
 import asyncHandler from "express-async-handler";
-import { IAMController } from "../../feature/IAM/IAM.controller";
-import { tokenMinddleware } from "../../utils/jwt.middleware";
+import { IAMController } from "@feature/IAM/IAM.controller";
+import { tokenMinddleware } from "@src/utils/jwt.middleware";
 
 export const authRouter = Router();
 authRouter.post("/login/google", asyncHandler(tokenMinddleware.googleMiddleware), asyncHandler(IAMController.login));

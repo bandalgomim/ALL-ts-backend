@@ -1,5 +1,5 @@
 import { messaging } from "../../../config/firebase";
-import { highlightInfoDto } from "../../models/fcm/fcm.dto";
+import { highlightInfoDto } from "@models/fcm/fcm.dto";
 
 export async function sendFCMToManyDevices(
     tokens: string[],

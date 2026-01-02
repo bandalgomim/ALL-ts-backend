@@ -2,7 +2,7 @@ import { RowDataPacket } from "mysql2/promise";
 import { getPool } from "../../../config/db.pool";
 import { ApiError } from "../../../config/error";
 import { status } from "../../../config/response.status";
-import { searchTagSql } from "./serchTag.sql";
+import { searchTagSql } from "@models/searchTag/serchTag.sql";
 
 
 export const searchTagDao = {

@@ -1,7 +1,7 @@
 import redisClient from "../../../../config/db.redis";
-import { rankDao } from "../../../models/matchData/rank/rank.dao";
-import { postRankReqDto } from "../../../models/matchData/rank/rank.dto";
-import { rankTranslator } from "../../../utils/matchData";
+import { rankDao } from "@models/matchData/rank/rank.dao";
+import { postRankReqDto } from "@models/matchData/rank/rank.dto";
+import { rankTranslator } from "@src/utils/matchData";
 
 export const rankService = {
     post: async (data: postRankReqDto) => {

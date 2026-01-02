@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { leagueService } from "./league.service";
+import { leagueService } from "@feature/league/league.service";
 
 export const leagueController = {
     get: async (req: Request, res: Response) => {

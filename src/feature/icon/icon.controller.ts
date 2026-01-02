@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { iconService } from "./icon.service";
+import { iconService } from "@feature/icon/icon.service";
 
 export const iconController = {
     patch: async (req: Request, res: Response) => {

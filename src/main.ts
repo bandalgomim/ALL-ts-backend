@@ -1,4 +1,4 @@
-import App from "./app";
+import App from "@src/app";
 import { initPool } from "./../config/db.pool";
 import { config } from "dotenv";
 

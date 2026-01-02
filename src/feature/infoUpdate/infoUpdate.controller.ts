@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { infoUpdateService } from "./infoUpdate.service";
-import { infoUpdate, teamInfo } from "../../models/infoUpdate/infoUpdate.dto";
+import { infoUpdateService } from "@feature/infoUpdate/infoUpdate.service";
+import { infoUpdate, teamInfo } from "@models/infoUpdate/infoUpdate.dto";
 
 export const infoUpdateController = {
     patchLeague: async (req: Request, res: Response) => {

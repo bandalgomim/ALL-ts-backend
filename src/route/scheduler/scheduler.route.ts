@@ -1,6 +1,6 @@
 import { Router } from "express";
 import asyncHandler from "express-async-handler";
-import { schedulerController } from "../../feature/scheduler/scheduler.controller";
+import { schedulerController } from "@feature/scheduler/scheduler.controller";
 
 export const schedulerRouter = Router();
 schedulerRouter.get("/", asyncHandler(schedulerController.get));

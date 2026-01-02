@@ -1,8 +1,8 @@
-import { teamDao } from "../../models/team/team.dao";
+import { teamDao } from "@models/team/team.dao";
 import { status } from "../../../config/response.status";
 import { BaseApiResponse } from "../../../config/response";
-import { getTeamDto } from "../../models/team/team.dto";
-import { match, matchList } from "../../models/main/main.dto";
+import { getTeamDto } from "@models/team/team.dto";
+import { match, matchList } from "@models/main/main.dto";
 
 export const teamService = {
     get: async (userId: string, teamId: number) => {

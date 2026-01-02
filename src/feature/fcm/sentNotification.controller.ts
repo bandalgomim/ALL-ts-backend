@@ -1,6 +1,6 @@
-import { fcmDao } from "../../models/fcm/fcm.dao";
-import { highlightInfoDto } from "../../models/fcm/fcm.dto";
-import { sendFCMToManyDevices, sendFCMToManyDevicesLive } from "./sentNotification.service";
+import { fcmDao } from "@models/fcm/fcm.dao";
+import { highlightInfoDto } from "@models/fcm/fcm.dto";
+import { sendFCMToManyDevices, sendFCMToManyDevicesLive } from "@feature/fcm/sentNotification.service";
 
 export const sentNotification = async (matchId: string) => {
     const result = await fcmDao.get(matchId);

@@ -1,8 +1,8 @@
-import { leagueDao } from "../../models/league/league.dao";
+import { leagueDao } from "@models/league/league.dao";
 import { status } from "../../../config/response.status";
 import { BaseApiResponse } from "../../../config/response";
-import { getLeagueDto, team, league } from "../../models/league/league.dto";
-import { match, matchList } from "../../models/main/main.dto";
+import { getLeagueDto, team, league } from "@models/league/league.dto";
+import { match, matchList } from "@models/main/main.dto";
 
 export const leagueService = {
     get: async (userId: string, leagueId: number) => {

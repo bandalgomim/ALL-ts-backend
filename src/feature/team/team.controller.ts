@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { teamService } from "./team.service";
+import { teamService } from "@feature/team/team.service";
 
 export const teamController = {
     get: async (req: Request, res: Response) => {

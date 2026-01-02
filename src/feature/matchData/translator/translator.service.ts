@@ -1,8 +1,8 @@
-import { getMatchIdDao } from "../../../models/matchData/getMatchId/getMatchId.dao";
-import { getTagDao } from "../../../models/matchData/getTag/getTag.dao";
-import { translatorDao } from "../../../models/matchData/translator/translator.dao";
-import { translatorListDto } from "../../../models/matchData/translator/translator.dto";
-import { parseRelativeDate, parseRelativeType } from "../../../utils/translator";
+import { getMatchIdDao } from "@models/matchData/getMatchId/getMatchId.dao";
+import { getTagDao } from "@models/matchData/getTag/getTag.dao";
+import { translatorDao } from "@models/matchData/translator/translator.dao";
+import { translatorListDto } from "@models/matchData/translator/translator.dto";
+import { parseRelativeDate, parseRelativeType } from "@src/utils/translator";
 
 export const translatorService = {
     post: async (data: translatorListDto) => {

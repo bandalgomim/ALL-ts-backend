@@ -1,6 +1,6 @@
-import { iconDao } from "../../models/icon/icon.dao";
-import { teamService } from "../team/team.service";
-import { leagueService } from "../league/league.service";
+import { iconDao } from "@models/icon/icon.dao";
+import { teamService } from "@feature/team/team.service";
+import { leagueService } from "@feature/league/league.service";
 
 export const iconService = {
     patchIcon: async (userId: string, type: string, id: number, uri: string) => {

@@ -2,7 +2,7 @@ import { RowDataPacket } from "mysql2/promise";
 import { getPool } from "../../../../config/db.pool";
 import { ApiError } from "../../../../config/error";
 import { status } from "../../../../config/response.status";
-import { getTagSql } from "./getTag.sql";
+import { getTagSql } from "@models/matchData/getTag/getTag.sql";
 
 export const getTagDao = {
     getTeamTag: async () => {

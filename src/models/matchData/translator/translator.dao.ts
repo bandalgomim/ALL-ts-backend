@@ -1,10 +1,10 @@
-import { translatorSql } from "./translator.sql";
+import { translatorSql } from "@models/matchData/translator/translator.sql";
 import { getPool } from "../../../../config/db.pool";
 import { ResultSetHeader } from "mysql2/promise";
 import { status } from "../../../../config/response.status";
 import { ApiError } from "../../../../config/error";
-import { translatorDto } from "./translator.dto";
-import { sentNotification } from "../../../feature/fcm/sentNotification.controller";
+import { translatorDto } from "@models/matchData/translator/translator.dto";
+import { sentNotification } from "@feature/fcm/sentNotification.controller";
 
 export const translatorDao = {
     post: async (data: translatorDto[]) => {

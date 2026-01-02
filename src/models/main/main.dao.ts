@@ -2,8 +2,8 @@ import { RowDataPacket } from "mysql2/promise";
 import { getPool } from "../../../config/db.pool";
 import { ApiError } from "../../../config/error";
 import { status } from "../../../config/response.status";
-import { mainSql } from "./main.sql";
-import { patchMainReqDto } from "./main.dto";
+import { mainSql } from "@models/main/main.sql";
+import { patchMainReqDto } from "@models/main/main.dto";
 
 
 export const mainDao = {

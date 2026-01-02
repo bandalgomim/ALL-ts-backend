@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { schedulerService } from "./scheduler.service";
+import { schedulerService } from "@feature/scheduler/scheduler.service";
 
 export const schedulerController = {
     get: async (req: Request, res: Response) => {

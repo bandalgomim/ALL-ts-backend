@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { uriService } from "./uri.service";
+import { uriService } from "@feature/matchData/uri/uri.service";
 
 export const uriController = {
     post: async (req: Request, res: Response) => {

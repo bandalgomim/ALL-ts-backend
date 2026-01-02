@@ -2,7 +2,7 @@ import { RowDataPacket } from "mysql2/promise";
 import { getPool } from "../../../config/db.pool";
 import { ApiError } from "../../../config/error";
 import { status } from "../../../config/response.status";
-import { teamSql } from "./team.sql";
+import { teamSql } from "@models/team/team.sql";
 
 
 export const teamDao = {

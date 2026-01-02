@@ -1,4 +1,4 @@
-import { searchTagService } from "../../feature/searchTag/searchTag.service";
+import { searchTagService } from "@feature/searchTag/searchTag.service";
 import cron from "node-cron";
 
 export const initTask = () => {

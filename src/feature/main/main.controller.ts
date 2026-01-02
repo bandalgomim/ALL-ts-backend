@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { mainService } from "./main.service";
+import { mainService } from "@feature/main/main.service";
 
 export const mainController = {
     get: async (req: Request, res: Response) => {

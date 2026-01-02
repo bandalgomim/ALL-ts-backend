@@ -1,4 +1,4 @@
-import { matchList } from "../main/main.dto";
+import { matchList } from "@models/main/main.dto";
 
 export interface team {
     teamId: number,
