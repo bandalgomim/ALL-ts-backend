@@ -34,8 +34,8 @@ export const matchSql = {
             m.match_time,
             m.match_state,
     
-            i1.icon AS home_team_logo,
-            i2.icon AS away_team_logo,
+            COALESCE(i1.icon, t1.team_logo) AS home_team_logo,
+            COALESCE(i2.icon, t2.team_logo) AS away_team_logo,
     
             m.home_team_score,
             m.away_team_score,
