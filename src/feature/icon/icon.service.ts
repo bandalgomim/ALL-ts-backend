@@ -3,7 +3,7 @@ import { teamService } from "@feature/team/team.service";
 import { leagueService } from "@feature/league/league.service";
 
 export const iconService = {
-    patchIcon: async (userId: string, type: string, id: number, uri: string) => {
+    patchIcon: async (userId: string, type: string, id: string, uri: string) => {
         await iconDao.patchIcon(userId, type, id, uri); // dao를 통해 업데이트
         let res;
         if (type === "team") {

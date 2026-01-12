@@ -5,7 +5,7 @@ import { status } from "../../../config/response.status";
 import { ApiError } from "../../../config/error";
 
 export const iconDao = {
-    patchIcon: async (userId: string, type: string, id: number, uri: string): Promise<void> => {
+    patchIcon: async (userId: string, type: string, id: string, uri: string): Promise<void> => {
         const connection = await getPool().getConnection();
         try {
             await connection.query<RowDataPacket[]>(iconSql.patchIcon, [ userId, type, id, uri ]);

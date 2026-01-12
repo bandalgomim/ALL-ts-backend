@@ -5,7 +5,7 @@ import { getTeamDto } from "@models/team/team.dto";
 import { match, matchList } from "@models/main/main.dto";
 
 export const teamService = {
-    get: async (userId: string, teamId: number) => {
+    get: async (userId: string, teamId: string) => {
         const result = await teamDao.get(userId, teamId);
         const matchList: matchList = {};
         let matchItems: match[] = [];

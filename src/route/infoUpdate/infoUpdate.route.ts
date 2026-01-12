@@ -4,4 +4,5 @@ import { infoUpdateController } from "@feature/infoUpdate/infoUpdate.controller"
 
 export const infoUpdateRouter = Router();
 
-infoUpdateRouter.patch("/", asyncHandler(infoUpdateController.patchAll));
+infoUpdateRouter.patch("/season", asyncHandler(infoUpdateController.patchSeason));
+infoUpdateRouter.patch("/team", asyncHandler(infoUpdateController.patchTeam));

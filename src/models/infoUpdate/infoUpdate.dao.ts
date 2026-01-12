@@ -3,80 +3,53 @@ import { getPool } from "../../../config/db.pool";
 import { ApiError } from "../../../config/error";
 import { status } from "../../../config/response.status";
 import { patchInfoUpdateSql } from "@models/infoUpdate/infoUpdate.sql";
-import { infoUpdate, teamInfo } from "@models/infoUpdate/infoUpdate.dto";
+import { infoUpdateSeason, infoUpdateTeam } from "@models/infoUpdate/infoUpdate.dto";
 
 export const infoUpdateDao = {
-    patchLeague: async (leagueId: number, leagueLogo: string) => {
-        const connection = await getPool().getConnection();
-        try {
-            const [ result ] = await connection.query<ResultSetHeader>(
-                patchInfoUpdateSql.patchLeague,
-                [ leagueLogo, leagueId ]
-            );
-            return result.affectedRows > 0;
-        } catch (err) {
-            console.error(err);
-            throw new ApiError(status.DATA_SEARCH_SQL_ERROR);
-        } finally {
-            connection.release();
-        }
-    },
-
-    patchSeason: async (seasonId: number, leagueId: number, seasonName: string) => {
-        const connection = await getPool().getConnection();
-        try {
-            const [ result ] = await connection.query<ResultSetHeader>(
-                patchInfoUpdateSql.patchSeason,
-                [ seasonId, leagueId, seasonName ]
-            );
-            return result.affectedRows > 0;
-        } catch (err) {
-            console.error(err);
-            throw new ApiError(status.DATA_SEARCH_SQL_ERROR);
-        } finally {
-            connection.release();
-        }
-    },
-
-    patchTeam: async (team: teamInfo) => {
-        const connection = await getPool().getConnection();
-        try {
-            const [ result ] = await connection.query<ResultSetHeader>(
-                patchInfoUpdateSql.patchTeam,
-                [ team.teamId, team.teamName, team.teamInit, team.teamLogo, team.sportId, team.countryId ]
-            );
-            return result.affectedRows > 0;
-        } catch (err) {
-            console.error(err);
-            throw new ApiError(status.DATA_SEARCH_SQL_ERROR);
-        } finally {
-            connection.release();
-        }
-    },
-
-    patchAll: async (data: infoUpdate) => {
+    patchSeason: async (req: infoUpdateSeason) => {
         const connection = await getPool().getConnection();
         try {
             await connection.beginTransaction();
             await connection.query<ResultSetHeader>(
                 patchInfoUpdateSql.patchLeague,
-                [ data.leagueLogo, data.leagueId ]
+                [ req.leagueId, req.leagueName, req.leagueInitial, req.leagueLogo, req.sportId, req.countryId ]
             );
             await connection.query<ResultSetHeader>(
-                patchInfoUpdateSql.patchSeason,
-                [ data.seasonId, data.leagueId, data.seasonName ]
+                patchInfoUpdateSql.patchSeasonState,
+                [ req.leagueId ]
             );
-            for (const team of data.teamInfo) {
-                await connection.query<ResultSetHeader>(
-                    patchInfoUpdateSql.patchTeam,
-                    [ team.teamId, team.teamName, team.teamInit, team.teamLogo, 1, 1 ]
-                );
-            }
+            const [ result ] = await connection.query<ResultSetHeader>(
+                patchInfoUpdateSql.patchSeason,
+                [ req.seasonId, req.leagueId, req.seasonName, req.seasonStart, req.seasonEnd ]
+            );
 
             await connection.commit();
-            return true;
+            return result.affectedRows > 0;
         } catch (err) {
-            await connection.rollback();
+            console.error(err);
+            throw new ApiError(status.DATA_SEARCH_SQL_ERROR);
+        } finally {
+            connection.release();
+        }
+    },
+    patchTeam: async (req: infoUpdateTeam[]) => {
+        const connection = await getPool().getConnection();
+        try {
+            const values = req.map((team) => [
+                team.teamId,
+                team.teamName,
+                team.teamInitial,
+                team.teamLogo,
+                team.sportId,
+                team.countryId
+            ]);
+
+            const [ result ] = await connection.query<ResultSetHeader>(
+                patchInfoUpdateSql.patchTeamBatch,
+                [ values ]
+            );
+            return result.affectedRows > 0;
+        } catch (err) {
             console.error(err);
             throw new ApiError(status.DATA_SEARCH_SQL_ERROR);
         } finally {

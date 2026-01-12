@@ -5,7 +5,7 @@ import { getLeagueDto, team, league } from "@models/league/league.dto";
 import { match, matchList } from "@models/main/main.dto";
 
 export const leagueService = {
-    get: async (userId: string, leagueId: number) => {
+    get: async (userId: string, leagueId: string) => {
         const result = await leagueDao.get(userId, leagueId);
         const league: league = {
             leagueId: result[0].league_id,

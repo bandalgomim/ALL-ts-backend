@@ -10,8 +10,8 @@ export const matchSql = {
         SELECT
         a.team_id,
         COALESCE(
-            MIN(CASE WHEN l.league_type = 'regular' THEN l.league_id END),
-            MIN(CASE WHEN l.league_type = 'cup'     THEN l.league_id END)
+            MIN(CASE WHEN l.league_type = 'domestic' THEN l.league_id END),
+            MIN(CASE WHEN l.league_type = 'international'     THEN l.league_id END)
         ) AS league_id
         FROM affiliation a
         JOIN league      l  ON l.league_id = a.league_id
