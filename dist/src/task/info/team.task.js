@@ -22,6 +22,13 @@ const teamTask = (data) => __awaiter(void 0, void 0, void 0, function* () {
         else if (leagueId.startsWith("apifootball")) {
             result = yield (0, external_api_1.apiFootballTeamData)(leagueId);
         }
+        /*if (result) {
+            for (const r of result) {
+                console.log(r);
+                const data = [ r ];
+                await teamService.patch(data as patchTeamDto[]);
+            }
+        }*/
         yield team_service_1.teamService.patch(result);
     }
 });
