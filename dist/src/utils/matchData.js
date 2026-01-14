@@ -19,15 +19,11 @@ exports.makePrevRankList = makePrevRankList;
 exports.setPrevData = setPrevData;
 exports.mergePrevUri = mergePrevUri;
 exports.concatByLeague = concatByLeague;
-exports.matchDataTranslator = matchDataTranslator;
-exports.rankTranslator = rankTranslator;
 exports.supplement = supplement;
 exports.supplementMatchList = supplementMatchList;
 exports.findLiveUpdates = findLiveUpdates;
 const db_redis_1 = __importDefault(require("../../config/db.redis"));
-const getTag_dao_1 = require("../models/matchData/getTag/getTag.dao");
-const scheduler_dao_1 = require("../models/scheduler/scheduler.dao");
-const translator_1 = require("./translator");
+const scheduler_dao_1 = require("@models/scheduler/scheduler.dao");
 function makePrevMatchList() {
     return {
         LCK: [], KBO: [], MLB: [], "K LEAGUE1": [],
@@ -154,78 +150,6 @@ function concatByLeague(prev = {}, next = {}) {
         out[lg] = a.concat(b); // 순서: prev 뒤에 now 붙임
     }
     return out;
-}
-function matchDataTranslator(data) {
-    return __awaiter(this, void 0, void 0, function* () {
-        var _a, _b;
-        const insertData = [];
-        const teamTag = yield getTag_dao_1.getTagDao.getTeamTag();
-        const leagueTag = yield getTag_dao_1.getTagDao.getLeagueTag();
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        for (const [league, items] of Object.entries(data)) {
-            for (const item of items) {
-                const found = leagueTag.find((tag) => tag.league_tag === item.leagueId || tag.league_id === item.leagueId);
-                item.leagueId = (_a = found === null || found === void 0 ? void 0 : found.league_id) !== null && _a !== void 0 ? _a : item.leagueId;
-                item.seasonId = (_b = found === null || found === void 0 ? void 0 : found.season_id) !== null && _b !== void 0 ? _b : null; // 기존 로직 유지
-                const homeTag = item.homeTeamId;
-                const awayTag = item.awayTeamId;
-                let homeTeamId = homeTag;
-                let awayTeamId = awayTag;
-                for (const tag of teamTag) {
-                    if (tag.league_id === item.leagueId) {
-                        if (tag.team_tag === homeTag)
-                            homeTeamId = tag.team_id;
-                        if (tag.team_tag === awayTag)
-                            awayTeamId = tag.team_id;
-                        if (homeTeamId !== homeTag && awayTeamId !== awayTag)
-                            break;
-                    }
-                }
-                item.homeTeamId = homeTeamId;
-                item.awayTeamId = awayTeamId;
-                item.status = (0, translator_1.parseMatchState)(item.status);
-                [item.date, item.time] = (0, translator_1.parseMatchDate)(item.date, item.time);
-                if (!item.date) {
-                    continue;
-                }
-                if (item.homeTeamScore === "") {
-                    item.homeTeamScore = 0;
-                }
-                if (item.awayTeamScore === "") {
-                    item.awayTeamScore = 0;
-                }
-                insertData.push(item);
-            }
-        }
-        return insertData;
-    });
-}
-function rankTranslator(data) {
-    return __awaiter(this, void 0, void 0, function* () {
-        var _a, _b;
-        const insertData = [];
-        const teamTag = yield getTag_dao_1.getTagDao.getTeamTag();
-        const leagueTag = yield getTag_dao_1.getTagDao.getLeagueTag();
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        for (const [league, items] of Object.entries(data)) {
-            for (const item of items) {
-                const found = leagueTag.find((tag) => tag.league_tag === item.leagueId);
-                const teamIdTag = item.teamId;
-                item.leagueId = (_a = found === null || found === void 0 ? void 0 : found.league_id) !== null && _a !== void 0 ? _a : item.leagueId;
-                item.seasonId = (_b = found === null || found === void 0 ? void 0 : found.season_id) !== null && _b !== void 0 ? _b : null; // 기존 로직 유지
-                let teamId = teamIdTag;
-                for (const tag of teamTag) {
-                    if (tag.league_id === item.leagueId) {
-                        if (tag.team_tag === teamIdTag)
-                            teamId = tag.team_id;
-                    }
-                }
-                item.teamId = teamId;
-                insertData.push(item);
-            }
-        }
-        return insertData;
-    });
 }
 function supplement(data) {
     return __awaiter(this, void 0, void 0, function* () {

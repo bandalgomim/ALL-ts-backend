@@ -10,15 +10,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.schedulerDao = void 0;
-const scheduler_sql_1 = require("./scheduler.sql");
+const scheduler_sql_1 = require("@models/scheduler/scheduler.sql");
 const db_pool_1 = require("../../../config/db.pool");
 const response_status_1 = require("../../../config/response.status");
 const error_1 = require("../../../config/error");
 exports.schedulerDao = {
-    get: (date) => __awaiter(void 0, void 0, void 0, function* () {
+    get: () => __awaiter(void 0, void 0, void 0, function* () {
         const connection = yield (0, db_pool_1.getPool)().getConnection();
         try {
-            const [rows] = yield connection.query(scheduler_sql_1.schedulerSql.get, [date]);
+            const [rows] = yield connection.query(scheduler_sql_1.schedulerSql.get, []);
             return rows; // 쿼리 결과 반환 추가
         }
         catch (err) {

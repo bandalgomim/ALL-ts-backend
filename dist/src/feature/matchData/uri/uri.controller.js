@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.uriController = void 0;
-const uri_service_1 = require("./uri.service");
+const uri_service_1 = require("@feature/matchData/uri/uri.service");
 exports.uriController = {
     post: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const date = req.query.date;

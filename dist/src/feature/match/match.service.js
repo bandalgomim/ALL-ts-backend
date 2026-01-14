@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.matchService = void 0;
-const match_dao_1 = require("../../models/match/match.dao");
+const match_dao_1 = require("@models/match/match.dao");
 const response_status_1 = require("../../../config/response.status");
 exports.matchService = {
     get: (userId, matchId) => __awaiter(void 0, void 0, void 0, function* () {
@@ -28,8 +28,8 @@ exports.matchService = {
         });
         const res = Object.assign(Object.assign({}, response_status_1.status.SUCCESS.body), { result: {
                 matchId: result[0].match_id,
-                matchDate: new Date(result[0].match_date),
-                matchTime: result[0].match_time,
+                matchDate: result[0].match_date.split(' ')[0],
+                matchTime: result[0].match_date.split(' ')[1],
                 homeTeamId: result[0].home_team_id,
                 awayTeamId: result[0].away_team_id,
                 homeTeamName: result[0].home_team_name,

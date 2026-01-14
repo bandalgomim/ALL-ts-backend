@@ -10,11 +10,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.leagueController = void 0;
-const league_service_1 = require("./league.service");
+const league_service_1 = require("@feature/league/league.service");
 exports.leagueController = {
     get: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const userId = res.locals.userId;
-        const leagueId = parseInt(req.query.leagueId);
+        const leagueId = req.query.leagueId;
         if (leagueId) {
             const result = yield league_service_1.leagueService.get(userId, leagueId);
             res.json(result);

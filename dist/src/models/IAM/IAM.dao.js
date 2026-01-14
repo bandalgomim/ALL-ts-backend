@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.IAMDao = void 0;
-const IAM_sql_1 = require("./IAM.sql");
+const IAM_sql_1 = require("@models/IAM/IAM.sql");
 const db_pool_1 = require("../../../config/db.pool");
 const response_status_1 = require("../../../config/response.status");
 const error_1 = require("../../../config/error");

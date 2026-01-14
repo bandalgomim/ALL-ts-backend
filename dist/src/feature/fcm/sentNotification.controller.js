@@ -10,8 +10,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sentNotificationLive = exports.sentNotification = void 0;
-const fcm_dao_1 = require("../../models/fcm/fcm.dao");
-const sentNotification_service_1 = require("./sentNotification.service");
+const fcm_dao_1 = require("@models/fcm/fcm.dao");
+const sentNotification_service_1 = require("@feature/fcm/sentNotification.service");
 const sentNotification = (matchId) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield fcm_dao_1.fcmDao.get(matchId);
     const highlightInfo = {

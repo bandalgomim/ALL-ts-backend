@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.fcmTokenService = void 0;
-const fcm_dao_1 = require("../../models/fcm/fcm.dao");
+const fcm_dao_1 = require("@models/fcm/fcm.dao");
 exports.fcmTokenService = {
     patch: (userId, body) => __awaiter(void 0, void 0, void 0, function* () {
         try {

@@ -2,11 +2,12 @@ import { ResultSetHeader } from "mysql2/promise";
 import { getPool } from "../../../../config/db.pool";
 import { ApiError } from "../../../../config/error";
 import { status } from "../../../../config/response.status";
-import { patchInfoUpdateSql } from "@models/infoUpdate/infoUpdate.sql";
 import { patchTeamDto } from "./team.dto";
+import { teamSql } from "./team.sql";
 
 export const teamDao = {
     patch: async (req: patchTeamDto[]) => {
+        if (!req || req.length === 0) return false; // ✅ empty 방어
         const connection = await getPool().getConnection();
         try {
             const values = req.map((team) => [
@@ -19,7 +20,7 @@ export const teamDao = {
             ]);
 
             const [ result ] = await connection.query<ResultSetHeader>(
-                patchInfoUpdateSql.patchTeamBatch,
+                teamSql.patch,
                 [ values ]
             );
             return result.affectedRows > 0;

@@ -1,9 +1,9 @@
-import { Request, Response } from "express";
 import { teamService } from "./team.service";
+import { patchTeamDto } from "@src/models/sync/team/team.dto";
 
 export const teamController = {
-    patch: async (req: Request, res: Response) => {
-        const result = await teamService.patch(req.body);
-        res.json(result);
+    patch: async (req: patchTeamDto[]) => {
+        const result = await teamService.patch(req);
+        return result;
     }
 };

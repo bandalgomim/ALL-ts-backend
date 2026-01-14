@@ -21,14 +21,12 @@ export const getTagSql = {
     `
     SELECT 
         league_id,
-        season_id,
         league_name as league_tag
     FROM 
         league
     UNION
     SELECT
         lt.league_id,
-        l.season_id,
         lt.tag as league_tag
     FROM league_tag lt 
     JOIN

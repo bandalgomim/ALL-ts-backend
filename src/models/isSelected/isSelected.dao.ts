@@ -7,7 +7,7 @@ import { isSelectedSql } from "@models/isSelected/isSelected.sql";
 
 export const isSelectedDao = {
 
-    patchTeam: async (userId: string, teamId: number) => {
+    patchTeam: async (userId: string, teamId: string) => {
         // isSelected 페이지의 달력과 선호팀에 들어갈 정보를 반환
         const connection = await getPool().getConnection();
         try {
@@ -37,7 +37,7 @@ export const isSelectedDao = {
             connection.release();
         }
     },
-    patchLeague: async (userId: string, leagueId: number) => {
+    patchLeague: async (userId: string, leagueId: string) => {
         // isSelected 페이지의 달력과 선호팀에 들어갈 정보를 반환
         const connection = await getPool().getConnection();
         try {

@@ -15,8 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.IAMService = void 0;
 const error_1 = require("../../../config/error");
 const response_status_1 = require("../../../config/response.status");
-const IAM_dao_1 = require("../../models/IAM/IAM.dao");
-const jwt_utils_1 = require("../../utils/jwt.utils");
+const IAM_dao_1 = require("@models/IAM/IAM.dao");
+const jwt_utils_1 = require("@src/utils/jwt.utils");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 exports.IAMService = {
     login: (userId) => __awaiter(void 0, void 0, void 0, function* () {

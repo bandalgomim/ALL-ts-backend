@@ -10,9 +10,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.iconService = void 0;
-const icon_dao_1 = require("../../models/icon/icon.dao");
-const team_service_1 = require("../team/team.service");
-const league_service_1 = require("../league/league.service");
+const icon_dao_1 = require("@models/icon/icon.dao");
+const team_service_1 = require("@feature/team/team.service");
+const league_service_1 = require("@feature/league/league.service");
 exports.iconService = {
     patchIcon: (userId, type, id, uri) => __awaiter(void 0, void 0, void 0, function* () {
         yield icon_dao_1.iconDao.patchIcon(userId, type, id, uri); // dao를 통해 업데이트

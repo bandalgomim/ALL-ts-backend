@@ -6,10 +6,10 @@ import { ApiError } from "../../../config/error";
 import { schedulerDto } from "@models/scheduler/scheduler.dto";
 
 export const schedulerDao = {
-    get: async (date: string): Promise<RowDataPacket[]> => {
+    get: async (): Promise<RowDataPacket[]> => {
         const connection = await getPool().getConnection();
         try {
-            const [ rows ] = await connection.query<RowDataPacket[]>(schedulerSql.get, [ date ]);
+            const [ rows ] = await connection.query<RowDataPacket[]>(schedulerSql.get, [  ]);
             return rows; // 쿼리 결과 반환 추가
         } catch (err) {
             console.error(err);

@@ -10,13 +10,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.IAMController = void 0;
-const IAM_service_1 = require("./IAM.service");
+const IAM_service_1 = require("@feature/IAM/IAM.service");
 const setHeader = (res, Authorization, RefreshToken) => {
     res.setHeader("Authorization", "Bearer " + Authorization); // 액세스 토큰을 헤더에 설정
     res.setHeader("RefreshToken", RefreshToken); // 리프레시 토큰을 헤더에 설정
 };
 exports.IAMController = {
     login: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        console.log("IAMController.login called");
         const result = yield IAM_service_1.IAMService.login(res.locals.userId);
         if (result[0] === true) {
             setHeader(res, result[1], result[2]);

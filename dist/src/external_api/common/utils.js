@@ -1,0 +1,162 @@
+"use strict";
+/**
+ * 공통 유틸리티 함수
+ */
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.COUNTRY_CODE_MAP = void 0;
+exports.extractNumericId = extractNumericId;
+exports.formatDateTime = formatDateTime;
+exports.parseDate = parseDate;
+exports.formatDate = formatDate;
+exports.formatDateISO = formatDateISO;
+exports.addDays = addDays;
+exports.getCountryCode = getCountryCode;
+/**
+ * ID 문자열에서 숫자만 추출
+ * @param id - 예: 'apifootball39', 'pandascore293', 39
+ * @returns 추출된 숫자
+ */
+function extractNumericId(id) {
+    if (typeof id === "number") {
+        return id;
+    }
+    const match = id.match(/\d+/);
+    if (match) {
+        return parseInt(match[0], 10);
+    }
+    throw new Error(`Invalid id format: ${id}`);
+}
+/**
+ * ISO 날짜 문자열을 표준 형식으로 변환
+ * @param isoDate - ISO 8601 형식 날짜
+ * @returns "YYYY-MM-DD HH:mm:ss" 형식
+ */
+function formatDateTime(isoDate) {
+    if (!isoDate)
+        return "";
+    try {
+        const dt = new Date(isoDate.replace("Z", "+00:00"));
+        const year = dt.getFullYear();
+        const month = String(dt.getMonth() + 1).padStart(2, "0");
+        const day = String(dt.getDate()).padStart(2, "0");
+        const hours = String(dt.getHours()).padStart(2, "0");
+        const minutes = String(dt.getMinutes()).padStart(2, "0");
+        const seconds = String(dt.getSeconds()).padStart(2, "0");
+        return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    }
+    catch (_a) {
+        return isoDate;
+    }
+}
+/**
+ * 날짜 문자열 파싱
+ * @param date - 날짜 문자열 또는 Date 객체
+ * @returns Date 객체
+ */
+function parseDate(date) {
+    if (date instanceof Date) {
+        return date;
+    }
+    const parsed = new Date(date);
+    if (isNaN(parsed.getTime())) {
+        throw new Error(`Invalid date format: ${date}. Expected YYYY-MM-DD`);
+    }
+    return parsed;
+}
+/**
+ * 날짜를 YYYY-MM-DD 형식으로 포맷
+ */
+function formatDate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+}
+/**
+ * 날짜를 ISO 8601 형식으로 포맷 (UTC)
+ */
+function formatDateISO(date) {
+    return date.toISOString().replace(".000Z", "Z");
+}
+/**
+ * 날짜에 일수 추가/감소
+ */
+function addDays(date, days) {
+    const result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+}
+/**
+ * 국가명을 ISO 코드로 변환하는 맵
+ */
+exports.COUNTRY_CODE_MAP = {
+    England: "GB-ENG",
+    Spain: "ES",
+    Germany: "DE",
+    Italy: "IT",
+    France: "FR",
+    Portugal: "PT",
+    Netherlands: "NL",
+    Belgium: "BE",
+    Turkey: "TR",
+    Scotland: "GB-SCT",
+    Austria: "AT",
+    Switzerland: "CH",
+    Greece: "GR",
+    "Czech-Republic": "CZ",
+    Denmark: "DK",
+    Norway: "NO",
+    Sweden: "SE",
+    Poland: "PL",
+    Ukraine: "UA",
+    Russia: "RU",
+    Croatia: "HR",
+    Serbia: "RS",
+    Slovakia: "SK",
+    Bulgaria: "BG",
+    Romania: "RO",
+    Hungary: "HU",
+    Israel: "IL",
+    Cyprus: "CY",
+    Azerbaijan: "AZ",
+    Kazakhstan: "KZ",
+    Slovenia: "SI",
+    Finland: "FI",
+    Ireland: "IE",
+    "Northern-Ireland": "GB-NIR",
+    Wales: "GB-WLS",
+    Albania: "AL",
+    Bosnia: "BA",
+    Montenegro: "ME",
+    "North-Macedonia": "MK",
+    Moldova: "MD",
+    Lithuania: "LT",
+    Latvia: "LV",
+    Estonia: "EE",
+    Georgia: "GE",
+    Armenia: "AM",
+    Belarus: "BY",
+    Iceland: "IS",
+    "Faroe-Islands": "FO",
+    Luxembourg: "LU",
+    Malta: "MT",
+    Andorra: "AD",
+    "San-Marino": "SM",
+    Liechtenstein: "LI",
+    Gibraltar: "GI",
+    "South-Korea": "KR",
+    Japan: "JP",
+    China: "CN",
+    Australia: "AU",
+    USA: "US",
+    Mexico: "MX",
+    Brazil: "BR",
+    Argentina: "AR",
+    World: "XW"
+};
+/**
+ * 국가명을 ISO 코드로 변환
+ */
+function getCountryCode(countryName) {
+    return exports.COUNTRY_CODE_MAP[countryName] || countryName.toUpperCase().slice(0, 2);
+}

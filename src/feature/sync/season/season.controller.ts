@@ -1,9 +1,8 @@
-import { Request, Response } from "express";
 import { seasonService } from "./season.service";
+import { patchSeasonDto } from "@src/models/sync/season/season.dto";
 
 export const seasonController = {
-    patch: async (req: Request, res: Response) => {
-        const result = await seasonService.patch(req.body);
-        res.json(result);
+    patch: async (data: patchSeasonDto) => {
+        await seasonService.patch(data);
     }
 };

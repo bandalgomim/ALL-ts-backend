@@ -10,11 +10,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.translatorDao = void 0;
-const translator_sql_1 = require("./translator.sql");
+const translator_sql_1 = require("@models/matchData/translator/translator.sql");
 const db_pool_1 = require("../../../../config/db.pool");
 const response_status_1 = require("../../../../config/response.status");
 const error_1 = require("../../../../config/error");
-const sentNotification_controller_1 = require("../../../feature/fcm/sentNotification.controller");
+const sentNotification_controller_1 = require("@feature/fcm/sentNotification.controller");
 exports.translatorDao = {
     post: (data) => __awaiter(void 0, void 0, void 0, function* () {
         if (!Array.isArray(data) || data.length === 0)

@@ -13,14 +13,14 @@ export const mainService = {
         const leagueList: league[] = [];
         result.forEach((data) => {
             if (data.match_id !== null && data.is_match_selected !== 0) {
-                if (prevDate && prevDate !== data.match_date) {
+                if (prevDate && prevDate !== data.match_date.split(' ')[0]) {
                     matchList[prevDate] = matchItems;
                     matchItems = [];
                 }
                 matchItems.push({
                     matchId: data.match_id,
-                    matchDate: data.match_date,
-                    matchTime: data.match_time,
+                    matchDate: data.match_date.split(' ')[0],
+                    matchTime: data.match_date.split(' ')[1],
                     matchState: data.match_state,
                     homeTeamId: data.home_team_id,
                     awayTeamId: data.away_team_id,
@@ -35,7 +35,7 @@ export const mainService = {
                     userId: data.user_id,
                     isMatchSelected: Boolean(data.is_match_selected)
                 });
-                prevDate = data.match_date;
+                prevDate = data.match_date.split(" ")[0];
             }
             if (data.team_id !== null && data.is_team_selected !== 0) {
                 teamList.push({

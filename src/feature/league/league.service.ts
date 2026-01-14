@@ -25,14 +25,14 @@ export const leagueService = {
 
         result.forEach((data) => {
             if (data.match_id !== null) {
-                if (prevDate && prevDate !== data.match_date) {
+                if (prevDate && prevDate !== data.match_date.split(" ")[0]) {
                     matchList[prevDate] = matchItems;
                     matchItems = [];
                 }
                 matchItems.push({
                     matchId: data.match_id,
-                    matchDate: data.match_date,
-                    matchTime: data.match_time,
+                    matchDate: data.match_date.split(" ")[0],
+                    matchTime: data.match_date.split(" ")[1],
                     matchState: data.match_state,
                     homeTeamId: data.home_team_id,
                     awayTeamId: data.away_team_id,
@@ -47,7 +47,7 @@ export const leagueService = {
                     userId: data.user_id,
                     isMatchSelected: Boolean(data.is_match_selected)
                 });
-                prevDate = data.match_date;
+                prevDate = data.match_date.split(" ")[0];
             } else {
                 teamList.push({
                     teamId: data.team_id,
@@ -78,6 +78,7 @@ export const leagueService = {
                 matchList: matchList // 날짜별로 묶인 matchList
             }
         };
+        console.log(teamList);
         return res;
     }
 };

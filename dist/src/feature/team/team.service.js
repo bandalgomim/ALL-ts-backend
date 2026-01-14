@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.teamService = void 0;
-const team_dao_1 = require("../../models/team/team.dao");
+const team_dao_1 = require("@models/team/team.dao");
 const response_status_1 = require("../../../config/response.status");
 exports.teamService = {
     get: (userId, teamId) => __awaiter(void 0, void 0, void 0, function* () {
@@ -21,14 +21,14 @@ exports.teamService = {
         if (result[0].match_id) {
             result.forEach((data) => {
                 if (data.match_id !== null) {
-                    if (prevDate && prevDate !== data.match_date) {
+                    if (prevDate && prevDate !== data.match_date.split(' ')[0]) {
                         matchList[prevDate] = matchItems;
                         matchItems = [];
                     }
                     matchItems.push({
                         matchId: data.match_id,
-                        matchDate: data.match_date,
-                        matchTime: data.match_time,
+                        matchDate: data.match_date.split(' ')[0],
+                        matchTime: data.match_date.split(' ')[1],
                         matchState: data.match_state,
                         homeTeamId: data.home_team_id,
                         awayTeamId: data.away_team_id,
@@ -43,7 +43,7 @@ exports.teamService = {
                         userId: data.user_id,
                         isMatchSelected: Boolean(data.is_match_selected)
                     });
-                    prevDate = data.match_date;
+                    prevDate = data.match_date.split(" ")[0];
                 }
             });
             // 마지막 날짜의 matchItems도 추가

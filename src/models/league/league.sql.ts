@@ -1,6 +1,6 @@
 export const leagueSql = {
     get:
-    `WITH match_list AS (
+    `WITH match_row AS (
         SELECT 
             m.match_id,
             m.home_team_id,
@@ -9,8 +9,10 @@ export const leagueSql = {
             t2.team_name AS away_team_name,
             t1.team_initial AS home_team_initial,
             t2.team_initial AS away_team_initial,
-            m.match_date,
-            m.match_time,
+            DATE_FORMAT(
+                CONVERT_TZ(m.match_date, '+00:00', '+09:00'),
+                '%Y-%m-%d %H:%i:%s'
+                ) AS match_date,
             m.match_state,
             COALESCE(i1.icon, t1.team_logo) AS home_team_logo,
             COALESCE(i2.icon, t2.team_logo) AS away_team_logo,
@@ -18,10 +20,10 @@ export const leagueSql = {
             m.away_team_score,
             EXISTS (
                 SELECT 1
-                FROM match_list c
-                WHERE m.match_id = c.match_id
-                AND c.is_selected = true
-                AND c.user_id = ?
+                FROM match_list ml
+                WHERE m.match_id = ml.match_id
+                AND ml.is_selected = true
+                AND ml.user_id = ?
             ) AS is_match_selected,
             NULL AS team_id,
             NULL AS team_name,
@@ -42,9 +44,8 @@ export const leagueSql = {
         LEFT JOIN team t1 ON t1.team_id = m.home_team_id
         LEFT JOIN team t2 ON t2.team_id = m.away_team_id
         WHERE m.league_id = ?
-        ORDER BY m.match_date ASC
     ),
-    team_list AS (
+    team_row AS (
         SELECT 
             NULL AS match_id,
             NULL AS home_team_id,
@@ -54,7 +55,6 @@ export const leagueSql = {
             NULL AS home_team_initial,
             NULL AS away_team_initial,
             NULL AS match_date,
-            null AS match_time,
             NULL AS match_state,
             NULL AS home_team_logo,
             NULL AS away_team_logo,
@@ -73,21 +73,24 @@ export const leagueSql = {
             str.section,
             str.section_idx
         FROM 
-            team t
-        LEFT JOIN
-            season_team_record str on t.team_id = str.team_id
-        LEFT JOIN 
-            league l ON l.league_id = str.league_id AND str.season_id = l.season_id
+            season s
+        JOIN
+            season_team_record str 
+            on str.league_id = s.league_id
+            AND str.season_id = s.season_id
+        JOIN
+            team t ON t.team_id = str.team_id
         LEFT JOIN
             icon i ON i.type = 'team' and t.team_id = i.id and i.user_id = ?
         WHERE
-            l.league_id = ?
-        ORDER BY str.section_idx ASC
+            s.league_id = ?
+        AND 
+            s.season_state = 1
     ),
     team_match AS (
-        SELECT * FROM team_list
+        SELECT * FROM team_row
         UNION ALL
-        SELECT * FROM match_list
+        SELECT * FROM match_row
     ),
     league_info AS (
         SELECT

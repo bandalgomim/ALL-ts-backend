@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.fcmDao = void 0;
-const fcm_sql_1 = require("./fcm.sql");
+const fcm_sql_1 = require("@models/fcm/fcm.sql");
 const db_pool_1 = require("../../../config/db.pool");
 const response_status_1 = require("../../../config/response.status");
 const error_1 = require("../../../config/error");

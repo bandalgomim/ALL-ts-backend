@@ -3,6 +3,7 @@ import { status } from "../../../config/response.status";
 import { BaseApiResponse } from "../../../config/response";
 import { getTeamDto } from "@models/team/team.dto";
 import { match, matchList } from "@models/main/main.dto";
+import { log } from "console";
 
 export const teamService = {
     get: async (userId: string, teamId: string) => {
@@ -14,14 +15,14 @@ export const teamService = {
         if (result[0].match_id) {
             result.forEach((data) => {
                 if (data.match_id !== null) {
-                    if (prevDate && prevDate !== data.match_date) {
+                    if (prevDate && prevDate !== data.match_date.split(' ')[0]) {
                         matchList[prevDate] = matchItems;
                         matchItems = [];
                     }
                     matchItems.push({
                         matchId: data.match_id,
-                        matchDate: data.match_date,
-                        matchTime: data.match_time,
+                        matchDate: data.match_date.split(' ')[0],
+                        matchTime: data.match_date.split(' ')[1],
                         matchState: data.match_state,
                         homeTeamId: data.home_team_id,
                         awayTeamId: data.away_team_id,
@@ -36,7 +37,7 @@ export const teamService = {
                         userId: data.user_id,
                         isMatchSelected: Boolean(data.is_match_selected)
                     });
-                    prevDate = data.match_date;
+                    prevDate = data.match_date.split(" ")[0];
                 }
             });
 

@@ -26,6 +26,7 @@ exports.searchTagSql = {
                 l.league_name AS tag,
                 l.league_name AS itemName
             FROM league l
+            WHERE l.is_active = 1
         ),
         search_tag_league_init AS (
             SELECT 
@@ -34,6 +35,7 @@ exports.searchTagSql = {
                 l.league_initial AS tag,
                 l.league_name AS itemName
             FROM league l
+            WHERE l.is_active = 1
         ),
         search_tag_team_tag AS (
             SELECT
@@ -52,6 +54,7 @@ exports.searchTagSql = {
                 l.league_name AS itemName
             FROM league_tag lt
             JOIN league l ON lt.league_id = l.league_id
+            WHERE l.is_active = 1
         )
         SELECT * FROM search_tag_team
         UNION ALL

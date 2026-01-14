@@ -6,23 +6,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = App;
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
-const jwt_middleware_1 = require("./utils/jwt.middleware");
+const jwt_middleware_1 = require("@src/utils/jwt.middleware");
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const dotenv_1 = require("dotenv");
-const match_route_1 = require("./route/match/match.route");
-const main_route_1 = require("./route/main/main.route");
-const team_route_1 = require("./route/team/team.route");
-const isSelected_route_1 = require("./route/isSelected/isSelected.route");
-const icon_route_1 = require("./route/icon/icon.route");
-const IAM_route_1 = require("./route/auth/IAM.route");
-const fcmToken_route_1 = require("./route/fcmToken/fcmToken.route");
-const node_cron_1 = __importDefault(require("node-cron"));
-const league_route_1 = require("./route/league/league.route");
-const scheduler_route_1 = require("./route/scheduler/scheduler.route");
-const matchData_route_1 = require("./route/matchData/matchData.route");
-const searchTag_service_1 = require("./feature/searchTag/searchTag.service");
-const searchTag_route_1 = require("./route/searchTag/searchTag.route");
-const versionCheck_route_1 = require("./route/versionCheck/versionCheck.route");
+const match_route_1 = require("@route/match/match.route");
+const main_route_1 = require("@route/main/main.route");
+const team_route_1 = require("@route/team/team.route");
+const isSelected_route_1 = require("@route/isSelected/isSelected.route");
+const icon_route_1 = require("@route/icon/icon.route");
+const IAM_route_1 = require("@route/auth/IAM.route");
+const fcmToken_route_1 = require("@route/fcmToken/fcmToken.route");
+const league_route_1 = require("@route/league/league.route");
+const matchData_route_1 = require("@route/matchData/matchData.route");
+const searchTag_route_1 = require("@route/searchTag/searchTag.route");
+const versionCheck_route_1 = require("@route/versionCheck/versionCheck.route");
+const init_task_1 = require("@src/task/init/init.task");
 (0, dotenv_1.config)();
 function App() {
     const app = (0, express_1.default)();
@@ -39,14 +37,10 @@ function App() {
     app.use("/isSelected", (0, express_async_handler_1.default)(jwt_middleware_1.tokenMinddleware.auth), (0, express_async_handler_1.default)(isSelected_route_1.isSelectedRouter));
     app.use("/league", (0, express_async_handler_1.default)(jwt_middleware_1.tokenMinddleware.auth), (0, express_async_handler_1.default)(league_route_1.leagueRouter));
     app.use("/icon", (0, express_async_handler_1.default)(jwt_middleware_1.tokenMinddleware.auth), (0, express_async_handler_1.default)(icon_route_1.iconRouter));
-    app.use("/scheduler", (0, express_async_handler_1.default)(scheduler_route_1.schedulerRouter));
     app.use("/matchData", (0, express_async_handler_1.default)(matchData_route_1.matchDataRouter));
     app.use("/searchTag", (0, express_async_handler_1.default)(searchTag_route_1.searchTagRouter));
     app.use("/versionCheck", (0, express_async_handler_1.default)(versionCheck_route_1.versionCheckRouter));
     // chackDailyMatch를 1분마다 실행
-    searchTag_service_1.searchTagService.patch();
-    node_cron_1.default.schedule("0 0 * * *", () => {
-        searchTag_service_1.searchTagService.patch();
-    });
+    (0, init_task_1.initTask)();
     return app;
 }

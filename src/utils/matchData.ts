@@ -1,10 +1,7 @@
 import redisClient from "../../config/db.redis";
-import { getTagDao } from "@models/matchData/getTag/getTag.dao";
-import { postRankReqDto, rankDto } from "@models/matchData/rank/rank.dto";
 import { uriDto } from "@models/matchData/uri/uri.dto";
 import { schedulerDao } from "@models/scheduler/scheduler.dao";
-import { postSchedulerReqDto, schedulerDto } from "@models/scheduler/scheduler.dto";
-import { parseMatchDate, parseMatchState } from "@src/utils/translator";
+import { schedulerDto } from "@models/scheduler/scheduler.dto";
 
 export function makePrevMatchList() {
     return {
@@ -141,69 +138,6 @@ export function concatByLeague(
         out[lg] = a.concat(b);   // 순서: prev 뒤에 now 붙임
     }
     return out;
-}
-
-export async function matchDataTranslator(data: postSchedulerReqDto | postRankReqDto) {
-    const insertData: schedulerDto[] = [];
-    const teamTag = await getTagDao.getTeamTag();
-    const leagueTag = await getTagDao.getLeagueTag();
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    for (const [ league, items ] of Object.entries(data)) {
-        for (const item of items) {
-            const found = leagueTag.find((tag) => tag.league_tag === item.leagueId || tag.league_id === item.leagueId);
-            item.leagueId = found?.league_id ?? item.leagueId;
-            item.seasonId = found?.season_id ?? null; // 기존 로직 유지
-            const homeTag = item.homeTeamId;
-            const awayTag = item.awayTeamId;
-            let homeTeamId = homeTag;
-            let awayTeamId = awayTag;
-            for (const tag of teamTag) {
-                if (tag.league_id === item.leagueId) {
-                    if (tag.team_tag === homeTag) homeTeamId = tag.team_id;
-                    if (tag.team_tag === awayTag) awayTeamId = tag.team_id;
-                    if (homeTeamId !== homeTag && awayTeamId !== awayTag) break;
-                }
-            }
-            item.homeTeamId = homeTeamId;
-            item.awayTeamId = awayTeamId;
-            item.status = parseMatchState(item.status) as string;
-            [ item.date, item.time ] = parseMatchDate(item.date, item.time) as string[];
-            if (!item.date) {
-                continue;
-            }
-            if (item.homeTeamScore === "") { item.homeTeamScore = 0; }
-            if (item.awayTeamScore === "") { item.awayTeamScore = 0; }
-            insertData.push(item);
-        }
-    }
-    return insertData;
-}
-
-export async function rankTranslator(data: postRankReqDto) {
-    const insertData: rankDto[] = [];
-    const teamTag = await getTagDao.getTeamTag();
-    const leagueTag = await getTagDao.getLeagueTag();
-
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    for (const [ league, items ] of Object.entries(data)) {
-        for (const item of items) {
-            const found = leagueTag.find((tag) => tag.league_tag === item.leagueId);
-            const teamIdTag = item.teamId;
-            item.leagueId = found?.league_id ?? item.leagueId;
-            item.seasonId = found?.season_id ?? null; // 기존 로직 유지
-            let teamId = teamIdTag;
-            for (const tag of teamTag) {
-                if (tag.league_id === item.leagueId) {
-                    if (tag.team_tag === teamIdTag) teamId = tag.team_id;
-                }
-            }
-            item.teamId = teamId;
-            insertData.push(item);
-        }
-    }
-    return insertData;
 }
 
 export async function supplement(data: schedulerDto[]) {

@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.searchTagController = void 0;
-const searchTag_service_1 = require("./searchTag.service");
+const searchTag_service_1 = require("@feature/searchTag/searchTag.service");
 exports.searchTagController = {
     get: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const result = yield searchTag_service_1.searchTagService.get();

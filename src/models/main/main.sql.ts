@@ -22,7 +22,6 @@ export const mainSql = {
                 NULL AS home_team_initial,
                 NULL AS away_team_initial,
                 null AS match_date,
-                null AS match_time,
                 null AS match_state,
                 null AS home_team_logo,
                 null AS away_team_logo,
@@ -61,7 +60,6 @@ export const mainSql = {
                 NULL AS home_team_initial,
                 NULL AS away_team_initial,
                 null AS match_date,
-                null AS match_time,
                 null AS match_state,
                 null AS home_team_logo,
                 null AS away_team_logo,
@@ -99,11 +97,13 @@ export const mainSql = {
                 t2.team_name AS away_team_name,
                 t1.team_initial AS home_team_initial,
                 t2.team_initial AS away_team_initial,
-                m.match_date AS match_date,
-                m.match_time,
+                DATE_FORMAT(
+                    CONVERT_TZ(m.match_date, '+00:00', '+09:00'),
+                    '%Y-%m-%d %H:%i:%s'
+                    ) AS match_date,
                 m.match_state,
-                i1.icon as home_team_logo,
-                i2.icon as away_team_logo,
+                COALESCE(i1.icon, t1.team_logo) AS home_team_logo,
+                COALESCE(i2.icon, t2.team_logo) AS away_team_logo,
                 m.home_team_score,
                 m.away_team_score,
                 EXISTS (

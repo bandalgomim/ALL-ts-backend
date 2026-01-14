@@ -6,17 +6,17 @@ export const matchSql = {
         SELECT m.away_team_id FROM match_info m WHERE m.match_id = ?
     ),
     preferred_league AS (
-        /* 팀별 1행: regular 우선 → 없으면 cup, 각 타입에서 최소 league_id 선택 */
         SELECT
-        a.team_id,
+        t.team_id,
         COALESCE(
             MIN(CASE WHEN l.league_type = 'domestic' THEN l.league_id END),
-            MIN(CASE WHEN l.league_type = 'international'     THEN l.league_id END)
+            MIN(CASE WHEN l.league_type = 'international' THEN l.league_id END)
         ) AS league_id
-        FROM affiliation a
-        JOIN league      l  ON l.league_id = a.league_id
-        JOIN match_teams mt ON mt.team_id  = a.team_id
-        GROUP BY a.team_id
+        FROM team t
+        JOIN season_team_record str ON str.team_id = t.team_id
+        JOIN league l ON l.league_id = str.league_id
+        JOIN match_teams mt ON mt.team_id  = t.team_id
+        GROUP BY t.team_id
     ),
     match_info_cte AS (
         SELECT
@@ -30,8 +30,10 @@ export const matchSql = {
             t1.team_initial AS home_team_initial,
             t2.team_initial AS away_team_initial,
     
-            m.match_date,
-            m.match_time,
+            DATE_FORMAT(
+                CONVERT_TZ(m.match_date, '+00:00', '+09:00'),
+                '%Y-%m-%d %H:%i:%s'
+                ) AS match_date,
             m.match_state,
     
             COALESCE(i1.icon, t1.team_logo) AS home_team_logo,

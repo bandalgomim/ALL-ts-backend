@@ -4,9 +4,9 @@ import { isSelectedService } from "@feature/isSelected/isSelected.service";
 export const isSelectedController = {
     patch: async (req: Request, res: Response) => {
         const userId = res.locals.userId;
-        const teamId = parseInt(req.query.teamId as string);
+        const teamId = req.query.teamId as string;
         const matchId = req.query.matchId as string;
-        const leagueId = parseInt(req.query.leagueId as string);
+        const leagueId = req.query.leagueId as string;
         let result;
         if (teamId && !matchId && !leagueId) {
             result = await isSelectedService.patchTeam(userId, teamId);

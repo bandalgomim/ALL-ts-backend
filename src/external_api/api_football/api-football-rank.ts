@@ -1,0 +1,249 @@
+/**
+ * API Football - 순위 정보 조회
+ */
+
+import { createApiFootballClient } from "../common/http-client";
+import { extractNumericId } from "../common/utils";
+import { RankDto, ApiResponse, hasApiError } from "../common/types";
+import { ApiFootballLeague, ApiFootballStanding, ApiFootballStandingsResponse } from "./dto";
+/**
+ * 현재 진행 중인 라운드 확인, 없으면 최근 라운드 반환
+ */
+async function getCurrentRound(
+    leagueId: number,
+    season: number,
+    client: ReturnType<typeof createApiFootballClient>
+): Promise<string | null> {
+    try {
+    // 현재 진행 중인 라운드 우선 확인
+        const currentRounds = await client.get<ApiResponse<string[]>>("/fixtures/rounds", {
+            league: leagueId,
+            season: season,
+            current: "true"
+        });
+
+        let rounds = currentRounds.response || [];
+
+        // 현재 라운드가 없으면 모든 라운드에서 마지막 선택
+        if (!rounds.length) {
+            const allRounds = await client.get<ApiResponse<string[]>>("/fixtures/rounds", {
+                league: leagueId,
+                season: season
+            });
+            rounds = allRounds.response || [];
+        }
+
+        return rounds.length > 0 ? rounds[0] : null;
+    } catch {
+        return null;
+    }
+}
+
+/**
+ * 모든 그룹을 합치되, 중복되는 팀은 더 최근 경기가 있었던 그룹의 정보를 우선
+ */
+function mergeAllGroupsWithPriority(
+    roundName: string | null,
+    allStandings: ApiFootballStanding[][]
+): ApiFootballStanding[][] {
+    if (allStandings.length <= 1) {
+        return allStandings;
+    }
+
+    const prioritizedGroups: ApiFootballStanding[][] = [];
+    const otherGroups: ApiFootballStanding[][] = [];
+
+    if (roundName) {
+        for (const group of allStandings) {
+            if (group && group.length > 0) {
+                const groupName = group[0]?.group || "";
+                if (groupName) {
+                    const groupLower = groupName.toLowerCase();
+                    const roundLower = roundName.toLowerCase();
+
+                    // 공통 키워드 추출
+                    const groupKeywords = new Set(
+                        groupLower.replace(",", " ").split(" ")
+                            .filter((word) => /^[a-z]+$/.test(word) && word.length > 2)
+                    );
+                    const roundKeywords = new Set(
+                        roundLower.replace("-", " ").split(" ")
+                            .filter((word) => /^[a-z]+$/.test(word) && word.length > 2)
+                    );
+
+                    // 현재 라운드와 매칭되면 우선순위 그룹
+                    const common = [ ...groupKeywords ].filter((x) => roundKeywords.has(x));
+                    if (common.length > 0 || roundName.includes(groupName) || groupName.includes(roundName)) {
+                        prioritizedGroups.push(group);
+                    } else {
+                        otherGroups.push(group);
+                    }
+                } else {
+                    otherGroups.push(group);
+                }
+            } else {
+                otherGroups.push(group);
+            }
+        }
+    } else {
+        otherGroups.push(...allStandings);
+    }
+
+    return [ ...prioritizedGroups, ...otherGroups ];
+}
+
+/**
+ * 리그 ID와 시즌을 받아 RankDto 형태로 순위 정보를 반환
+ *
+ * @param leagueId - 리그 ID (예: 'apifootball39' 또는 39)
+ * @param season - 시즌 (예: 2025, 'apifootball2025' 또는 undefined - 현재 시즌 사용)
+ * @returns RankDto 형태의 순위 정보 리스트
+ */
+export async function apiFootballRankInfo(
+    leagueId: string | number,
+    season?: string | number
+): Promise<RankDto[] | null> {
+    const numericLeagueId = extractNumericId(leagueId);
+    const client = createApiFootballClient();
+
+    try {
+    // 1. 리그 정보 조회 (현재 시즌)
+        const leagueData = await client.get<ApiResponse<ApiFootballLeague[]>>("/leagues", {
+            id: numericLeagueId,
+            current: "true"
+        });
+
+        if (hasApiError(leagueData) || !leagueData.response?.length) {
+            return null;
+        }
+
+        const leagueInfo = leagueData.response[0];
+        const seasons = leagueInfo.seasons || [];
+
+        // 시즌 결정
+        let currentSeason: number;
+        if (season) {
+            currentSeason = extractNumericId(season);
+        } else {
+            // current=true 우선, 없으면 가장 최근 시즌
+            const currentSeasonInfo = seasons.find((s) => s.current);
+            if (currentSeasonInfo) {
+                currentSeason = currentSeasonInfo.year;
+            } else if (seasons.length > 0) {
+                const sortedSeasons = [ ...seasons ].sort((a, b) => b.year - a.year);
+                currentSeason = sortedSeasons[0].year;
+            } else {
+                currentSeason = new Date().getFullYear();
+            }
+        }
+
+        // 2. 순위표 조회
+        const standingsData = await client.get<ApiResponse<ApiFootballStandingsResponse[]>>("/standings", {
+            league: numericLeagueId,
+            season: currentSeason
+        });
+
+        if (hasApiError(standingsData) || !standingsData.response?.length) {
+            return [];
+        }
+
+        const leagueStandings = standingsData.response[0].league;
+        const allStandings = leagueStandings.standings;
+
+        // 3. 현재 진행 중인 라운드 확인
+        const currentRound = await getCurrentRound(numericLeagueId, currentSeason, client);
+
+        // 4. 모든 그룹을 우선순위 정렬
+        const sortedGroups = mergeAllGroupsWithPriority(currentRound, allStandings);
+
+        // 5. 중복 제거하며 합치기
+        const seenTeams = new Set<number>();
+        const standingsList: ApiFootballStanding[] = [];
+
+        for (const group of sortedGroups) {
+            for (const standing of group) {
+                const teamId = standing.team?.id;
+                if (teamId && !seenTeams.has(teamId)) {
+                    seenTeams.add(teamId);
+                    standingsList.push(standing);
+                }
+            }
+        }
+
+        // 6. 팀 코드 정보를 얻기 위해 Teams API 호출
+        interface TeamInfo {
+            team: {
+                id: number,
+                code: string
+            }
+        }
+
+        const teamsData = await client.get<ApiResponse<TeamInfo[]>>("/teams", {
+            league: numericLeagueId,
+            season: currentSeason
+        });
+
+        const teamCodeMap: Record<number, string> = {};
+        if (teamsData.response) {
+            for (const item of teamsData.response) {
+                teamCodeMap[item.team.id] = item.team.code;
+            }
+        }
+
+        // section별로 팀을 그룹화
+        const sectionTeams: Record<string, Array<[number, RankDto]>> = {};
+
+        for (const standing of standingsList) {
+            const teamId = standing.team?.id;
+            const wins = standing.all.win;
+            const draws = standing.all.draw;
+            const losses = standing.all.lose;
+            const points = standing.points;
+            const rank = standing.rank;
+            const section = standing.group || null;
+
+            const rankInfo: RankDto = {
+                seasonId: `apifootball${currentSeason}`,
+                teamId: `apifootball${teamId}`,
+                leagueId: `apifootball${numericLeagueId}`,
+                rank,
+                win: wins,
+                draw: draws,
+                lose: losses,
+                point: points,
+                section,
+                sectionIdx: null
+            };
+
+            const sectionKey = section || "default";
+            if (!sectionTeams[sectionKey]) {
+                sectionTeams[sectionKey] = [];
+            }
+            sectionTeams[sectionKey].push([ rank || 999, rankInfo ]);
+        }
+
+        // section을 알파벳 역순으로 정렬
+        const sortedSections = Object.keys(sectionTeams).sort()
+            .reverse();
+
+        // sectionIdx 할당
+        const allRanks: RankDto[] = [];
+        let idx = 1;
+
+        for (const section of sortedSections) {
+            const teams = sectionTeams[section];
+            teams.sort((a, b) => a[0] - b[0]);
+
+            for (const [ , rankInfo ] of teams) {
+                rankInfo.sectionIdx = idx;
+                allRanks.push(rankInfo);
+            }
+            idx++;
+        }
+
+        return allRanks;
+
+    } catch (error) {
+        return null;
+    }
+}
