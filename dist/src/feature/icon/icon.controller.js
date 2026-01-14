@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.iconController = void 0;
-const icon_service_1 = require("@feature/icon/icon.service");
+const icon_service_1 = require("../icon/icon.service");
 exports.iconController = {
     patch: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const userId = res.locals.userId;

@@ -10,10 +10,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.infoTask = void 0;
-const external_api_1 = require("@src/external_api");
+const external_api_1 = require("../../external_api");
 const init_task_1 = require("../init/init.task");
-const match_service_1 = require("@src/feature/sync/match/match.service");
-const rank_service_1 = require("@src/feature/sync/rank/rank.service");
+const match_service_1 = require("../../feature/sync/match/match.service");
+const rank_service_1 = require("../../feature/sync/rank/rank.service");
 const infoTask = (leagueId, seasonId) => __awaiter(void 0, void 0, void 0, function* () {
     const today = (0, init_task_1.getTodayYMD)();
     let rank;

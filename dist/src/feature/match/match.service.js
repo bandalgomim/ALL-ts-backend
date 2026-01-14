@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.matchService = void 0;
-const match_dao_1 = require("@models/match/match.dao");
+const match_dao_1 = require("../../models/match/match.dao");
 const response_status_1 = require("../../../config/response.status");
 exports.matchService = {
     get: (userId, matchId) => __awaiter(void 0, void 0, void 0, function* () {

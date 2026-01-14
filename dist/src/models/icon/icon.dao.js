@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.iconDao = void 0;
-const icon_sql_1 = require("@models/icon/icon.sql");
+const icon_sql_1 = require("../icon/icon.sql");
 const db_pool_1 = require("../../../config/db.pool");
 const response_status_1 = require("../../../config/response.status");
 const error_1 = require("../../../config/error");

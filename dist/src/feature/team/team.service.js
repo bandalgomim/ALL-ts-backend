@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.teamService = void 0;
-const team_dao_1 = require("@models/team/team.dao");
+const team_dao_1 = require("../../models/team/team.dao");
 const response_status_1 = require("../../../config/response.status");
 exports.teamService = {
     get: (userId, teamId) => __awaiter(void 0, void 0, void 0, function* () {

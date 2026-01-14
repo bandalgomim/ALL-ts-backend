@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.teamService = void 0;
 const response_status_1 = require("../../../../config/response.status");
-const team_dao_1 = require("@src/models/sync/team/team.dao");
+const team_dao_1 = require("../../../models/sync/team/team.dao");
 exports.teamService = {
     patch: (req) => __awaiter(void 0, void 0, void 0, function* () {
         yield team_dao_1.teamDao.patch(req);

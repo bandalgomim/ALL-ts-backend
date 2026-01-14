@@ -13,7 +13,7 @@ exports.matchDao = void 0;
 const db_pool_1 = require("../../../config/db.pool");
 const error_1 = require("../../../config/error");
 const response_status_1 = require("../../../config/response.status");
-const match_sql_1 = require("@models/match/match.sql");
+const match_sql_1 = require("../match/match.sql");
 exports.matchDao = {
     get: (userId, matchId) => __awaiter(void 0, void 0, void 0, function* () {
         // match 페이지의 달력과 선호팀에 들어갈 정보를 반환

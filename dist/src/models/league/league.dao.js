@@ -13,7 +13,7 @@ exports.leagueDao = void 0;
 const db_pool_1 = require("../../../config/db.pool");
 const error_1 = require("../../../config/error");
 const response_status_1 = require("../../../config/response.status");
-const league_sql_1 = require("@models/league/league.sql");
+const league_sql_1 = require("../league/league.sql");
 exports.leagueDao = {
     get: (userId, leagueId) => __awaiter(void 0, void 0, void 0, function* () {
         // league 페이지의 달력과 선호팀에 들어갈 정보를 반환

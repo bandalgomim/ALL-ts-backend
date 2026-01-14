@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.translatorController = void 0;
-const translator_service_1 = require("@feature/matchData/translator/translator.service");
+const translator_service_1 = require("../../matchData/translator/translator.service");
 exports.translatorController = {
     post: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const result = yield translator_service_1.translatorService.post(req.body);

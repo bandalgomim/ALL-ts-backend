@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.uriService = void 0;
 const db_redis_1 = __importDefault(require("../../../../config/db.redis"));
-const matchData_1 = require("@src/utils/matchData");
+const matchData_1 = require("../../../utils/matchData");
 exports.uriService = {
     post: (data, date) => __awaiter(void 0, void 0, void 0, function* () {
         var _a;

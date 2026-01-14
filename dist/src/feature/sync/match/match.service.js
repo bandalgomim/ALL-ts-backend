@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.matchService = void 0;
-const match_dao_1 = require("@src/models/sync/match/match.dao");
+const match_dao_1 = require("../../../models/sync/match/match.dao");
 exports.matchService = {
     get: (date) => __awaiter(void 0, void 0, void 0, function* () {
         const data = yield match_dao_1.matchDao.get(date);

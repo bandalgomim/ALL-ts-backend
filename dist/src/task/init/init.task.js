@@ -14,9 +14,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.initTask = void 0;
 exports.getTodayYMD = getTodayYMD;
-const searchTag_service_1 = require("@feature/searchTag/searchTag.service");
-const sceduler_service_1 = require("@src/feature/scheduler/sceduler.service");
-const match_service_1 = require("@src/feature/sync/match/match.service");
+const searchTag_service_1 = require("../../feature/searchTag/searchTag.service");
+const sceduler_service_1 = require("../../feature/scheduler/sceduler.service");
+const match_service_1 = require("../../feature/sync/match/match.service");
 const node_cron_1 = __importDefault(require("node-cron"));
 const match_task_1 = require("./match.task");
 const scehduler_task_1 = require("../scehduler/scehduler.task");

@@ -10,11 +10,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.tokenMinddleware = void 0;
-const jwt_utils_1 = require("@src/utils/jwt.utils");
+const jwt_utils_1 = require("../utils/jwt.utils");
 const response_status_1 = require("../../config/response.status");
 const dotenv_1 = require("dotenv");
 const error_1 = require("../../config/error");
-const IAM_controller_1 = require("@feature/IAM/IAM.controller");
+const IAM_controller_1 = require("../feature/IAM/IAM.controller");
 const google_auth_library_1 = require("google-auth-library");
 const jose_1 = require("jose");
 (0, dotenv_1.config)();

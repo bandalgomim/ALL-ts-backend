@@ -10,8 +10,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.teamTask = void 0;
-const external_api_1 = require("@src/external_api");
-const team_service_1 = require("@src/feature/sync/team/team.service");
+const external_api_1 = require("../../external_api");
+const team_service_1 = require("../../feature/sync/team/team.service");
 const teamTask = (data) => __awaiter(void 0, void 0, void 0, function* () {
     for (const item of data) {
         const { leagueId, seasonId } = item;

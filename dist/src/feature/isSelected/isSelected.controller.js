@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.isSelectedController = void 0;
-const isSelected_service_1 = require("@feature/isSelected/isSelected.service");
+const isSelected_service_1 = require("../isSelected/isSelected.service");
 exports.isSelectedController = {
     patch: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const userId = res.locals.userId;

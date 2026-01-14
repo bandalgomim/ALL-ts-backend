@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.teamController = void 0;
-const team_service_1 = require("@feature/team/team.service");
+const team_service_1 = require("../team/team.service");
 exports.teamController = {
     get: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const teamId = req.query.teamId;

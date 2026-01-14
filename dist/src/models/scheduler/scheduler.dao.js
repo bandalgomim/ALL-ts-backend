@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.schedulerDao = void 0;
-const scheduler_sql_1 = require("@models/scheduler/scheduler.sql");
+const scheduler_sql_1 = require("../scheduler/scheduler.sql");
 const db_pool_1 = require("../../../config/db.pool");
 const response_status_1 = require("../../../config/response.status");
 const error_1 = require("../../../config/error");

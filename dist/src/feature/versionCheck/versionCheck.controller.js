@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.versionCheckController = void 0;
-const versionCheck_service_1 = require("@feature/versionCheck/versionCheck.service");
+const versionCheck_service_1 = require("../versionCheck/versionCheck.service");
 exports.versionCheckController = {
     post: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const version = req.body;

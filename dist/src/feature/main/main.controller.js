@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.mainController = void 0;
-const main_service_1 = require("@feature/main/main.service");
+const main_service_1 = require("../main/main.service");
 exports.mainController = {
     get: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const userId = res.locals.userId;

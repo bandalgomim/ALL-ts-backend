@@ -23,7 +23,7 @@ exports.supplement = supplement;
 exports.supplementMatchList = supplementMatchList;
 exports.findLiveUpdates = findLiveUpdates;
 const db_redis_1 = __importDefault(require("../../config/db.redis"));
-const scheduler_dao_1 = require("@models/scheduler/scheduler.dao");
+const scheduler_dao_1 = require("../models/scheduler/scheduler.dao");
 function makePrevMatchList() {
     return {
         LCK: [], KBO: [], MLB: [], "K LEAGUE1": [],

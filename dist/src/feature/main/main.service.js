@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.mainService = void 0;
-const main_dao_1 = require("@models/main/main.dao");
+const main_dao_1 = require("../../models/main/main.dao");
 const response_status_1 = require("../../../config/response.status");
 exports.mainService = {
     get: (userId) => __awaiter(void 0, void 0, void 0, function* () {

@@ -10,10 +10,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.translatorService = void 0;
-const getMatchId_dao_1 = require("@models/matchData/getMatchId/getMatchId.dao");
-const getTag_dao_1 = require("@models/matchData/getTag/getTag.dao");
-const translator_dao_1 = require("@models/matchData/translator/translator.dao");
-const translator_1 = require("@src/utils/translator");
+const getMatchId_dao_1 = require("../../../models/matchData/getMatchId/getMatchId.dao");
+const getTag_dao_1 = require("../../../models/matchData/getTag/getTag.dao");
+const translator_dao_1 = require("../../../models/matchData/translator/translator.dao");
+const translator_1 = require("../../../utils/translator");
 exports.translatorService = {
     post: (data) => __awaiter(void 0, void 0, void 0, function* () {
         var _a, _b;

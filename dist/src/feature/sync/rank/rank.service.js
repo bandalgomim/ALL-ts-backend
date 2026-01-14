@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.rankService = void 0;
-const rank_dao_1 = require("@models/sync/rank/rank.dao");
+const rank_dao_1 = require("../../../models/sync/rank/rank.dao");
 exports.rankService = {
     patch: (data) => __awaiter(void 0, void 0, void 0, function* () {
         yield rank_dao_1.rankDao.patch(data);

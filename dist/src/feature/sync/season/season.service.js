@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.seasonService = void 0;
-const season_dao_1 = require("@src/models/sync/season/season.dao");
+const season_dao_1 = require("../../../models/sync/season/season.dao");
 exports.seasonService = {
     patch: (data) => __awaiter(void 0, void 0, void 0, function* () {
         yield season_dao_1.seasonDao.patch(data);

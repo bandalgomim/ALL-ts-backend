@@ -13,7 +13,7 @@ exports.mainDao = void 0;
 const db_pool_1 = require("../../../config/db.pool");
 const error_1 = require("../../../config/error");
 const response_status_1 = require("../../../config/response.status");
-const main_sql_1 = require("@models/main/main.sql");
+const main_sql_1 = require("../main/main.sql");
 exports.mainDao = {
     get: (userId) => __awaiter(void 0, void 0, void 0, function* () {
         // main 페이지의 달력과 선호팀에 들어갈 정보를 반환

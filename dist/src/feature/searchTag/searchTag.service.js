@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.searchTagService = void 0;
-const serchTag_dao_1 = require("@models/searchTag/serchTag.dao");
+const serchTag_dao_1 = require("../../models/searchTag/serchTag.dao");
 const db_redis_1 = __importDefault(require("../../../config/db.redis"));
 const response_status_1 = require("../../../config/response.status");
 exports.searchTagService = {

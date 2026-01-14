@@ -10,8 +10,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.isSelectedService = void 0;
-const isSelected_dao_1 = require("@models/isSelected/isSelected.dao");
-const main_service_1 = require("@feature/main/main.service");
+const isSelected_dao_1 = require("../../models/isSelected/isSelected.dao");
+const main_service_1 = require("../main/main.service");
 exports.isSelectedService = {
     patchTeam: (userId, teamId) => __awaiter(void 0, void 0, void 0, function* () {
         yield isSelected_dao_1.isSelectedDao.patchTeam(userId, teamId); // dao를 통해 업데이트
