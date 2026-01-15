@@ -3,10 +3,7 @@ export const matchSql = {
     `SELECT
         m.league_id,
         m.season_id,
-        DATE_FORMAT(
-            CONVERT_TZ(m.match_date, '+00:00', '+09:00'),
-            '%Y-%m-%d %H:%i:%s'
-            ) AS match_date
+        m.match_date
     FROM
         match_info m
     WHERE

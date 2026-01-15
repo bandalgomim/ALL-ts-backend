@@ -10,9 +10,9 @@ import { teamTask } from "../info/team.task";
 export function getTodayYMD(): string {
     const today = new Date();
     return [
-        today.getFullYear(),
-        String(today.getMonth() + 1).padStart(2, "0"),
-        String(today.getDate()).padStart(2, "0")
+        today.getUTCFullYear(),
+        String(today.getUTCMonth() + 1).padStart(2, "0"),
+        String(today.getUTCDate()).padStart(2, "0")
     ].join("-");
 }
 
@@ -30,8 +30,16 @@ async function runDailyTasks() {
 
 export const initTask = () => {
     runDailyTasks();
+
     cron.schedule(
-        "0 0 * * *", () => { runDailyTasks(); }
+        "0 0 * * *", // 매일 00:00
+        () => {
+            runDailyTasks();
+        },
+        {
+            timezone: "UTC", // 🔥 핵심
+        }
     );
 };
+
 

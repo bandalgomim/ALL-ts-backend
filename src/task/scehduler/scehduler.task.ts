@@ -93,6 +93,8 @@ export function initMinuteScheduler(matchData: matchDataDto[]) {
 
     task = cron.schedule("* * * * *", () => {
         minuteJob().catch(console.error);
+    }, {
+        timezone: "UTC", // 🔥 핵심
     });
 
     task.start();

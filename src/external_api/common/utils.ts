@@ -29,19 +29,20 @@ export function formatDateTime(isoDate: string): string {
     if (!isoDate) return "";
 
     try {
-        const dt = new Date(isoDate.replace("Z", "+00:00"));
-        const year = dt.getFullYear();
-        const month = String(dt.getMonth() + 1).padStart(2, "0");
-        const day = String(dt.getDate()).padStart(2, "0");
-        const hours = String(dt.getHours()).padStart(2, "0");
-        const minutes = String(dt.getMinutes()).padStart(2, "0");
-        const seconds = String(dt.getSeconds()).padStart(2, "0");
+    // 2026-01-15T08:30:00.000Z
+    // 2026-01-15T08:30:00Z
+        const m = isoDate.match(
+            /^(\d{4}-\d{2}-\d{2})[T ](\d{2}:\d{2}:\d{2})/
+        );
 
-        return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        if (!m) return isoDate;
+
+        return `${m[1]} ${m[2]}`;
     } catch {
         return isoDate;
     }
 }
+
 
 /**
  * 날짜 문자열 파싱

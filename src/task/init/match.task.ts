@@ -16,13 +16,15 @@ export const matchTask = async (data: taskDto[]) => {
         } else if (leagueId.startsWith("apifootball")) {
             result = await apiFootballMatchInfo(leagueId, seasonId);
         }
-        /*if (result) {
+
+        /* if (result) {
             for (const r of result) {
                 console.log(r);
                 const data = [ r ];
                 await matchService.patch(data as patchMatchDto[]);
             }
         }*/
+
         await matchService.patch(result as patchMatchDto[]);
     }
 };
