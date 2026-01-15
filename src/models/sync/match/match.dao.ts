@@ -20,7 +20,7 @@ export const matchDao = {
         }
     },
     patch: async (data: patchMatchDto[]) => {
-        if (!Array.isArray(data) || data.length === 0) return;
+        if (!Array.isArray(data) || data.length === 0) return false;
 
         const connection = await getPool().getConnection();
         try {
@@ -49,5 +49,36 @@ export const matchDao = {
         } finally {
             connection.release();
         }
-    }
+    },
+    patchMatchList: async (data: patchMatchDto[]): Promise<number> => {
+        if (!Array.isArray(data) || data.length === 0) return 0;
+
+        const connection = await getPool().getConnection();
+        try {
+            const matchListRows = data.map((item) => ([
+                item.matchId,
+                item.homeTeamId ? item.homeTeamId : "TBD",
+                item.awayTeamId ? item.awayTeamId : "TBD",
+            ]));
+
+            await connection.beginTransaction();
+
+            await connection.query(matchSql.patchMatchList.createTmpNewMatches);
+            await connection.query(matchSql.patchMatchList.truncateTmpNewMatches);
+            await connection.query(matchSql.patchMatchList.insertTmpNewMatches, [matchListRows]);
+
+            const [result] = await connection.query<ResultSetHeader>(
+                matchSql.patchMatchList.insertMatchListFromTmp
+            );
+
+            await connection.commit();
+            return result.affectedRows ?? 0;
+        } catch (err) {
+            console.error(err);
+            try { await connection.rollback(); } catch { /* empty */ }
+            throw new ApiError(status.DATA_SEARCH_SQL_ERROR);
+        } finally {
+            connection.release();
+        }
+    },
 };

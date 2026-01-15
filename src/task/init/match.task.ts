@@ -25,6 +25,9 @@ export const matchTask = async (data: taskDto[]) => {
             }
         }*/
 
-        await matchService.patch(result as patchMatchDto[]);
+        const ok = await matchService.patch(result as patchMatchDto[]);
+        if (ok) {
+            await matchService.patchMatchList(result as patchMatchDto[]);
+        }
     }
 };

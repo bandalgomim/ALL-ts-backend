@@ -1,12 +1,11 @@
 import { searchTagService } from "@feature/searchTag/searchTag.service";
-import { schedulerService } from "@src/feature/scheduler/sceduler.service";
 import { matchService } from "@src/feature/sync/match/match.service";
 import cron from "node-cron";
 import { matchTask, taskDto } from "./match.task";
 import { initMinuteScheduler, matchDataDto } from "../scehduler/scehduler.task";
 import { rankTask } from "./rank.task";
 import { teamTask } from "../info/team.task";
-
+import { schedulerService } from "@src/feature/sync/scheduler/scheduler.service";
 export function getTodayYMD(): string {
     const today = new Date();
     return [

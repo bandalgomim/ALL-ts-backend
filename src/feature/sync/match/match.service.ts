@@ -8,6 +8,11 @@ export const matchService = {
 
     },
     patch: async (data: patchMatchDto[]) => {
-        await matchDao.patch(data);
+        const result = await matchDao.patch(data);
+        return result;
+    },
+    patchMatchList: async (data: patchMatchDto[]): Promise<number> => {
+        const result = await matchDao.patchMatchList(data);
+        return result;
     }
 };
