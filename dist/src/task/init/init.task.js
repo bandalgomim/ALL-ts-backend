@@ -15,26 +15,27 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.initTask = void 0;
 exports.getTodayYMD = getTodayYMD;
 const searchTag_service_1 = require("../../feature/searchTag/searchTag.service");
-const sceduler_service_1 = require("../../feature/scheduler/sceduler.service");
 const match_service_1 = require("../../feature/sync/match/match.service");
 const node_cron_1 = __importDefault(require("node-cron"));
 const match_task_1 = require("./match.task");
 const scehduler_task_1 = require("../scehduler/scehduler.task");
 const rank_task_1 = require("./rank.task");
 const team_task_1 = require("../info/team.task");
+const scheduler_service_1 = require("../../feature/sync/scheduler/scheduler.service");
 function getTodayYMD() {
     const today = new Date();
     return [
-        today.getFullYear(),
-        String(today.getMonth() + 1).padStart(2, "0"),
-        String(today.getDate()).padStart(2, "0")
+        today.getUTCFullYear(),
+        String(today.getUTCMonth() + 1).padStart(2, "0"),
+        String(today.getUTCDate()).padStart(2, "0")
     ].join("-");
 }
 function runDailyTasks() {
     return __awaiter(this, void 0, void 0, function* () {
         const ymd = getTodayYMD();
-        const leagues = yield sceduler_service_1.schedulerService.get();
+        const leagues = yield scheduler_service_1.schedulerService.get();
         yield (0, team_task_1.teamTask)(leagues);
+        //리그 초기에만
         yield (0, match_task_1.matchTask)(leagues);
         yield (0, rank_task_1.rankTask)(leagues);
         yield searchTag_service_1.searchTagService.patch();
@@ -44,6 +45,11 @@ function runDailyTasks() {
 }
 const initTask = () => {
     runDailyTasks();
-    node_cron_1.default.schedule("0 0 * * *", () => { runDailyTasks(); });
+    node_cron_1.default.schedule("0 0 * * *", // 매일 00:00
+    () => {
+        runDailyTasks();
+    }, {
+        timezone: "UTC", // 🔥 핵심
+    });
 };
 exports.initTask = initTask;

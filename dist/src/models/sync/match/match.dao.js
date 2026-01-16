@@ -32,7 +32,7 @@ exports.matchDao = {
     }),
     patch: (data) => __awaiter(void 0, void 0, void 0, function* () {
         if (!Array.isArray(data) || data.length === 0)
-            return;
+            return false;
         const connection = yield (0, db_pool_1.getPool)().getConnection();
         try {
             // VALUES ?에 넣을 2차원 배열 생성
@@ -64,5 +64,36 @@ exports.matchDao = {
         finally {
             connection.release();
         }
-    })
+    }),
+    patchMatchList: (data) => __awaiter(void 0, void 0, void 0, function* () {
+        var _a;
+        if (!Array.isArray(data) || data.length === 0)
+            return 0;
+        const connection = yield (0, db_pool_1.getPool)().getConnection();
+        try {
+            const matchListRows = data.map((item) => ([
+                item.matchId,
+                item.homeTeamId ? item.homeTeamId : "TBD",
+                item.awayTeamId ? item.awayTeamId : "TBD",
+            ]));
+            yield connection.beginTransaction();
+            yield connection.query(match_sql_1.matchSql.patchMatchList.createTmpNewMatches);
+            yield connection.query(match_sql_1.matchSql.patchMatchList.truncateTmpNewMatches);
+            yield connection.query(match_sql_1.matchSql.patchMatchList.insertTmpNewMatches, [matchListRows]);
+            const [result] = yield connection.query(match_sql_1.matchSql.patchMatchList.insertMatchListFromTmp);
+            yield connection.commit();
+            return (_a = result.affectedRows) !== null && _a !== void 0 ? _a : 0;
+        }
+        catch (err) {
+            console.error(err);
+            try {
+                yield connection.rollback();
+            }
+            catch ( /* empty */_b) { /* empty */ }
+            throw new error_1.ApiError(response_status_1.status.DATA_SEARCH_SQL_ERROR);
+        }
+        finally {
+            connection.release();
+        }
+    }),
 };

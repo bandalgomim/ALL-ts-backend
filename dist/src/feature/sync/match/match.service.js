@@ -17,6 +17,11 @@ exports.matchService = {
         return data;
     }),
     patch: (data) => __awaiter(void 0, void 0, void 0, function* () {
-        yield match_dao_1.matchDao.patch(data);
+        const result = yield match_dao_1.matchDao.patch(data);
+        return result;
+    }),
+    patchMatchList: (data) => __awaiter(void 0, void 0, void 0, function* () {
+        const result = yield match_dao_1.matchDao.patchMatchList(data);
+        return result;
     })
 };

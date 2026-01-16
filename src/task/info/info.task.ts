@@ -19,13 +19,14 @@ export const infoTask = async (leagueId: string, seasonId: string) => {
     }
     if (match) {
         for (const m of match) {
-            if (m.status === "end") {
+            if (m.status === "live") {
                 const key = `push:live:${m.matchId}`;
                 const ok = await redisClient.set(key, "1", {
                     NX: true,
                     EX: 72 * 60 * 60
                 });
-                if (ok) {
+                console.log("Set live notification key:", key, ok);
+                if (ok === "OK") {
                     await sentNotificationLive(m.matchId);
                 }
             }

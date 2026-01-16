@@ -22,14 +22,17 @@ const matchTask = (data) => __awaiter(void 0, void 0, void 0, function* () {
         else if (leagueId.startsWith("apifootball")) {
             result = yield (0, external_api_1.apiFootballMatchInfo)(leagueId, seasonId);
         }
-        /*if (result) {
+        /* if (result) {
             for (const r of result) {
                 console.log(r);
                 const data = [ r ];
                 await matchService.patch(data as patchMatchDto[]);
             }
         }*/
-        yield match_service_1.matchService.patch(result);
+        const ok = yield match_service_1.matchService.patch(result);
+        if (ok) {
+            yield match_service_1.matchService.patchMatchList(result);
+        }
     }
 });
 exports.matchTask = matchTask;

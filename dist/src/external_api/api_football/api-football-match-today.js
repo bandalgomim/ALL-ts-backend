@@ -70,7 +70,6 @@ function apiFootballMatchToday(leagueId, season, date) {
                 return null;
             }
             // 2. 날짜 범위의 경기 조회
-            console.log(`경기 조회 중... (${dateFrom} ~ ${dateTo})`);
             const fixturesData = yield client.get("/fixtures", {
                 league: numericLeagueId,
                 season: numericSeason,

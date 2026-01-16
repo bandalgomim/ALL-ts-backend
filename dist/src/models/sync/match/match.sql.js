@@ -5,10 +5,7 @@ exports.matchSql = {
     get: `SELECT
         m.league_id,
         m.season_id,
-        DATE_FORMAT(
-            CONVERT_TZ(m.match_date, '+00:00', '+09:00'),
-            '%Y-%m-%d %H:%i:%s'
-            ) AS match_date
+        m.match_date
     FROM
         match_info m
     WHERE
@@ -39,5 +36,30 @@ exports.matchSql = {
       away_team_score = VALUES(away_team_score),
       double_header = VALUES(double_header),
       season_id = VALUES(season_id);
-    `
+    `,
+    patchMatchList: {
+        createTmpNewMatches: `
+            CREATE TEMPORARY TABLE IF NOT EXISTS tmp_new_matches (
+            match_id VARCHAR(30) NOT NULL,
+            home_team_id VARCHAR(255) NOT NULL,
+            away_team_id VARCHAR(255) NOT NULL,
+            PRIMARY KEY (match_id)
+            ) ENGINE=MEMORY;
+        `,
+        truncateTmpNewMatches: `
+            TRUNCATE TABLE tmp_new_matches;
+        `,
+        insertTmpNewMatches: `
+            INSERT INTO tmp_new_matches (match_id, home_team_id, away_team_id)
+            VALUES ?;
+        `,
+        insertMatchListFromTmp: `
+            INSERT IGNORE INTO match_list (user_id, match_id, is_selected)
+            SELECT DISTINCT tl.user_id, tnm.match_id, 1
+            FROM tmp_new_matches tnm
+            JOIN team_list tl
+            ON tl.is_selected = 1
+            AND tl.team_id IN (tnm.home_team_id, tnm.away_team_id);
+        `
+    }
 };

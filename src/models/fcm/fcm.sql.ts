@@ -33,8 +33,6 @@ export const fcmSql = {
         team t2 ON mi.away_team_id = t2.team_id
     WHERE
         mi.match_id = ?
-    AND
-        mi.alarm = 0
     `,
     postLiveAlarm: "uPDATE match_info SET alarm = 1 WHERE match_id = ?",
     getFcmToken:

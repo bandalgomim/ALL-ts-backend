@@ -23,7 +23,8 @@ let running = false;
 function buildScedules(matchData) {
     const tmp = new Map();
     for (const data of matchData) {
-        const time = new Date(data.match_date).getTime();
+        const time = new Date(data.match_date.replace(" ", "T") + "Z").getTime();
+        console.log("date", data.league_id, data.match_date, time);
         if (!Number.isFinite(time))
             continue;
         const cur = tmp.get(data.league_id);
@@ -70,6 +71,8 @@ function minuteJob() {
             return;
         running = true;
         const now = Date.now();
+        console.log(now);
+        console.log(scedulesMap);
         try {
             for (const [key, scedule] of scedulesMap.entries()) {
                 if (now > scedule.end) {
@@ -95,6 +98,8 @@ function initMinuteScheduler(matchData) {
         upsertscedule(scedule);
     task = node_cron_1.default.schedule("* * * * *", () => {
         minuteJob().catch(console.error);
+    }, {
+        timezone: "UTC", // 🔥 핵심
     });
     task.start();
 }

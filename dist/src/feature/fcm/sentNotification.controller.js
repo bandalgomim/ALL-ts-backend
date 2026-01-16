@@ -31,6 +31,7 @@ const sentNotificationLive = (matchId) => __awaiter(void 0, void 0, void 0, func
     if (!matchId)
         return;
     const result = yield fcm_dao_1.fcmDao.getLive(matchId);
+    console.log("Live match info result:", result[0].home_team_name, result[0].away_team_name);
     if (!result[0])
         return;
     const highlightInfo = {
@@ -39,6 +40,7 @@ const sentNotificationLive = (matchId) => __awaiter(void 0, void 0, void 0, func
         awayTeamName: result[0].away_team_name
     };
     let tokens = yield fcm_dao_1.fcmDao.getFcmToken(matchId);
+    console.log("Live match FCM tokens:", tokens);
     tokens = Array.from(new Set(tokens));
     if (tokens.length !== 0) {
         yield fcm_dao_1.fcmDao.postLiveAlarm(matchId);

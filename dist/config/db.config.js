@@ -11,6 +11,6 @@ function getDbConfig() {
         waitForConnections: true,
         connectionLimit: 50,
         queueLimit: 0,
-        dateStrings: ['DATE'],
+        dateStrings: ['DATE', 'DATETIME', 'TIMESTAMP'],
     };
 }
