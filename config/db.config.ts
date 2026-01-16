@@ -10,6 +10,6 @@ export default function getDbConfig(): PoolOptions {
         waitForConnections: true,
         connectionLimit: 50,
         queueLimit: 0,
-        dateStrings: ['DATE'],
+        dateStrings: ['DATE', 'DATETIME', 'TIMESTAMP'],
     };
 }

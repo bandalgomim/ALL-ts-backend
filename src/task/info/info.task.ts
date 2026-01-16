@@ -19,7 +19,7 @@ export const infoTask = async (leagueId: string, seasonId: string) => {
     }
     if (match) {
         for (const m of match) {
-            if (m.status === "live") {
+            if (m.status === "end") {
                 const key = `push:live:${m.matchId}`;
                 const ok = await redisClient.set(key, "1", {
                     NX: true,

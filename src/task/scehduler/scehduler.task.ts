@@ -4,7 +4,7 @@ import { infoTask } from "../info/info.task";
 export type matchDataDto = {
     league_id: string,
     season_id: string,
-    match_date: Date
+    match_date: string
 };
 type sceduleDto = {
     league_id: string,
@@ -22,7 +22,8 @@ function buildScedules(matchData: matchDataDto[]): sceduleDto[] {
     const tmp = new Map<string, { league_id: string, season_id: string, min: number, max: number }>();
 
     for (const data of matchData) {
-        const time = new Date(data.match_date).getTime();
+        const time = new Date(data.match_date.replace(" ", "T") + "Z").getTime();
+        console.log("date", data.league_id, data.match_date, time);
         if (!Number.isFinite(time)) continue;
 
         const cur = tmp.get(data.league_id);
@@ -68,6 +69,8 @@ async function minuteJob() {
     if (running) return;
     running = true;
     const now = Date.now();
+    console.log(now)
+    console.log(scedulesMap)
     try {
         for (const [ key, scedule ] of scedulesMap.entries()) {
             if (now > scedule.end) {

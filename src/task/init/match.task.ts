@@ -6,7 +6,6 @@ export interface taskDto {
     leagueId: string,
     seasonId: string
 }
-
 export const matchTask = async (data: taskDto[]) => {
     for (const item of data) {
         const { leagueId, seasonId } = item;
@@ -24,7 +23,6 @@ export const matchTask = async (data: taskDto[]) => {
                 await matchService.patch(data as patchMatchDto[]);
             }
         }*/
-
         const ok = await matchService.patch(result as patchMatchDto[]);
         if (ok) {
             await matchService.patchMatchList(result as patchMatchDto[]);

@@ -78,7 +78,6 @@ export const leagueService = {
                 matchList: matchList // 날짜별로 묶인 matchList
             }
         };
-        console.log(teamList);
         return res;
     }
 };
