@@ -38,7 +38,8 @@ exports.tokenUtils = {
     login: (user_id) => __awaiter(void 0, void 0, void 0, function* () {
         const accessToken = exports.tokenUtils.sign(user_id);
         const refreshToken = exports.tokenUtils.refresh();
-        yield db_redis_1.default.set(user_id, refreshToken);
+        const key = "user:refreshToken:" + user_id;
+        yield db_redis_1.default.set(key, refreshToken);
         return [accessToken, refreshToken];
     }),
     verify: (token) => {
@@ -63,7 +64,8 @@ exports.tokenUtils = {
     },
     refreshVerify: (token, userId) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const data = yield db_redis_1.default.get(userId);
+            const key = "user:refreshToken:" + userId;
+            const data = yield db_redis_1.default.get(key);
             if (token === data) {
                 try {
                     jsonwebtoken_1.default.verify(token, secret);

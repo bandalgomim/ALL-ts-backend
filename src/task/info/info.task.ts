@@ -25,7 +25,6 @@ export const infoTask = async (leagueId: string, seasonId: string) => {
                     NX: true,
                     EX: 72 * 60 * 60
                 });
-                console.log("Set live notification key:", key, ok);
                 if (ok === "OK") {
                     await sentNotificationLive(m.matchId);
                 }

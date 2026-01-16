@@ -39,7 +39,6 @@ const infoTask = (leagueId, seasonId) => __awaiter(void 0, void 0, void 0, funct
                     NX: true,
                     EX: 72 * 60 * 60
                 });
-                console.log("Set live notification key:", key, ok);
                 if (ok === "OK") {
                     yield (0, sentNotification_controller_1.sentNotificationLive)(m.matchId);
                 }

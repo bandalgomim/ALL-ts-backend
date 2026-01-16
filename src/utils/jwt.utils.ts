@@ -25,7 +25,8 @@ export const tokenUtils = {
     login: async (user_id: string) => {
         const accessToken = tokenUtils.sign(user_id);
         const refreshToken = tokenUtils.refresh();
-        await redisClient.set(user_id, refreshToken);
+        const key = "user:refreshToken:" + user_id;
+        await redisClient.set(key, refreshToken);
         return [ accessToken, refreshToken ];
     },
     verify: (token: string) => {
@@ -49,7 +50,8 @@ export const tokenUtils = {
     },
     refreshVerify: async (token: string, userId: string) => {
         try {
-            const data = await redisClient.get(userId);
+            const key = "user:refreshToken:" + userId;
+            const data = await redisClient.get(key);
             if (token === data) {
                 try {
                     jwt.verify(token, secret);

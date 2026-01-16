@@ -23,7 +23,6 @@ function buildScedules(matchData: matchDataDto[]): sceduleDto[] {
 
     for (const data of matchData) {
         const time = new Date(data.match_date.replace(" ", "T") + "Z").getTime();
-        console.log("date", data.league_id, data.match_date, time);
         if (!Number.isFinite(time)) continue;
 
         const cur = tmp.get(data.league_id);
@@ -69,8 +68,6 @@ async function minuteJob() {
     if (running) return;
     running = true;
     const now = Date.now();
-    console.log(now)
-    console.log(scedulesMap)
     try {
         for (const [ key, scedule ] of scedulesMap.entries()) {
             if (now > scedule.end) {
