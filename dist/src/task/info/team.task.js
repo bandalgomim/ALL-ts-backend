@@ -31,5 +31,6 @@ const teamTask = (data) => __awaiter(void 0, void 0, void 0, function* () {
         }*/
         yield team_service_1.teamService.patch(result);
     }
+    console.log("팀 정보 업데이트 완료");
 });
 exports.teamTask = teamTask;

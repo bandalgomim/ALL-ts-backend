@@ -40,6 +40,8 @@ function runDailyTasks() {
         yield (0, rank_task_1.rankTask)(leagues);
         yield searchTag_service_1.searchTagService.patch();
         const data = yield match_service_1.matchService.get(ymd);
+        console.log(`Running daily tasks for date: ${ymd}`);
+        console.log(leagues);
         (0, scehduler_task_1.initMinuteScheduler)(data);
     });
 }

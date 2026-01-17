@@ -28,4 +28,5 @@ export const matchTask = async (data: taskDto[]) => {
             await matchService.patchMatchList(result as patchMatchDto[]);
         }
     }
+    console.log("매치 정보 업데이트 완료");
 };

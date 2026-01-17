@@ -26,4 +26,5 @@ export const teamTask = async (data: taskDto[]) => {
         
         await teamService.patch(result as patchTeamDto[]);
     }
+    console.log("팀 정보 업데이트 완료");
 };

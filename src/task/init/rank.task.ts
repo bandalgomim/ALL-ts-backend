@@ -14,4 +14,5 @@ export const rankTask = async (data: taskDto[]) => {
         }
         await rankService.patch(result as patchRankDto[]);
     }
+    console.log("랭킹 정보 업데이트 완료");
 };

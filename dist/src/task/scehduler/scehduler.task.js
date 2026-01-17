@@ -77,6 +77,14 @@ function minuteJob() {
                     continue;
                 }
                 if (now >= scedule.start && now <= scedule.end) {
+                    const d = new Date(now);
+                    const utc = `${d.getUTCFullYear()}-`
+                        + `${String(d.getUTCMonth() + 1).padStart(2, "0")}-`
+                        + `${String(d.getUTCDate()).padStart(2, "0")} `
+                        + `${String(d.getUTCHours()).padStart(2, "0")}:`
+                        + `${String(d.getUTCMinutes()).padStart(2, "0")}:`
+                        + `${String(d.getUTCSeconds()).padStart(2, "0")} UTC`;
+                    console.log("매치 및 랭킹 업데이트 작업 실행", scedule.league_id, utc);
                     yield (0, info_task_1.infoTask)(scedule.league_id, scedule.season_id);
                 }
             }

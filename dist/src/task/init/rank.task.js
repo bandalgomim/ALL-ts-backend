@@ -24,5 +24,6 @@ const rankTask = (data) => __awaiter(void 0, void 0, void 0, function* () {
         }
         yield rank_service_1.rankService.patch(result);
     }
+    console.log("랭킹 정보 업데이트 완료");
 });
 exports.rankTask = rankTask;

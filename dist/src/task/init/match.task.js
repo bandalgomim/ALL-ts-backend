@@ -34,5 +34,6 @@ const matchTask = (data) => __awaiter(void 0, void 0, void 0, function* () {
             yield match_service_1.matchService.patchMatchList(result);
         }
     }
+    console.log("매치 정보 업데이트 완료");
 });
 exports.matchTask = matchTask;
