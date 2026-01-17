@@ -58,16 +58,16 @@ export const matchDao = {
             const matchListRows = data.map((item) => ([
                 item.matchId,
                 item.homeTeamId ? item.homeTeamId : "TBD",
-                item.awayTeamId ? item.awayTeamId : "TBD",
+                item.awayTeamId ? item.awayTeamId : "TBD"
             ]));
 
             await connection.beginTransaction();
 
             await connection.query(matchSql.patchMatchList.createTmpNewMatches);
             await connection.query(matchSql.patchMatchList.truncateTmpNewMatches);
-            await connection.query(matchSql.patchMatchList.insertTmpNewMatches, [matchListRows]);
+            await connection.query(matchSql.patchMatchList.insertTmpNewMatches, [ matchListRows ]);
 
-            const [result] = await connection.query<ResultSetHeader>(
+            const [ result ] = await connection.query<ResultSetHeader>(
                 matchSql.patchMatchList.insertMatchListFromTmp
             );
 
@@ -80,5 +80,5 @@ export const matchDao = {
         } finally {
             connection.release();
         }
-    },
+    }
 };

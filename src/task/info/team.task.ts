@@ -16,14 +16,15 @@ export const teamTask = async (data: taskDto[]) => {
         } else if (leagueId.startsWith("apifootball")) {
             result = await apiFootballTeamData(leagueId);
         }
-        /*if (result) {
+
+        /* if (result) {
             for (const r of result) {
                 console.log(r);
                 const data = [ r ];
                 await teamService.patch(data as patchTeamDto[]);
             }
         }*/
-        
+
         await teamService.patch(result as patchTeamDto[]);
     }
     console.log("팀 정보 업데이트 완료");

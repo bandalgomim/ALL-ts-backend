@@ -1,47 +1,9 @@
-/**
- * API Football - 순위 정보 조회
- */
-
 import { createApiFootballClient } from "../common/http-client";
 import { extractNumericId } from "../common/utils";
 import { RankDto, ApiResponse, hasApiError } from "../common/types";
-import { ApiFootballLeague, ApiFootballStanding, ApiFootballStandingsResponse } from "./dto";
-/**
- * 현재 진행 중인 라운드 확인, 없으면 최근 라운드 반환
- */
-async function getCurrentRound(
-    leagueId: number,
-    season: number,
-    client: ReturnType<typeof createApiFootballClient>
-): Promise<string | null> {
-    try {
-    // 현재 진행 중인 라운드 우선 확인
-        const currentRounds = await client.get<ApiResponse<string[]>>("/fixtures/rounds", {
-            league: leagueId,
-            season: season,
-            current: "true"
-        });
+import { ApiFootballStanding, ApiFootballStandingsResponse } from "./dto";
+import { getCurrentRound } from "./api-football-utils";
 
-        let rounds = currentRounds.response || [];
-
-        // 현재 라운드가 없으면 모든 라운드에서 마지막 선택
-        if (!rounds.length) {
-            const allRounds = await client.get<ApiResponse<string[]>>("/fixtures/rounds", {
-                league: leagueId,
-                season: season
-            });
-            rounds = allRounds.response || [];
-        }
-
-        return rounds.length > 0 ? rounds[0] : null;
-    } catch {
-        return null;
-    }
-}
-
-/**
- * 모든 그룹을 합치되, 중복되는 팀은 더 최근 경기가 있었던 그룹의 정보를 우선
- */
 function mergeAllGroupsWithPriority(
     roundName: string | null,
     allStandings: ApiFootballStanding[][]
@@ -101,41 +63,16 @@ function mergeAllGroupsWithPriority(
  */
 export async function apiFootballRankInfo(
     leagueId: string | number,
-    season?: string | number
+    season?: string
 ): Promise<RankDto[] | null> {
     const numericLeagueId = extractNumericId(leagueId);
     const client = createApiFootballClient();
 
     try {
     // 1. 리그 정보 조회 (현재 시즌)
-        const leagueData = await client.get<ApiResponse<ApiFootballLeague[]>>("/leagues", {
-            id: numericLeagueId,
-            current: "true"
-        });
-
-        if (hasApiError(leagueData) || !leagueData.response?.length) {
-            return null;
-        }
-
-        const leagueInfo = leagueData.response[0];
-        const seasons = leagueInfo.seasons || [];
 
         // 시즌 결정
-        let currentSeason: number;
-        if (season) {
-            currentSeason = extractNumericId(season);
-        } else {
-            // current=true 우선, 없으면 가장 최근 시즌
-            const currentSeasonInfo = seasons.find((s) => s.current);
-            if (currentSeasonInfo) {
-                currentSeason = currentSeasonInfo.year;
-            } else if (seasons.length > 0) {
-                const sortedSeasons = [ ...seasons ].sort((a, b) => b.year - a.year);
-                currentSeason = sortedSeasons[0].year;
-            } else {
-                currentSeason = new Date().getFullYear();
-            }
-        }
+        const currentSeason = extractNumericId(season as string);
 
         // 2. 순위표 조회
         const standingsData = await client.get<ApiResponse<ApiFootballStandingsResponse[]>>("/standings", {
@@ -167,26 +104,6 @@ export async function apiFootballRankInfo(
                     seenTeams.add(teamId);
                     standingsList.push(standing);
                 }
-            }
-        }
-
-        // 6. 팀 코드 정보를 얻기 위해 Teams API 호출
-        interface TeamInfo {
-            team: {
-                id: number,
-                code: string
-            }
-        }
-
-        const teamsData = await client.get<ApiResponse<TeamInfo[]>>("/teams", {
-            league: numericLeagueId,
-            season: currentSeason
-        });
-
-        const teamCodeMap: Record<number, string> = {};
-        if (teamsData.response) {
-            for (const item of teamsData.response) {
-                teamCodeMap[item.team.id] = item.team.code;
             }
         }
 

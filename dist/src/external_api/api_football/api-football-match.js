@@ -42,7 +42,6 @@ function convertApiFootballStatus(apiStatus) {
  */
 function apiFootballMatchInfo(leagueId, season) {
     return __awaiter(this, void 0, void 0, function* () {
-        var _a;
         const numericLeagueId = (0, utils_1.extractNumericId)(leagueId);
         if (!season) {
             throw new Error("season is required");
@@ -53,15 +52,6 @@ function apiFootballMatchInfo(leagueId, season) {
             : `apifootball${season}`;
         const client = (0, http_client_1.createApiFootballClient)();
         try {
-            // 1. 리그 정보 조회
-            const leagueData = yield client.get("/leagues", {
-                id: numericLeagueId,
-                season: numericSeason
-            });
-            if ((0, types_1.hasApiError)(leagueData) || !((_a = leagueData.response) === null || _a === void 0 ? void 0 : _a.length)) {
-                console.log("❌ 리그 정보 조회 실패");
-                return null;
-            }
             // 2. 해당 시즌의 모든 경기 조회
             const fixturesData = yield client.get("/fixtures", {
                 league: numericLeagueId,

@@ -39,11 +39,11 @@ function buildScedules(matchData: matchDataDto[]): sceduleDto[] {
         }
     }
 
-    return Array.from(tmp.values()).map(v => ({
+    return Array.from(tmp.values()).map((v) => ({
         league_id: v.league_id,
         season_id: v.season_id,
         start: v.min,
-        end: v.max + SIX_HOURS,
+        end: v.max + SIX_HOURS
     }));
 }
 
@@ -59,7 +59,7 @@ function upsertscedule(scedule: sceduleDto) {
         league_id: scedule.league_id,
         season_id: scedule.season_id,
         start: Math.min(old.start, scedule.start),
-        end: Math.max(old.end, scedule.end),
+        end: Math.max(old.end, scedule.end)
     });
 }
 
@@ -103,7 +103,7 @@ export function initMinuteScheduler(matchData: matchDataDto[]) {
     task = cron.schedule("* * * * *", () => {
         minuteJob().catch(console.error);
     }, {
-        timezone: "UTC", // 🔥 핵심
+        timezone: "UTC" // 🔥 핵심
     });
 
     task.start();

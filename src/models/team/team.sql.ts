@@ -1,5 +1,5 @@
 export const teamSql = {
-get:
+    get:
 	`WITH
 	selected_league AS (
 		SELECT
@@ -140,4 +140,4 @@ get:
 	LEFT JOIN match_row mr ON 1 = 1
 
 	ORDER BY mr.match_date;`
-	};
+};

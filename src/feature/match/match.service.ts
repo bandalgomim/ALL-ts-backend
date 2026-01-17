@@ -21,8 +21,8 @@ export const matchService = {
             ...status.SUCCESS.body,
             result: {
                 matchId: result[0].match_id,
-                matchDate: result[0].match_date.split(' ')[0],
-                matchTime: result[0].match_date.split(' ')[1],
+                matchDate: result[0].match_date.split(" ")[0],
+                matchTime: result[0].match_date.split(" ")[1],
                 homeTeamId: result[0].home_team_id,
                 awayTeamId: result[0].away_team_id,
                 homeTeamName: result[0].home_team_name,

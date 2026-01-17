@@ -77,3 +77,10 @@ export interface ApiFootballTeam {
         logo: string
     }
 }
+
+export interface TeamInfo {
+    team: {
+        id: number,
+        code: string
+    }
+}

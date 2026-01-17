@@ -74,7 +74,7 @@ exports.matchDao = {
             const matchListRows = data.map((item) => ([
                 item.matchId,
                 item.homeTeamId ? item.homeTeamId : "TBD",
-                item.awayTeamId ? item.awayTeamId : "TBD",
+                item.awayTeamId ? item.awayTeamId : "TBD"
             ]));
             yield connection.beginTransaction();
             yield connection.query(match_sql_1.matchSql.patchMatchList.createTmpNewMatches);
@@ -95,5 +95,5 @@ exports.matchDao = {
         finally {
             connection.release();
         }
-    }),
+    })
 };

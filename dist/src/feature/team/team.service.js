@@ -21,14 +21,14 @@ exports.teamService = {
         if (result[0].match_id) {
             result.forEach((data) => {
                 if (data.match_id !== null) {
-                    if (prevDate && prevDate !== data.match_date.split(' ')[0]) {
+                    if (prevDate && prevDate !== data.match_date.split(" ")[0]) {
                         matchList[prevDate] = matchItems;
                         matchItems = [];
                     }
                     matchItems.push({
                         matchId: data.match_id,
-                        matchDate: data.match_date.split(' ')[0],
-                        matchTime: data.match_date.split(' ')[1],
+                        matchDate: data.match_date.split(" ")[0],
+                        matchTime: data.match_date.split(" ")[1],
                         matchState: data.match_state,
                         homeTeamId: data.home_team_id,
                         awayTeamId: data.away_team_id,

@@ -5,7 +5,7 @@
 import { createApiFootballClient } from "../common/http-client";
 import { extractNumericId, formatDateTime } from "../common/utils";
 import { MatchDto, MatchStatus, ApiResponse, hasApiError } from "../common/types";
-import { ApiFootballFixture, ApiFootballLeague } from "./dto";
+import { ApiFootballFixture } from "./dto";
 
 /**
  * API Football 상태를 MatchStatus로 변환
@@ -47,18 +47,6 @@ export async function apiFootballMatchInfo(
     const client = createApiFootballClient();
 
     try {
-    // 1. 리그 정보 조회
-        const leagueData = await client.get<ApiResponse<ApiFootballLeague[]>>("/leagues", {
-            id: numericLeagueId,
-            season: numericSeason
-        });
-
-        if (hasApiError(leagueData) || !leagueData.response?.length) {
-            console.log("❌ 리그 정보 조회 실패");
-            return null;
-        }
-
-
         // 2. 해당 시즌의 모든 경기 조회
         const fixturesData = await client.get<ApiResponse<ApiFootballFixture[]>>("/fixtures", {
             league: numericLeagueId,

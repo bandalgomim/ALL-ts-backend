@@ -6,7 +6,8 @@
 import { createApiFootballClient } from "../common/http-client";
 import { extractNumericId, getCountryCode } from "../common/utils";
 import { TeamDto, ApiResponse, hasApiError } from "../common/types";
-import { ApiFootballLeague, ApiFootballTeam } from "./dto";
+import { ApiFootballLeague } from "./dto";
+import { getTeamInfos } from "./api-football-utils";
 
 /**
  * 리그 ID를 받아 해당 리그의 팀 정보를 TeamDto 형태로 반환 (Teams API 기반)
@@ -15,7 +16,7 @@ import { ApiFootballLeague, ApiFootballTeam } from "./dto";
  * @returns TeamDto 형태의 팀 정보 리스트
  */
 export async function apiFootballTeamData(
-    leagueId: string | number
+    leagueId: string | number,
 ): Promise<TeamDto[] | null> {
     const numericId = extractNumericId(leagueId);
     const client = createApiFootballClient();
@@ -61,12 +62,9 @@ export async function apiFootballTeamData(
       || "";
 
         // 2) Teams API로 팀 목록 조회 (standings 제거)
-        const teamsData = await client.get<ApiResponse<ApiFootballTeam[]>>("/teams", {
-            league: numericId,
-            season: currentSeason
-        });
+        const teamsData = await getTeamInfos(numericId, currentSeason, client);
 
-        if (hasApiError(teamsData) || !teamsData.response?.length) {
+        if (hasApiError(teamsData) || !teamsData?.length) {
             console.log("⚠️ 팀 목록 조회 실패");
             return [];
         }
@@ -74,7 +72,7 @@ export async function apiFootballTeamData(
         // 3) TeamDto 생성 (중복 제거)
         const teamDict: Record<number, TeamDto> = {};
 
-        for (const item of teamsData.response) {
+        for (const item of teamsData) {
             const team = item.team;
             const teamId = team?.id;
             if (!teamId) continue;

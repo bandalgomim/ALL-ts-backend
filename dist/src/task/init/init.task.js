@@ -35,7 +35,7 @@ function runDailyTasks() {
         const ymd = getTodayYMD();
         const leagues = yield scheduler_service_1.schedulerService.get();
         yield (0, team_task_1.teamTask)(leagues);
-        //리그 초기에만
+        // 리그 초기에만
         yield (0, match_task_1.matchTask)(leagues);
         yield (0, rank_task_1.rankTask)(leagues);
         yield searchTag_service_1.searchTagService.patch();
@@ -51,7 +51,7 @@ const initTask = () => {
     () => {
         runDailyTasks();
     }, {
-        timezone: "UTC", // 🔥 핵심
+        timezone: "UTC" // 🔥 핵심
     });
 };
 exports.initTask = initTask;

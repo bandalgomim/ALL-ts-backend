@@ -42,11 +42,11 @@ function buildScedules(matchData) {
                 cur.max = time;
         }
     }
-    return Array.from(tmp.values()).map(v => ({
+    return Array.from(tmp.values()).map((v) => ({
         league_id: v.league_id,
         season_id: v.season_id,
         start: v.min,
-        end: v.max + SIX_HOURS,
+        end: v.max + SIX_HOURS
     }));
 }
 function upsertscedule(scedule) {
@@ -60,7 +60,7 @@ function upsertscedule(scedule) {
         league_id: scedule.league_id,
         season_id: scedule.season_id,
         start: Math.min(old.start, scedule.start),
-        end: Math.max(old.end, scedule.end),
+        end: Math.max(old.end, scedule.end)
     });
 }
 /* ===== 1분 작업 ===== */
@@ -104,7 +104,7 @@ function initMinuteScheduler(matchData) {
     task = node_cron_1.default.schedule("* * * * *", () => {
         minuteJob().catch(console.error);
     }, {
-        timezone: "UTC", // 🔥 핵심
+        timezone: "UTC" // 🔥 핵심
     });
     task.start();
 }

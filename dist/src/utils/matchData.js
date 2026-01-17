@@ -13,24 +13,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getNextDate = exports.getPrevDate = void 0;
-exports.makePrevMatchList = makePrevMatchList;
 exports.makePrevUriList = makePrevUriList;
-exports.makePrevRankList = makePrevRankList;
 exports.setPrevData = setPrevData;
 exports.mergePrevUri = mergePrevUri;
 exports.concatByLeague = concatByLeague;
 exports.supplement = supplement;
 exports.supplementMatchList = supplementMatchList;
-exports.findLiveUpdates = findLiveUpdates;
 const db_redis_1 = __importDefault(require("../../config/db.redis"));
 const scheduler_dao_1 = require("../models/scheduler/scheduler.dao");
-function makePrevMatchList() {
-    return {
-        LCK: [], KBO: [], MLB: [], "K LEAGUE1": [],
-        EPL: [], BUNDESLIGA: [], LALIGA: [],
-        LEAGUE1: [], "SERIE A": [], MLS: [], UCL: [], WORLDS: []
-    };
-}
 function makePrevUriList() {
     return {
         LCK: { soop: [], youtube: [], youtube_lck: [] },
@@ -47,38 +37,22 @@ function makePrevUriList() {
         WORLDS: { soop: [], youtube: [] }
     };
 }
-function makePrevRankList() {
-    return {
-        LCK: [], KBO: [], MLB: [], "K LEAGUE1": [],
-        EPL: [], BUNDESLIGA: [], LALIGA: [],
-        LEAGUE1: [], "SERIE A": [], MLS: [], UCL: [], WORLDS: []
-    };
-}
 function setPrevData(date) {
     return __awaiter(this, void 0, void 0, function* () {
         const prevUriList = makePrevUriList();
-        const prevMatchList = makePrevMatchList();
-        const prevRankList = makePrevRankList();
-        if (!(yield db_redis_1.default.get(`prevMatchList_${date}`))) {
+        if (!(yield db_redis_1.default.get(`prevUriList_${date}`))) {
             yield db_redis_1.default.set(`prevUriList_${date}`, JSON.stringify(prevUriList));
-            yield db_redis_1.default.set(`prevMatchList_${date}`, JSON.stringify(prevMatchList));
         }
         const prevDate = (0, exports.getPrevDate)(date, 1);
         const prev2Date = (0, exports.getPrevDate)(date, 2);
         const nextDate = (0, exports.getNextDate)(date, 1);
-        if (!(yield db_redis_1.default.get(`prevMatchList_${prevDate}`))) {
+        if (!(yield db_redis_1.default.get(`prevUriList_${prevDate}`))) {
             yield db_redis_1.default.set(`prevUriList_${prevDate}`, JSON.stringify(prevUriList));
-            yield db_redis_1.default.set(`prevMatchList_${prevDate}`, JSON.stringify(prevMatchList));
         }
-        if (!(yield db_redis_1.default.get("prevRankList"))) {
-            yield db_redis_1.default.set("prevRankList", JSON.stringify(prevRankList));
-        }
-        if (!(yield db_redis_1.default.get(`prevMatchList_${nextDate}`))) {
+        if (!(yield db_redis_1.default.get(`prevUriList_${nextDate}`))) {
             yield db_redis_1.default.set(`prevUriList_${nextDate}`, JSON.stringify(prevUriList));
-            yield db_redis_1.default.set(`prevMatchList_${nextDate}`, JSON.stringify(prevMatchList));
         }
         yield db_redis_1.default.del(`prevUriList_${prev2Date}`);
-        yield db_redis_1.default.del(`prevMatchList_${prev2Date}`);
     });
 }
 const getPrevDate = (dateStr, count) => {
@@ -184,23 +158,4 @@ function supplementMatchList(data) {
         const maxNext = nextDate.toISOString().split("T")[0] + "-";
         yield scheduler_dao_1.schedulerDao.getUserMatchList([...teamIdSet].map((id) => Number(id)), minDate, maxNext);
     });
-}
-function findLiveUpdates(list, data) {
-    const oldMap = new Map(list.map((m) => [m.matchId, m]));
-    const liveUpdates = [];
-    for (const match of data) {
-        if (match.status !== "live")
-            continue; // live만 관심 있음
-        const prev = oldMap.get(match.matchId);
-        // 1️⃣ next → live 로 바뀐 경우
-        if (prev && prev.status === "next") {
-            liveUpdates.push(match);
-            // eslint-disable-next-line @stylistic/brace-style
-        }
-        // 2️⃣ 기존엔 없고 새로 생긴 live
-        else if (!prev) {
-            liveUpdates.push(match);
-        }
-    }
-    return liveUpdates;
 }

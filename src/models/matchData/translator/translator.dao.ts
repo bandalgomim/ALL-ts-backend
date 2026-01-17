@@ -1,6 +1,6 @@
 import { translatorSql } from "@models/matchData/translator/translator.sql";
 import { getPool } from "../../../../config/db.pool";
-import { ResultSetHeader } from "mysql2/promise";
+import { ResultSetHeader, RowDataPacket } from "mysql2/promise";
 import { status } from "../../../../config/response.status";
 import { ApiError } from "../../../../config/error";
 import { translatorDto } from "@models/matchData/translator/translator.dto";
@@ -54,6 +54,22 @@ export const translatorDao = {
             for (const matchId of fcmMatchId) {
                 await sentNotification(matchId);
             }
+        }
+    },
+    get: async (leagueId: string) => {
+        const connection = await getPool().getConnection();
+        try {
+            const [ result ] = await connection.query<RowDataPacket[]>(
+                translatorSql.get,
+                [ leagueId, leagueId, leagueId ]
+            );
+            return result;
+        } catch (err) {
+            console.error(err);
+            throw new ApiError(status.DATA_SEARCH_SQL_ERROR);
+        } finally {
+        // 연결 반환 보장
+            connection.release();
         }
     }
 };

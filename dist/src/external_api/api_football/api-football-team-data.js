@@ -17,6 +17,7 @@ exports.apiFootballTeamData = apiFootballTeamData;
 const http_client_1 = require("../common/http-client");
 const utils_1 = require("../common/utils");
 const types_1 = require("../common/types");
+const api_football_utils_1 = require("./api-football-utils");
 /**
  * 리그 ID를 받아 해당 리그의 팀 정보를 TeamDto 형태로 반환 (Teams API 기반)
  *
@@ -25,7 +26,7 @@ const types_1 = require("../common/types");
  */
 function apiFootballTeamData(leagueId) {
     return __awaiter(this, void 0, void 0, function* () {
-        var _a, _b, _c, _d, _e, _f, _g;
+        var _a, _b, _c, _d, _e, _f;
         const numericId = (0, utils_1.extractNumericId)(leagueId);
         const client = (0, http_client_1.createApiFootballClient)();
         try {
@@ -58,17 +59,14 @@ function apiFootballTeamData(leagueId) {
                     : "")
                 || "";
             // 2) Teams API로 팀 목록 조회 (standings 제거)
-            const teamsData = yield client.get("/teams", {
-                league: numericId,
-                season: currentSeason
-            });
-            if ((0, types_1.hasApiError)(teamsData) || !((_g = teamsData.response) === null || _g === void 0 ? void 0 : _g.length)) {
+            const teamsData = yield (0, api_football_utils_1.getTeamInfos)(numericId, currentSeason, client);
+            if ((0, types_1.hasApiError)(teamsData) || !(teamsData === null || teamsData === void 0 ? void 0 : teamsData.length)) {
                 console.log("⚠️ 팀 목록 조회 실패");
                 return [];
             }
             // 3) TeamDto 생성 (중복 제거)
             const teamDict = {};
-            for (const item of teamsData.response) {
+            for (const item of teamsData) {
                 const team = item.team;
                 const teamId = team === null || team === void 0 ? void 0 : team.id;
                 if (!teamId)
