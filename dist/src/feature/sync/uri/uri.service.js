@@ -16,17 +16,24 @@ exports.uriService = void 0;
 const db_redis_1 = __importDefault(require("../../../../config/db.redis"));
 exports.uriService = {
     post: (data) => __awaiter(void 0, void 0, void 0, function* () {
-        const res = [];
-        for (const uri of data) {
-            const key = `uri:${uri.uri}`;
-            const ok = yield db_redis_1.default.set(key, "1", {
-                NX: true,
-                EX: 72 * 60 * 60
-            });
-            if (ok === "OK") {
-                res.push(uri);
+        try {
+            console.log(data);
+            const res = [];
+            for (const uri of data) {
+                const key = `uri:${uri.uri}`;
+                const ok = yield db_redis_1.default.set(key, "1", {
+                    NX: true,
+                    EX: 72 * 60 * 60
+                });
+                if (ok === "OK") {
+                    res.push(uri);
+                }
             }
+            return res;
         }
-        return res;
+        catch (error) {
+            console.error("Error in uriService.post:", error);
+            throw error;
+        }
     })
 };

@@ -12,7 +12,7 @@ import { iconRouter } from "@route/icon/icon.route";
 import { authRouter } from "@route/auth/IAM.route";
 import { fcmTokenRouter } from "@route/fcmToken/fcmToken.route";
 import { leagueRouter } from "@route/league/league.route";
-import { matchDataRouter } from "@route/matchData/matchData.route";
+import { syncRouter } from "@route/sync/sync.route";
 import { searchTagRouter } from "@route/searchTag/searchTag.route";
 import { versionCheckRouter } from "@route/versionCheck/versionCheck.route";
 import { initTask } from "@src/task/init/init.task";
@@ -34,11 +34,9 @@ export default function App() {
     app.use("/isSelected", asyncHandler(tokenMinddleware.auth), asyncHandler(isSelectedRouter));
     app.use("/league", asyncHandler(tokenMinddleware.auth), asyncHandler(leagueRouter));
     app.use("/icon", asyncHandler(tokenMinddleware.auth), asyncHandler(iconRouter));
-    app.use("/matchData", asyncHandler(matchDataRouter));
+    app.use("/sync", asyncHandler(syncRouter));
     app.use("/searchTag", asyncHandler(searchTagRouter));
     app.use("/versionCheck", asyncHandler(versionCheckRouter));
-
-    // chackDailyMatch를 1분마다 실행
 
     initTask();
 

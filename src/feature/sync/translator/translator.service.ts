@@ -1,14 +1,14 @@
 /* eslint-disable @stylistic/max-len */
-import { getMatchIdDao } from "@models/matchData/getMatchId/getMatchId.dao";
-import { translatorDao } from "@models/matchData/translator/translator.dao";
-import { translatorDto } from "@models/matchData/translator/translator.dto";
+import { translatorDao } from "@src/models/sync/translator/translator.dao";
+import { translatorDto } from "@src/models/sync/translator/translator.dto";
 import { parseRelativeDate, parseRelativeType } from "@src/utils/translator";
 
 export const translatorService = {
     post: async (data: translatorDto[]) => {
+        console.log(data);
         const translatedData = [];
         for (const item of data) {
-            const tag = await translatorDao.get(item.leagueId);
+            const tag = await translatorDao.getTag(item.leagueId);
             item.leagueId = tag[0].league_id;
             const homeTag = item.homeTeamId;
             const awayTag = item.awayTeamId;
@@ -26,15 +26,14 @@ export const translatorService = {
             item.homeTeamId = homeTeamId;
             item.awayTeamId = awayTeamId;
             item.date = parseRelativeDate(item.date);
-            item.matchId = await getMatchIdDao.get(item.leagueId, item.homeTeamId, item.awayTeamId, item.doubleHeader);
-            console.log("in translatorService | homeTeam: ", item.homeTeamId, " | awayTeamId: ", item.awayTeamId, item.date ? item.date : "no date");
-            console.log("in translatorService | matchId: ", item.matchId ? item.matchId : "⚠️  Team id error", " | homeTeamId: ", item.homeTeamId, " | awayTeamId: ", item.awayTeamId, item.date ? item.date : "no date", "\n");
+            item.matchId = await translatorDao.getMatchId(item);
+            console.log("in translatorService | homeTeam: ", homeTag, " | awayTeamId: ", awayTag, item.date ? item.date : "no date");
+            console.log("in translatorService | matchId: ", item.matchId ? item.matchId : "⚠️  Team id error", " | homeTeamId: ", homeTag, " | awayTeamId: ", awayTag, item.date ? item.date : "no date", "\n");
             item.type = parseRelativeType(item.type) as string;
             translatedData.push(item);
         }
-        await translatorDao.post(translatedData);
-
-        // prevUriList를 저장하거나 반환 등 필요한 작업 수행
+        const res = await translatorDao.post(translatedData);
+        return res;
 
     }
 };

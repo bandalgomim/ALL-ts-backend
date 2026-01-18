@@ -16,6 +16,7 @@ exports.initMinuteScheduler = initMinuteScheduler;
 const node_cron_1 = __importDefault(require("node-cron"));
 const info_task_1 = require("../info/info.task");
 const SIX_HOURS = 6 * 60 * 60 * 1000;
+const THREE_HOURS = 3 * 60 * 60 * 1000;
 const scedulesMap = new Map(); // key = league_id
 let task = null;
 let running = false;
@@ -46,7 +47,7 @@ function buildScedules(matchData) {
         league_id: v.league_id,
         season_id: v.season_id,
         start: v.min,
-        end: v.max + SIX_HOURS
+        end: v.league_id.startsWith("apifootball") ? v.max + THREE_HOURS : v.max + SIX_HOURS
     }));
 }
 function upsertscedule(scedule) {

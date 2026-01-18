@@ -14,6 +14,7 @@ const fcm_dao_1 = require("../../models/fcm/fcm.dao");
 const sentNotification_service_1 = require("../fcm/sentNotification.service");
 const sentNotification = (matchId) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield fcm_dao_1.fcmDao.get(matchId);
+    console.log(result);
     const highlightInfo = {
         matchId: result[0].match_id,
         homeTeamName: result[0].home_team_name,

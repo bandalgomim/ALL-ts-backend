@@ -1,10 +1,10 @@
 "use strict";
-/* eslint-disable @typescript-eslint/no-unused-vars */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.parseRelativeDate = parseRelativeDate;
 exports.parseRelativeType = parseRelativeType;
 exports.parseMatchState = parseMatchState;
 exports.parseMatchDate = parseMatchDate;
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @stylistic/no-mixed-operators */
 function parseRelativeDate(dateStr) {
     const now = new Date();

@@ -13,6 +13,7 @@ type sceduleDto = {
     end: number   // ms UTC
 };
 const SIX_HOURS = 6 * 60 * 60 * 1000;
+const THREE_HOURS = 3 * 60 * 60 * 1000;
 const scedulesMap = new Map<string, sceduleDto>(); // key = league_id
 let task: ScheduledTask | null = null;
 let running = false;
@@ -43,7 +44,7 @@ function buildScedules(matchData: matchDataDto[]): sceduleDto[] {
         league_id: v.league_id,
         season_id: v.season_id,
         start: v.min,
-        end: v.max + SIX_HOURS
+        end: v.league_id.startsWith("apifootball") ? v.max + THREE_HOURS : v.max + SIX_HOURS
     }));
 }
 

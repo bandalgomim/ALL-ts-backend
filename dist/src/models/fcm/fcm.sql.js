@@ -18,8 +18,6 @@ exports.fcmSql = {
     WHERE
         mi.match_id = ?
     AND
-        mu.platform_id = 1
-    AND
         mu.type = "highlight"
     `,
     getLive: `SELECT

@@ -1,9 +1,9 @@
-import { translatorSql } from "@models/matchData/translator/translator.sql";
+import { translatorSql } from "@src/models/sync/translator/translator.sql";
 import { getPool } from "../../../../config/db.pool";
 import { ResultSetHeader, RowDataPacket } from "mysql2/promise";
 import { status } from "../../../../config/response.status";
 import { ApiError } from "../../../../config/error";
-import { translatorDto } from "@models/matchData/translator/translator.dto";
+import { translatorDto } from "@src/models/sync/translator/translator.dto";
 import { sentNotification } from "@feature/fcm/sentNotification.controller";
 
 export const translatorDao = {
@@ -56,11 +56,11 @@ export const translatorDao = {
             }
         }
     },
-    get: async (leagueId: string) => {
+    getTag: async (leagueId: string) => {
         const connection = await getPool().getConnection();
         try {
             const [ result ] = await connection.query<RowDataPacket[]>(
-                translatorSql.get,
+                translatorSql.getTag,
                 [ leagueId, leagueId, leagueId ]
             );
             return result;
@@ -69,6 +69,21 @@ export const translatorDao = {
             throw new ApiError(status.DATA_SEARCH_SQL_ERROR);
         } finally {
         // 연결 반환 보장
+            connection.release();
+        }
+    },
+    getMatchId: async (item: translatorDto) => {
+        const connection = await getPool().getConnection();
+        try {
+            const [ result ] = await connection.query<RowDataPacket[]>(translatorSql.getMatchId,
+                // eslint-disable-next-line @stylistic/max-len
+                [ item.doubleHeader, item.leagueId, item.homeTeamId, item.homeTeamId, item.awayTeamId, item.awayTeamId,  item.date, item.date, item.date ]);
+            return result.length > 0 ? (result[0].match_id as string) : null;
+        } catch (err) {
+            console.error(err);
+            throw new ApiError(status.DATA_SEARCH_SQL_ERROR);
+        } finally {
+            // 연결 반환 보장
             connection.release();
         }
     }

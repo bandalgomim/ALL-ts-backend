@@ -17,7 +17,7 @@ const icon_route_1 = require("./route/icon/icon.route");
 const IAM_route_1 = require("./route/auth/IAM.route");
 const fcmToken_route_1 = require("./route/fcmToken/fcmToken.route");
 const league_route_1 = require("./route/league/league.route");
-const matchData_route_1 = require("./route/matchData/matchData.route");
+const sync_route_1 = require("./route/sync/sync.route");
 const searchTag_route_1 = require("./route/searchTag/searchTag.route");
 const versionCheck_route_1 = require("./route/versionCheck/versionCheck.route");
 const init_task_1 = require("./task/init/init.task");
@@ -37,10 +37,9 @@ function App() {
     app.use("/isSelected", (0, express_async_handler_1.default)(jwt_middleware_1.tokenMinddleware.auth), (0, express_async_handler_1.default)(isSelected_route_1.isSelectedRouter));
     app.use("/league", (0, express_async_handler_1.default)(jwt_middleware_1.tokenMinddleware.auth), (0, express_async_handler_1.default)(league_route_1.leagueRouter));
     app.use("/icon", (0, express_async_handler_1.default)(jwt_middleware_1.tokenMinddleware.auth), (0, express_async_handler_1.default)(icon_route_1.iconRouter));
-    app.use("/matchData", (0, express_async_handler_1.default)(matchData_route_1.matchDataRouter));
+    app.use("/sync", (0, express_async_handler_1.default)(sync_route_1.syncRouter));
     app.use("/searchTag", (0, express_async_handler_1.default)(searchTag_route_1.searchTagRouter));
     app.use("/versionCheck", (0, express_async_handler_1.default)(versionCheck_route_1.versionCheckRouter));
-    // chackDailyMatch를 1분마다 실행
     (0, init_task_1.initTask)();
     return app;
 }

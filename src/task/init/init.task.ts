@@ -19,9 +19,8 @@ async function runDailyTasks() {
     const ymd = getTodayYMD();
 
     const leagues = await schedulerService.get();
-    await teamTask(leagues as taskDto[]);
-
     // 리그 초기에만
+    //await teamTask(leagues as taskDto[]);
     await matchTask(leagues as taskDto[]);
     await rankTask(leagues as taskDto[]);
     await searchTagService.patch();

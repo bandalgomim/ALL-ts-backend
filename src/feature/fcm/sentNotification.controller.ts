@@ -4,6 +4,7 @@ import { sendFCMToManyDevices, sendFCMToManyDevicesLive } from "@feature/fcm/sen
 
 export const sentNotification = async (matchId: string) => {
     const result = await fcmDao.get(matchId);
+    console.log(result);
     const highlightInfo: highlightInfoDto = {
         matchId: result[0].match_id,
         homeTeamName: result[0].home_team_name,

@@ -20,7 +20,6 @@ const node_cron_1 = __importDefault(require("node-cron"));
 const match_task_1 = require("./match.task");
 const scehduler_task_1 = require("../scehduler/scehduler.task");
 const rank_task_1 = require("./rank.task");
-const team_task_1 = require("../info/team.task");
 const scheduler_service_1 = require("../../feature/sync/scheduler/scheduler.service");
 function getTodayYMD() {
     const today = new Date();
@@ -34,8 +33,8 @@ function runDailyTasks() {
     return __awaiter(this, void 0, void 0, function* () {
         const ymd = getTodayYMD();
         const leagues = yield scheduler_service_1.schedulerService.get();
-        yield (0, team_task_1.teamTask)(leagues);
         // 리그 초기에만
+        //await teamTask(leagues as taskDto[]);
         yield (0, match_task_1.matchTask)(leagues);
         yield (0, rank_task_1.rankTask)(leagues);
         yield searchTag_service_1.searchTagService.patch();
