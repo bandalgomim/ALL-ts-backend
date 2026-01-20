@@ -9,7 +9,6 @@ export const schedulerSql = {
     JOIN
         season s ON l.league_id = s.league_id AND s.season_state = 1
     WHERE
-        l.is_active = 1`,
-
+        l.is_active = 1`
 };
 

@@ -20,13 +20,13 @@ async function runDailyTasks() {
 
     const leagues = await schedulerService.get();
     // 리그 초기에만
-    //await teamTask(leagues as taskDto[]);
+    await teamTask(leagues as taskDto[]);
     await matchTask(leagues as taskDto[]);
     await rankTask(leagues as taskDto[]);
     await searchTagService.patch();
     const data = await matchService.get(ymd);
     console.log(`Running daily tasks for date: ${ymd}`);
-    console.log(leagues);
+    //console.log(leagues);
     initMinuteScheduler(data as matchDataDto[]);
 
 }

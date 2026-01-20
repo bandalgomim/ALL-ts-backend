@@ -1,11 +1,13 @@
 import { matchDao } from "@models/match/match.dao";
 import { status } from "../../../config/response.status";
-import { BaseApiResponse } from "../../../config/response";
+import { BaseApiResponse, SuccessResponse } from "../../../config/response";
 import { getMatchDto, platform } from "@models/match/match.dto";
 
 export const matchService = {
     get: async (userId: string, matchId: string) => {
+        console.log(`matchService.get called with userId: ${userId}, matchId: ${matchId}`);
         const result = await matchDao.get(userId, matchId); // dao의 정보를 반환
+        console.log(`matchDao.get returned ${result} records`);
         const platform: platform[] = [];
         result.map((data) => {
             // 매핑을 통해 배열에 알맞은 오브젝트를 생성 후 push
@@ -14,7 +16,7 @@ export const matchService = {
                 platformName: data.platform_name,
                 platformLeagueUrl: data.league_url,
                 platformMatchUrl: data.match_url,
-                platfromMatchUrlType: data.match_url_type ? data.match_url_type : "root"
+                platfromMatchUrlType: data.match_url_type ? data.match_url_type : "replay"
             });
         });
         const res: BaseApiResponse<getMatchDto> = {
@@ -43,6 +45,7 @@ export const matchService = {
                 platform: platform
             }
         };
+        console.log(platform)
         return res;
     }
 };

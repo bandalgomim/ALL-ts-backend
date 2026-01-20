@@ -1,4 +1,4 @@
-type SuccessResponse<T> = {
+export type SuccessResponse<T> = {
     isSuccess: true,
     code: string,
     message: string,
