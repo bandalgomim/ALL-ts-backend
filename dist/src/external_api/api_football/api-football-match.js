@@ -87,9 +87,10 @@ function apiFootballMatchInfo(leagueId, season) {
                 allMatches.push(matchInfo);
             }
             return allMatches;
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
         }
         catch (error) {
-            console.error("API 요청 실패:", error);
+            console.error("API 요청 실패: api-football-match");
             return null;
         }
     });

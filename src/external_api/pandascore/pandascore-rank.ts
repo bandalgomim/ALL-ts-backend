@@ -331,9 +331,9 @@ export async function pandaScoreRankInfo(
         }
 
         return allRanks;
-
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-        console.error("API 요청 실패:", error);
+        console.error("API 요청 실패: pandascore-rank");
         return null;
     }
 }

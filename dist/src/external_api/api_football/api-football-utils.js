@@ -27,14 +27,14 @@ function getCurrentRound(leagueId, season, client) {
             const currentRes = yield client.get("/fixtures/rounds", {
                 league: leagueId,
                 season,
-                current: "true",
+                current: "true"
             });
             let rounds = (_a = currentRes.response) !== null && _a !== void 0 ? _a : [];
             // 2) 없으면 전체 라운드에서 "마지막" 선택(주석대로라면)
             if (!rounds.length) {
                 const allRes = yield client.get("/fixtures/rounds", {
                     league: leagueId,
-                    season,
+                    season
                 });
                 rounds = (_b = allRes.response) !== null && _b !== void 0 ? _b : [];
                 if (rounds.length)

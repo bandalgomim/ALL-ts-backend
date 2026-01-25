@@ -16,7 +16,7 @@ import { getTeamInfos } from "./api-football-utils";
  * @returns TeamDto 형태의 팀 정보 리스트
  */
 export async function apiFootballTeamData(
-    leagueId: string | number,
+    leagueId: string | number
 ): Promise<TeamDto[] | null> {
     const numericId = extractNumericId(leagueId);
     const client = createApiFootballClient();

@@ -17,7 +17,7 @@ export async function getCurrentRound(
         const currentRes = await client.get<ApiResponse<string[]>>("/fixtures/rounds", {
             league: leagueId,
             season,
-            current: "true",
+            current: "true"
         });
 
         let rounds = currentRes.response ?? [];
@@ -26,10 +26,10 @@ export async function getCurrentRound(
         if (!rounds.length) {
             const allRes = await client.get<ApiResponse<string[]>>("/fixtures/rounds", {
                 league: leagueId,
-                season,
+                season
             });
             rounds = allRes.response ?? [];
-            if (rounds.length) rounds = [rounds[rounds.length - 1]]; // 마지막 라운드
+            if (rounds.length) rounds = [ rounds[rounds.length - 1] ]; // 마지막 라운드
         }
 
         const round = rounds[0] ?? null;

@@ -14,6 +14,7 @@ const external_api_1 = require("../../external_api");
 const team_service_1 = require("../../feature/sync/team/team.service");
 const teamTask = (data) => __awaiter(void 0, void 0, void 0, function* () {
     for (const item of data) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { leagueId, seasonId } = item;
         let result;
         if (leagueId.startsWith("pandascore")) {

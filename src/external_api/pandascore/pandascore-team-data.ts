@@ -66,7 +66,6 @@ export async function pandaScoreTeamData(
 
         for (const tournament of tournaments) {
             const tournamentId = tournament.id;
-            const tournamentName = tournament.name || "";
 
             try {
                 const rostersResponse = await client.get<PandaScoreRostersResponse | PandaScoreRoster[]>(

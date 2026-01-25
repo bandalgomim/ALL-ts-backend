@@ -3,7 +3,6 @@ import { status } from "../../../config/response.status";
 import { BaseApiResponse } from "../../../config/response";
 import { getTeamDto } from "@models/team/team.dto";
 import { match, matchList } from "@models/main/main.dto";
-import { log } from "console";
 
 export const teamService = {
     get: async (userId: string, teamId: string) => {

@@ -60,7 +60,6 @@ function pandaScoreTeamData(leagueId) {
             const teamDict = {};
             for (const tournament of tournaments) {
                 const tournamentId = tournament.id;
-                const tournamentName = tournament.name || "";
                 try {
                     const rostersResponse = yield client.get(`/tournaments/${tournamentId}/rosters`, { "page[size]": 100 });
                     // rosters 배열 추출

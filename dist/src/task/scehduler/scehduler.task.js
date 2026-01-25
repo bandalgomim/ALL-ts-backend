@@ -52,11 +52,10 @@ function buildScedules(matchData) {
 }
 function upsertscedule(scedule) {
     const old = scedulesMap.get(scedule.league_id);
-    if (!old) {
+    if (!old || old.season_id !== scedule.season_id) {
         scedulesMap.set(scedule.league_id, scedule);
         return;
     }
-    // scedule는 하나, 기간만 연장
     scedulesMap.set(scedule.league_id, {
         league_id: scedule.league_id,
         season_id: scedule.season_id,
@@ -96,16 +95,13 @@ function minuteJob() {
     });
 }
 function initMinuteScheduler(matchData) {
-    if (task)
-        return; // 중복 방지
-    // 🔥 seed → scedule (딱 1번)
     const scedules = buildScedules(matchData);
-    for (const scedule of scedules)
-        upsertscedule(scedule);
-    task = node_cron_1.default.schedule("* * * * *", () => {
-        minuteJob().catch(console.error);
-    }, {
-        timezone: "UTC" // 🔥 핵심
-    });
-    task.start();
+    for (const sc of scedules)
+        upsertscedule(sc);
+    if (!task) {
+        task = node_cron_1.default.schedule("* * * * *", () => minuteJob().catch(console.error), {
+            timezone: "UTC"
+        });
+        task.start();
+    }
 }

@@ -9,6 +9,7 @@ export interface taskDto {
 
 export const teamTask = async (data: taskDto[]) => {
     for (const item of data) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { leagueId, seasonId } = item;
         let result;
         if (leagueId.startsWith("pandascore")) {
