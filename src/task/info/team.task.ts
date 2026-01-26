@@ -13,7 +13,6 @@ export const teamTask = async (data: taskDto[]) => {
 
         try {
             let result;
-
             if (leagueId.startsWith("pandascore")) {
                 result = await pandaScoreTeamData(leagueId);
             } else if (leagueId.startsWith("apifootball")) {
