@@ -37,7 +37,7 @@ export const initTask = () => {
     runDailyTasks();
 
     cron.schedule(
-        "0 15 * * *", // 매일 15:00
+        "10 0 * * *",
         () => {
             runDailyTasks();
         },

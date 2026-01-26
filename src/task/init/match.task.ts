@@ -9,24 +9,34 @@ export interface taskDto {
 export const matchTask = async (data: taskDto[]) => {
     for (const item of data) {
         const { leagueId, seasonId } = item;
-        let result;
-        if (leagueId.startsWith("pandascore")) {
-            result = await pandaScoreMatchInfo(leagueId, seasonId);
-        } else if (leagueId.startsWith("apifootball")) {
-            result = await apiFootballMatchInfo(leagueId, seasonId);
-        }
+        try {
+            let result: patchMatchDto[] | null = null;
 
-        /* if (result) {
-            for (const r of result) {
-                console.log(r);
-                const data = [ r ];
-                await matchService.patch(data as patchMatchDto[]);
+            if (leagueId.startsWith("pandascore")) {
+                result = await pandaScoreMatchInfo(leagueId, seasonId);
+            } else if (leagueId.startsWith("apifootball")) {
+                result = await apiFootballMatchInfo(leagueId, seasonId);
             }
-        }*/
-        const ok = await matchService.patch(result as patchMatchDto[]);
-        if (ok) {
-            await matchService.patchMatchList(result as patchMatchDto[]);
+
+            if (!result || result.length === 0) {
+                console.warn(`⚠️ 매치 없음 또는 조회 실패: ${leagueId} / ${seasonId}`);
+                continue;
+            }
+
+            const ok = await matchService.patch(result);
+            if (ok) {
+                await matchService.patchMatchList(result);
+            }
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        } catch (error) {
+            console.error("❌ matchTask 실패", {
+                leagueId
+            });
+            continue; // 다음 리그로
         }
     }
+
     console.log("매치 정보 업데이트 완료");
 };
+

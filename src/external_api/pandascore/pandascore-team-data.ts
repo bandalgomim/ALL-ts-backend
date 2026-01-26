@@ -102,8 +102,9 @@ export async function pandaScoreTeamData(
         }
         return Object.values(teamDict);
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-        console.error("API 요청 실패:", error);
+        console.error("API 요청 실패: pandascore-team-data");
         return null;
     }
 }

@@ -15,14 +15,31 @@ const rank_service_1 = require("../../feature/sync/rank/rank.service");
 const rankTask = (data) => __awaiter(void 0, void 0, void 0, function* () {
     for (const item of data) {
         const { leagueId, seasonId } = item;
-        let result;
-        if (leagueId.startsWith("pandascore")) {
-            result = yield (0, external_api_1.pandaScoreRankInfo)(leagueId, seasonId);
+        try {
+            let result;
+            if (leagueId.startsWith("pandascore")) {
+                result = yield (0, external_api_1.pandaScoreRankInfo)(leagueId, seasonId);
+            }
+            else if (leagueId.startsWith("apifootball")) {
+                result = yield (0, external_api_1.apiFootballRankInfo)(leagueId, seasonId);
+            }
+            else {
+                console.warn(`⚠️ 알 수 없는 leagueId: ${leagueId}`);
+                continue;
+            }
+            if (!result || result.length === 0) {
+                console.warn(`⚠️ 랭킹 없음 또는 조회 실패: ${leagueId} / ${seasonId}`);
+                continue;
+            }
+            yield rank_service_1.rankService.patch(result);
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
         }
-        else if (leagueId.startsWith("apifootball")) {
-            result = yield (0, external_api_1.apiFootballRankInfo)(leagueId, seasonId);
+        catch (error) {
+            console.error("❌ rankTask 실패", {
+                leagueId
+            });
+            continue; // 다음 리그로
         }
-        yield rank_service_1.rankService.patch(result);
     }
     console.log("랭킹 정보 업데이트 완료");
 });

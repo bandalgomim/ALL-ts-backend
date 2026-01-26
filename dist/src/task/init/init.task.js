@@ -47,8 +47,7 @@ function runDailyTasks() {
 }
 const initTask = () => {
     runDailyTasks();
-    node_cron_1.default.schedule("0 15 * * *", // 매일 15:00
-    () => {
+    node_cron_1.default.schedule("10 0 * * *", () => {
         runDailyTasks();
     }, {
         timezone: "UTC" // 🔥 핵심

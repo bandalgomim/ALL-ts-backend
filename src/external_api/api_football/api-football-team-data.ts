@@ -94,8 +94,9 @@ export async function apiFootballTeamData(
         }
 
         return Object.values(teamDict);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-        console.error("API 요청 실패:", error);
+        console.error("API 요청 실패: api-football-team-data");
         return null;
     }
 }
