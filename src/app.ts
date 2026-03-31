@@ -20,25 +20,25 @@ import { initTask } from "@src/task/init/init.task";
 config();
 
 export default function App() {
-    const app = express();
-    app.use(cors()); // cors 방식 허용
-    app.use(express.static("public")); // 정적 파일 접근
-    app.use(express.json()); // request의 본문을 json으로 해석할 수 있도록 함 (JSON 형태의 요청 body를 파싱하기 위함)
-    app.use(express.urlencoded({ extended: false }));
-    app.use("/auth", asyncHandler(authRouter));
-    app.use("/fcmToken", asyncHandler(tokenMinddleware.auth), asyncHandler(fcmTokenRouter));
-    app.use("/main", asyncHandler(tokenMinddleware.auth), asyncHandler(mainRouter));
-    app.use("/team", asyncHandler(tokenMinddleware.auth), asyncHandler(teamRouter));
-    app.use("/match", asyncHandler(tokenMinddleware.auth), asyncHandler(matchRouter));
-    app.use("/icon", asyncHandler(tokenMinddleware.auth), asyncHandler(iconRouter));
-    app.use("/isSelected", asyncHandler(tokenMinddleware.auth), asyncHandler(isSelectedRouter));
-    app.use("/league", asyncHandler(tokenMinddleware.auth), asyncHandler(leagueRouter));
-    app.use("/icon", asyncHandler(tokenMinddleware.auth), asyncHandler(iconRouter));
-    app.use("/sync", asyncHandler(syncRouter));
-    app.use("/searchTag", asyncHandler(searchTagRouter));
-    app.use("/versionCheck", asyncHandler(versionCheckRouter));
+  const app = express();
+  app.use(cors()); // cors 방식 허용
+  app.use(express.static("public")); // 정적 파일 접근
+  app.use(express.json()); // request의 본문을 json으로 해석할 수 있도록 함 (JSON 형태의 요청 body를 파싱하기 위함)
+  app.use(express.urlencoded({ extended: false }));
+  app.use("/auth", asyncHandler(authRouter));
+  app.use("/fcmToken", asyncHandler(tokenMinddleware.auth), asyncHandler(fcmTokenRouter));
+  app.use("/main", asyncHandler(tokenMinddleware.auth), asyncHandler(mainRouter));
+  app.use("/team", asyncHandler(tokenMinddleware.auth), asyncHandler(teamRouter));
+  app.use("/match", asyncHandler(tokenMinddleware.auth), asyncHandler(matchRouter));
+  app.use("/icon", asyncHandler(tokenMinddleware.auth), asyncHandler(iconRouter));
+  app.use("/isSelected", asyncHandler(tokenMinddleware.auth), asyncHandler(isSelectedRouter));
+  app.use("/league", asyncHandler(tokenMinddleware.auth), asyncHandler(leagueRouter));
+  app.use("/icon", asyncHandler(tokenMinddleware.auth), asyncHandler(iconRouter));
+  app.use("/sync", asyncHandler(syncRouter));
+  app.use("/searchTag", asyncHandler(searchTagRouter));
+  app.use("/versionCheck", asyncHandler(versionCheckRouter));
 
-    initTask();
+  initTask();
 
-    return app;
+  return app;
 }

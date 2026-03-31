@@ -1,40 +1,40 @@
 import { apiFootballRankInfo, pandaScoreRankInfo } from "@src/external_api";
-import { taskDto } from "./match.task";
+import { type taskDto } from "./match.task";
 import { rankService } from "@src/feature/sync/rank/rank.service";
-import { patchRankDto } from "@src/models/sync/rank/rank.dto";
+import { type patchRankDto } from "@src/models/sync/rank/rank.dto";
 
 export const rankTask = async (data: taskDto[]) => {
-    for (const item of data) {
-        const { leagueId, seasonId } = item;
+  for (const item of data) {
+    console.log(item);
 
-        try {
-            let result;
+    const { leagueId, seasonId } = item;
+    try {
+      let result;
 
-            if (leagueId.startsWith("pandascore")) {
-                result = await pandaScoreRankInfo(leagueId, seasonId);
-            } else if (leagueId.startsWith("apifootball")) {
-                result = await apiFootballRankInfo(leagueId, seasonId);
-            } else {
-                console.warn(`⚠️ 알 수 없는 leagueId: ${leagueId}`);
-                continue;
-            }
+      if (leagueId.startsWith("pandascore")) {
+        result = await pandaScoreRankInfo(leagueId, seasonId);
+      } else if (leagueId.startsWith("apifootball")) {
+        result = await apiFootballRankInfo(leagueId, seasonId);
+      } else {
+        console.warn(`⚠️ 알 수 없는 leagueId: ${leagueId}`);
+        continue;
+      }
 
-            if (!result || result.length === 0) {
-                console.warn(`⚠️ 랭킹 없음 또는 조회 실패: ${leagueId} / ${seasonId}`);
-                continue;
-            }
+      if (!result || result.length === 0) {
+        console.warn(`⚠️ 랭킹 없음 또는 조회 실패: ${leagueId} / ${seasonId}`);
+        continue;
+      }
 
-            await rankService.patch(result as patchRankDto[]);
+      await rankService.patch(result as patchRankDto[]);
 
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        } catch (error) {
-            console.error("❌ rankTask 실패", {
-                leagueId
-            });
-            continue; // 다음 리그로
-        }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      console.error("❌ rankTask 실패", {
+        leagueId
+      });
+      continue; // 다음 리그로
     }
+  }
 
-    console.log("랭킹 정보 업데이트 완료");
+  console.log("랭킹 정보 업데이트 완료");
 };
-

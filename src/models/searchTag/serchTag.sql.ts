@@ -1,6 +1,5 @@
 export const searchTagSql = {
-    patch:
-    `WITH
+  patch: `WITH
         search_tag_team AS (
             SELECT 
                 t.team_id AS teamId,

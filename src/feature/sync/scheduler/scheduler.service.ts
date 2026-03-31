@@ -1,8 +1,8 @@
-import { schedulerDao } from "@src/models/scheduler/scheduler.dao";
+import { schedulerDao } from "@src/models/sync/scheduler/scheduler.dao";
 
 export const schedulerService = {
-    get: async () => {
-        const result = await schedulerDao.get();
-        return result;
-    }
+  get: async () => {
+    const result = await schedulerDao.get();
+    return result;
+  }
 };

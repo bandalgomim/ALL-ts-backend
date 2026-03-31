@@ -1,6 +1,5 @@
 export const matchSql = {
-    get:
-    `WITH match_teams AS (
+  get: `WITH match_teams AS (
         SELECT m.home_team_id AS team_id FROM match_info m WHERE m.match_id = ?
         UNION ALL
         SELECT m.away_team_id FROM match_info m WHERE m.match_id = ?
@@ -106,5 +105,3 @@ export const matchSql = {
     ORDER BY mi.match_date ASC
     `
 };
-
-

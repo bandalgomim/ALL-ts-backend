@@ -1,5 +1,5 @@
 export const rankSql = {
-    patch: `
+  patch: `
     INSERT INTO season_team_record (
       season_id,
       league_id,
@@ -23,4 +23,3 @@ export const rankSql = {
       \`section_idx\` = VALUES(\`section_idx\`);
   `
 };
-

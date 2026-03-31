@@ -1,6 +1,5 @@
 export const teamSql = {
-    get:
-	`WITH
+  get: `WITH
 	selected_league AS (
 		SELECT
 			t.team_id,

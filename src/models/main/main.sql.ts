@@ -1,6 +1,5 @@
 export const mainSql = {
-    get:
-    `WITH
+  get: `WITH
         team_list_info as (
             SELECT 
                 tl.team_id,
@@ -144,22 +143,22 @@ export const mainSql = {
     FROM 
         league_list_info lli
     `,
-    patchTeamList: (teamItems: { teamId: number, index: number }[]) => {
-        const caseStatements = teamItems.map(() => "WHEN team_id = ? THEN ?").join(" ");
-        const whereClause = teamItems.map(() => "?").join(", ");
-        return `
+  patchTeamList: (teamItems: { teamId: number; index: number }[]) => {
+    const caseStatements = teamItems.map(() => "WHEN team_id = ? THEN ?").join(" ");
+    const whereClause = teamItems.map(() => "?").join(", ");
+    return `
             UPDATE team_list
             SET \`index\` = CASE ${caseStatements} END
             WHERE team_id IN (${whereClause});
         `;
-    },
-    patchLeagueList: (leagueItems: { leagueId: number, index: number }[]) => {
-        const caseStatements = leagueItems.map(() => "WHEN league_id = ? THEN ?").join(" ");
-        const whereClause = leagueItems.map(() => "?").join(", ");
-        return `
+  },
+  patchLeagueList: (leagueItems: { leagueId: number; index: number }[]) => {
+    const caseStatements = leagueItems.map(() => "WHEN league_id = ? THEN ?").join(" ");
+    const whereClause = leagueItems.map(() => "?").join(", ");
+    return `
             UPDATE league_list
             SET \`index\` = CASE ${caseStatements} END
             WHERE league_id IN (${whereClause});
         `;
-    }
+  }
 };

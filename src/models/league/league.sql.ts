@@ -1,6 +1,5 @@
 export const leagueSql = {
-    get:
-    `WITH match_row AS (
+  get: `WITH match_row AS (
         SELECT 
             m.match_id,
             m.home_team_id,

@@ -1,15 +1,14 @@
 export type SuccessResponse<T> = {
-    isSuccess: true,
-    code: string,
-    message: string,
-    result: T
+  isSuccess: true;
+  code: string;
+  message: string;
+  result: T;
 };
 
 type FailedResponse = {
-    isSuccess: false,
-    code: string,
-    message: string
+  isSuccess: false;
+  code: string;
+  message: string;
 };
-
 
 export type BaseApiResponse<T> = SuccessResponse<T> | FailedResponse;

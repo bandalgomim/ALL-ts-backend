@@ -9,7 +9,7 @@ const redisHost = process.env.REDISHOST || "localhost";
 const redisPort = process.env.REDISPORT || 6379;
 
 const redisClient = createClient({
-  url: `redis://${redisUser}:${redisPassword}@${redisHost}:${redisPort}`, // ← 비번 추가!
+  url: `redis://${redisUser}:${redisPassword}@${redisHost}:${redisPort}` // ← 비번 추가!
   // username: 'default', // Redis 6 이상에서 ACL 계정 쓰는 경우 (기본은 default)
 });
 

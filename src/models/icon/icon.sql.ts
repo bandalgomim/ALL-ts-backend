@@ -1,6 +1,5 @@
 export const iconSql = {
-    patchIcon:
-    `INSERT INTO icon (user_id, type, id, icon)
+  patchIcon: `INSERT INTO icon (user_id, type, id, icon)
         VALUES (?, ?, ?, ?)
     ON DUPLICATE KEY UPDATE
         user_id = VALUES(user_id),
@@ -8,4 +7,3 @@ export const iconSql = {
         id = VALUES(id),
         icon = VALUES(icon);`
 };
-

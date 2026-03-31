@@ -4,4 +4,3 @@ import { teamController } from "@feature/team/team.controller";
 
 export const teamRouter = Router();
 teamRouter.get("/", asyncHandler(teamController.get));
-

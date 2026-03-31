@@ -1,6 +1,5 @@
 export const schedulerSql = {
-    get:
-    `SELECT
+  get: `SELECT
         l.league_id as leagueId,
         s.season_id as seasonId
     FROM

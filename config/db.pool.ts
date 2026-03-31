@@ -4,11 +4,11 @@ import getDbConfig from "./db.config";
 let pool: Pool;
 
 export function initPool() {
-    if (!pool) {
-        pool = createPool(getDbConfig());
-    }
+  if (!pool) {
+    pool = createPool(getDbConfig());
+  }
 }
 
 export function getPool() {
-    return pool;
+  return pool;
 }

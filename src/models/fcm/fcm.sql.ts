@@ -1,7 +1,6 @@
 export const fcmSql = {
-    patchFcmToken: "UPDATE user SET fcm_token = ? WHERE user_id = ?",
-    get:
-    `SELECT
+  patchFcmToken: "UPDATE user SET fcm_token = ? WHERE user_id = ?",
+  get: `SELECT
         mi.match_id,
         t1.team_name as home_team_name,
         t2.team_name as away_team_name
@@ -18,8 +17,7 @@ export const fcmSql = {
     AND
         mu.type = "highlight"
     `,
-    getLive:
-    `SELECT
+  getLive: `SELECT
         mi.match_id,
         t1.team_name as home_team_name,
         t2.team_name as away_team_name
@@ -32,9 +30,8 @@ export const fcmSql = {
     WHERE
         mi.match_id = ?
     `,
-    postLiveAlarm: "uPDATE match_info SET alarm = 1 WHERE match_id = ?",
-    getFcmToken:
-    `SELECT
+  postLiveAlarm: "uPDATE match_info SET alarm = 1 WHERE match_id = ?",
+  getFcmToken: `SELECT
         u.fcm_token
     FROM
         user u

@@ -1,3 +1,3 @@
 export interface postUriDto {
-    uri: string
+  uri: string;
 }

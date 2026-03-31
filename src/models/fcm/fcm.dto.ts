@@ -1,10 +1,9 @@
 export interface patchFcmTokenReqDto {
-    token: string
+  token: string;
 }
 
 export interface highlightInfoDto {
-    matchId: string,
-    homeTeamName: string,
-    awayTeamName: string
+  matchId: string;
+  homeTeamName: string;
+  awayTeamName: string;
 }
-
